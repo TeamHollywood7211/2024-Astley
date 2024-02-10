@@ -48,4 +48,11 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.01;
     public static final double TURN_CONSTANT    = 6;
   }
+
+  public static class ArmConstants
+  {
+    public static final PIDConstants armPID = new PIDConstants(0.00, 0.0, 0.0);
+    public static final int armMotor1ID = 60;
+    public static final int armMotor2ID = 61;
+  }
 }
