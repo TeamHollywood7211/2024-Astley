@@ -15,8 +15,8 @@
     "canbus": null
   },
   "conversionFactor": {
-    "angle": 0.00012963309,
-    "drive": 0.00000831213
+    "angle": 16.8,
+    "drive": 0.05958135187
   },
   "encoder": {
     "type": "cancoder",
