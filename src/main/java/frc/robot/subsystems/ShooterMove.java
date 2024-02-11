@@ -5,32 +5,19 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.*;
+import frc.robot.Constants.ShooterConstants;
 
-public class ArmSubsystem extends SubsystemBase {
-  PIDController pid = new PIDController(ArmConstants.armP, ArmConstants.armI, ArmConstants.armD);
-  CANSparkMax ArmMotor1 = new CANSparkMax(ArmConstants.armMotor1ID, MotorType.kBrushless); //assigns the motors and stuff
-  CANSparkMax ArmMotor2 = new CANSparkMax(ArmConstants.armMotor2ID, MotorType.kBrushless);
-  public RelativeEncoder armEncoder1 = ArmMotor1.getEncoder();
-  public RelativeEncoder armEncoder2 = ArmMotor2.getEncoder();
-  double setpoint = 0;
+public class ShooterMove extends SubsystemBase {
+  PIDController pid = new PIDController(0,0,0);
+  CANSparkMax ShooterMoverMotor = new CANSparkMax(ShooterConstants.ShooterMoverMotorID, MotorType.kBrushed);
   /** Creates a new ExampleSubsystem. */
-  public ArmSubsystem() {
-    ArmMotor1.restoreFactoryDefaults();
-    ArmMotor2.restoreFactoryDefaults();
+  public ShooterMove() {
     
-    
-    //ArmMotor2.follow(ArmMotor1);
-
-
   }
 
   /**
@@ -39,6 +26,7 @@ public class ArmSubsystem extends SubsystemBase {
    * @return a command
    */
   public Command exampleMethodCommand() {
+    
     // Inline construction of command goes here.
     // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
@@ -59,10 +47,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Pos", armEncoder1.getPosition());
-    
-    ArmMotor1.set(MathUtil.clamp(pid.calculate(armEncoder1.getPosition(), setpoint), -0.5, 0.5));
-    ArmMotor2.set(MathUtil.clamp(pid.calculate(armEncoder2.getPosition(), -setpoint), -0.5, 0.5));
     // This method will be called once per scheduler run
   }
 
@@ -70,27 +54,4 @@ public class ArmSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-
-  public void setPosLow()
-  {
-    setpoint = 0;
-  }
-  public void setPosMid()
-  {
-    setpoint = 100;
-  }
-  public void setPosHigh()
-  {
-    setpoint = 177;
-  }
-
-  public void ManualUp()
-  {
-    setpoint++;
-  }
-  public void ManualDown()
-  {
-    setpoint--;
-  }
-
 }

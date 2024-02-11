@@ -5,32 +5,19 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.*;
 
-public class ArmSubsystem extends SubsystemBase {
-  PIDController pid = new PIDController(ArmConstants.armP, ArmConstants.armI, ArmConstants.armD);
-  CANSparkMax ArmMotor1 = new CANSparkMax(ArmConstants.armMotor1ID, MotorType.kBrushless); //assigns the motors and stuff
-  CANSparkMax ArmMotor2 = new CANSparkMax(ArmConstants.armMotor2ID, MotorType.kBrushless);
-  public RelativeEncoder armEncoder1 = ArmMotor1.getEncoder();
-  public RelativeEncoder armEncoder2 = ArmMotor2.getEncoder();
-  double setpoint = 0;
+public class IntakeSubsystem extends SubsystemBase {
+  CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushed);
+  CANSparkMax IntakeMotor2 = new CANSparkMax(IntakeConstants.IntakeMotor2ID, MotorType.kBrushed);
   /** Creates a new ExampleSubsystem. */
-  public ArmSubsystem() {
-    ArmMotor1.restoreFactoryDefaults();
-    ArmMotor2.restoreFactoryDefaults();
-    
-    
-    //ArmMotor2.follow(ArmMotor1);
-
-
+  public IntakeSubsystem() {
+    IntakeMotor1.restoreFactoryDefaults();
+    IntakeMotor2.restoreFactoryDefaults();
   }
 
   /**
@@ -59,10 +46,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Pos", armEncoder1.getPosition());
-    
-    ArmMotor1.set(MathUtil.clamp(pid.calculate(armEncoder1.getPosition(), setpoint), -0.5, 0.5));
-    ArmMotor2.set(MathUtil.clamp(pid.calculate(armEncoder2.getPosition(), -setpoint), -0.5, 0.5));
     // This method will be called once per scheduler run
   }
 
@@ -71,26 +54,20 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void setPosLow()
+  public void Intake()
   {
-    setpoint = 0;
+    IntakeMotor1.set(1);
+    IntakeMotor2.set(-1);
   }
-  public void setPosMid()
+  public void Outake()
   {
-    setpoint = 100;
+    IntakeMotor1.set(-1);
+    IntakeMotor1.set(1);
   }
-  public void setPosHigh()
+  public void IntakeStop()
   {
-    setpoint = 177;
-  }
-
-  public void ManualUp()
-  {
-    setpoint++;
-  }
-  public void ManualDown()
-  {
-    setpoint--;
+    IntakeMotor1.set(0);
+    IntakeMotor2.set(0);
   }
 
 }
