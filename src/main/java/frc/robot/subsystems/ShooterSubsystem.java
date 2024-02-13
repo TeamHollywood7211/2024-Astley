@@ -5,59 +5,99 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
+
+
 
 public class ShooterSubsystem extends SubsystemBase {
-  CANSparkMax IntakeMotor1 = new CANSparkMax(50, MotorType.kBrushless); //assigns the motors and stuff
-  CANSparkMax IntakeMotor2 = new CANSparkMax(51, MotorType.kBrushless);
+  PIDController pid = new PIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
+  CANSparkMax shooterMotor1 = new CANSparkMax(ShooterConstants.shooterMotor1ID, MotorType.kBrushless);
+  CANSparkMax shooterMotor2 = new CANSparkMax(ShooterConstants.shooterMotor2ID, MotorType.kBrushless);
 
-  CANSparkMax IntakeMotor3 = new CANSparkMax(49, MotorType.kBrushed); //assigns the motors and stuff
-
+  CANSparkMax shooterAngleMotor = new CANSparkMax(ShooterConstants.ShooterMoverMotorID, MotorType.kBrushed);
+  public RelativeEncoder shooterAngleEncoder = shooterAngleMotor.getEncoder();
   
-  /** Creates a new ExampleSubsystem. */
+  double setpoint = 0;
+
   public ShooterSubsystem() {
-    //IntakeMotor2.follow(IntakeMotor1); //use follow instead (controller groups are deprecated)
-    IntakeMotor1.restoreFactoryDefaults();
-    IntakeMotor2.restoreFactoryDefaults();
+    shooterMotor1.restoreFactoryDefaults();
+    shooterMotor2.restoreFactoryDefaults();
+
+    shooterMotor2.follow(shooterMotor1);
 
 
-    IntakeMotor2.setInverted(false); //set true if needs to be inverted
+
 
   }
 
   public Command exampleMethodCommand() {
-
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          /* one-time action goes here */
+          
         });
   }
 
+
   public boolean exampleCondition() {
+    // Query some boolean state, such as a digital sensor.
     return false;
   }
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Shooter Angle: ", shooterAngleEncoder.getPosition());
+    
+    shooterAngleMotor.set(MathUtil.clamp(pid.calculate(shooterAngleEncoder.getPosition(), setpoint), -0.5, 0.5));
+    // This method will be called once per scheduler run
+  
   }
 
   @Override
   public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
+  }
+  public void intake()
+  {
+    shooterMotor1.set(1);
+    shooterMotor2.set(1);
+  }
+  public void outake()
+  {
+    shooterMotor1.set(-0.15);
+    shooterMotor2.set(-0.15);
+  }
+  public void stopShooter()
+  {
+    shooterMotor1.set(0);
+    shooterMotor2.set(0);
+
   }
 
-  public void runGripSpeed(double speed1, double speed2)
+  public void moveShooter(double speed)
   {
-    IntakeMotor1.set(speed1); //sets the leader motor to the designated speed
-    IntakeMotor2.set(speed2);
+    setpoint += speed;
   }
 
-  public void runRearSpeed(double speed3)
+  public void shooterPosA() //fill in with the actual robot pos later plz :3
   {
-    IntakeMotor3.set(speed3);
+    setpoint = 0;
   }
+
+  public void shooterPosB()
+  {
+    setpoint = 0;
+  }
+  
+
+
 }

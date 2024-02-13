@@ -22,6 +22,8 @@ public class ArmSubsystem extends SubsystemBase {
   public RelativeEncoder armEncoder1 = ArmMotor1.getEncoder();
   public RelativeEncoder armEncoder2 = ArmMotor2.getEncoder();
   double setpoint = 0;
+  double leftOffset = 0;
+  double rightOffset = 0;
   /** Creates a new ExampleSubsystem. */
   public ArmSubsystem() {
     ArmMotor1.restoreFactoryDefaults();
@@ -61,8 +63,8 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putNumber("Arm Pos", armEncoder1.getPosition());
     
-    ArmMotor1.set(MathUtil.clamp(pid.calculate(armEncoder1.getPosition(), setpoint), -0.5, 0.5));
-    ArmMotor2.set(MathUtil.clamp(pid.calculate(armEncoder2.getPosition(), -setpoint), -0.5, 0.5));
+    ArmMotor1.set(MathUtil.clamp(pid.calculate(armEncoder1.getPosition(), setpoint+leftOffset), -0.5, 0.5));
+    ArmMotor2.set(MathUtil.clamp(pid.calculate(armEncoder2.getPosition(), (-setpoint)+rightOffset), -0.5, 0.5));
     // This method will be called once per scheduler run
   }
 
@@ -84,13 +86,41 @@ public class ArmSubsystem extends SubsystemBase {
     setpoint = 177;
   }
 
-  public void ManualUp()
+  public void leftManualUp()
   {
-    setpoint++;
+    leftOffset++;
+    System.out.print("L: " + leftOffset);
   }
-  public void ManualDown()
+  public void leftManualDown()
   {
-    setpoint--;
+    leftOffset--;
+    System.out.print("L: " + leftOffset);
+  }
+
+
+
+  public void rightManualUp()
+  {
+    rightOffset++;
+    System.out.print("R: " + rightOffset);
+  }
+  
+  public void rightManualDown()
+  {
+    rightOffset--;
+    System.out.print("R: " + rightOffset);
+  }
+  
+  public void resetOffsets()
+  {
+    rightOffset = 0;
+    leftOffset = 0;
+  }
+  public void resetZeros()
+  {
+    armEncoder1.setPosition(0);
+    armEncoder2.setPosition(0);
+    resetOffsets();
   }
 
 }

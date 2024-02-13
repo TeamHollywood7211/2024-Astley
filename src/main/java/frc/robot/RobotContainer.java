@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+//import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.commands.*;
 import frc.robot.subsystems.Articulation.PoseEstimator;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
@@ -28,10 +29,11 @@ public class RobotContainer {
 
     /* Subsystems */
 //    private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
-    private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+    private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   
+
     /* Controllers */
     private final Joystick driver = new Joystick(0);
 
@@ -39,10 +41,15 @@ public class RobotContainer {
 
     private final CommandXboxController m_driver = new CommandXboxController(0);
     private final CommandXboxController m_operator = new CommandXboxController(1);
+    private final CommandXboxController m_diagnostic = new CommandXboxController(2);
+
+    private final MoveShooterCommand m_moveShooter = new MoveShooterCommand(shooterSubsystem, m_operator);
+
+    private final diagnosticsCommand m_diagnosticCommand = new diagnosticsCommand(m_diagnostic, armSubsystem);
 
     /* Commands */
     //private final ClimberCommand climberCommand = new ClimberCommand(m_ClimberSubsystem, m_driver);
-    private final ShooterCommand shooterCommand = new ShooterCommand(m_ShooterSubsystem, m_driver);
+    //private final ShooterCommand shooterCommand = new ShooterCommand(m_ShooterSubsystem, m_driver);
 
 
     /* Drive Controls */
@@ -94,6 +101,7 @@ public class RobotContainer {
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
+        
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro()));
@@ -120,10 +128,10 @@ public class RobotContainer {
 //    new Trigger(m_driver.povUp()).onTrue(climberCommand);
 //    new Trigger(m_driver.povDown()).onTrue(climberCommand);
 
-//    new Trigger(m_driver.rightTrigger(0.1)).onTrue(climberCommand);
-//    new Trigger(m_driver.leftTrigger(0.1)).onTrue(climberCommand);
-    new Trigger(m_driver.rightBumper()).onTrue(shooterCommand);
-    new Trigger(m_driver.leftBumper()).onTrue(shooterCommand);
+    //new Trigger(m_driver.rightTrigger(0.1)).onTrue(climberCommand);
+    //new Trigger(m_driver.leftTrigger(0.1)).onTrue(climberCommand);
+    //new Trigger(m_driver.rightBumper()).onTrue(shooterCommand);
+    //new Trigger(m_driver.leftBumper()).onTrue(shooterCommand);
     //Arm Move Stuff
 
     new Trigger(m_operator.a()).onTrue(new InstantCommand(armSubsystem::setPosLow)); 
@@ -131,19 +139,51 @@ public class RobotContainer {
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::setPosHigh));
 
 
-    new Trigger(m_operator.povDown()).onTrue(new InstantCommand(armSubsystem::ManualDown));
-    new Trigger(m_operator.povUp()).onTrue(new InstantCommand(armSubsystem::ManualUp));
 
-    new Trigger(m_operator.rightTrigger(0.1)).onTrue(new InstantCommand(intakeSubsystem::Intake)); //Run Intake
-    new Trigger(m_operator.leftTrigger(0.1)).onTrue(new InstantCommand(intakeSubsystem::Outake));  //Run Outtake
+    //Shooter controls, right trigger shoots, right bumper retracts
+    //Intake controls, left trigger intakes, left bumper outakes (retracts?)
 
-    new Trigger(m_operator.leftTrigger(0.1)) //Stop if not running in or out
-    .and(m_operator.rightTrigger(0.1)).onFalse(new InstantCommand(intakeSubsystem::IntakeStop));
+    //SHOOTER//
+    new Trigger(m_operator.rightTrigger()).whileTrue(new InstantCommand(shooterSubsystem::intake));
+    new Trigger(m_operator.rightBumper()).whileTrue(new InstantCommand(shooterSubsystem::outake));
+    
+    
+    new Trigger(m_operator.rightTrigger()).and(m_operator.rightBumper()).whileFalse(new InstantCommand(shooterSubsystem::stopShooter));
+
+    new Trigger(m_operator.povLeft()).onTrue(new InstantCommand(shooterSubsystem::shooterPosA));
+    new Trigger(m_operator.povRight()).onTrue(new InstantCommand(shooterSubsystem::shooterPosB));
+
+    //INTAKE//
+    new Trigger(m_operator.leftTrigger()).whileTrue(new InstantCommand(intakeSubsystem::intake));
+    new Trigger(m_operator.leftBumper()).whileTrue(new InstantCommand(intakeSubsystem::outake));
+    
+    new Trigger(m_operator.leftTrigger()).and(m_operator.leftBumper()).whileFalse(new InstantCommand(intakeSubsystem::stopIntake));
+
+    //Move Arm
+    new Trigger(m_operator.rightStick()).whileTrue(m_moveShooter);
 
 
+    //Diagnostics
+
+    new Trigger(m_diagnostic.leftStick()).onTrue(m_diagnosticCommand);
+    new Trigger(m_diagnostic.rightStick()).onTrue(m_diagnosticCommand);
     
 
-    }
+
+    /* 
+    new Trigger(m_diagnostic.rightTrigger()).whileTrue(new InstantCommand(armSubsystem::rightManualUp));
+    new Trigger(m_diagnostic.rightBumper()).whileTrue(new InstantCommand(armSubsystem::rightManualDown));
+
+    new Trigger(m_diagnostic.leftTrigger()).whileTrue(new InstantCommand(armSubsystem::leftManualDown)); //These are swapped due to motors being backwards
+    new Trigger(m_diagnostic.leftBumper()).whileTrue(new InstantCommand(armSubsystem::leftManualUp));
+    
+    new Trigger(m_diagnostic.button(7)).onTrue(new InstantCommand(armSubsystem::resetOffsets)); //In case you really eff up and need to reset both offsets
+    new Trigger(m_diagnostic.button(8)).onTrue(new InstantCommand(armSubsystem::resetZeros)); //Sets your zeros for when you un-eff up the robot
+    */
+
+}
+    
+
 
     /**
      * Use this to pass the autonomous command to the main {@link Robot} class.
