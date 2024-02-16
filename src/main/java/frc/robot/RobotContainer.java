@@ -33,6 +33,7 @@ public class RobotContainer {
     private final ArmSubsystem armSubsystem = new ArmSubsystem();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   
+    public static double shooterSpeed = 0.50;
 
     /* Controllers */
     private final Joystick driver = new Joystick(0);
@@ -47,6 +48,7 @@ public class RobotContainer {
 
     private final diagnosticsCommand m_diagnosticCommand = new diagnosticsCommand(m_diagnostic, armSubsystem);
 
+    private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem, shooterSubsystem, m_operator);
     /* Commands */
     //private final ClimberCommand climberCommand = new ClimberCommand(m_ClimberSubsystem, m_driver);
     //private final ShooterCommand shooterCommand = new ShooterCommand(m_ShooterSubsystem, m_driver);
@@ -144,20 +146,26 @@ public class RobotContainer {
     //Intake controls, left trigger intakes, left bumper outakes (retracts?)
 
     //SHOOTER//
-    new Trigger(m_operator.rightTrigger()).whileTrue(new InstantCommand(shooterSubsystem::intake));
-    new Trigger(m_operator.rightBumper()).whileTrue(new InstantCommand(shooterSubsystem::outake));
+    new Trigger(m_operator.rightTrigger()).onTrue(m_intakeShooterCommand);
+    new Trigger(m_operator.rightBumper()).onTrue(m_intakeShooterCommand);
     
-    
-    new Trigger(m_operator.rightTrigger()).and(m_operator.rightBumper()).whileFalse(new InstantCommand(shooterSubsystem::stopShooter));
+    new Trigger(m_operator.rightTrigger()).and(m_operator.rightBumper()).onFalse(m_intakeShooterCommand);
 
-    new Trigger(m_operator.povLeft()).onTrue(new InstantCommand(shooterSubsystem::shooterPosA));
-    new Trigger(m_operator.povRight()).onTrue(new InstantCommand(shooterSubsystem::shooterPosB));
+
+
+    
+
+    new Trigger(m_operator.povDown()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLow)); //For when you need the real zoomin' speed or smth and wanna 0 the bot.
+    new Trigger(m_operator.povRight()).onTrue(new InstantCommand(shooterSubsystem::shooterPosAmp)); //For when we are next to the amp
+    new Trigger(m_operator.povUp()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLongShot)); //For when we are REALLLY far away
+
+    new Trigger(m_operator.povLeft()).onTrue(new InstantCommand(shooterSubsystem::shooterPosRingPickup)); //For when we are not that far away but close enough to make it ok :3
 
     //INTAKE//
-    new Trigger(m_operator.leftTrigger()).whileTrue(new InstantCommand(intakeSubsystem::intake));
-    new Trigger(m_operator.leftBumper()).whileTrue(new InstantCommand(intakeSubsystem::outake));
+    new Trigger(m_operator.leftTrigger()).onTrue(m_intakeShooterCommand);
+    new Trigger(m_operator.leftBumper()).onTrue(m_intakeShooterCommand);
     
-    new Trigger(m_operator.leftTrigger()).and(m_operator.leftBumper()).whileFalse(new InstantCommand(intakeSubsystem::stopIntake));
+    new Trigger(m_operator.leftTrigger()).or(m_operator.leftBumper()).onFalse(m_intakeShooterCommand);
 
     //Move Arm
     new Trigger(m_operator.rightStick()).whileTrue(m_moveShooter);

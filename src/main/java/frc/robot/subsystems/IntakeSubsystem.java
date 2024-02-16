@@ -14,13 +14,15 @@ import frc.robot.Constants.*;
 
 public class IntakeSubsystem extends SubsystemBase {
   
-  CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushed);
-  CANSparkMax IntakeMotor2 = new CANSparkMax(IntakeConstants.IntakeMotor2ID, MotorType.kBrushed);
-  DigitalInput IR = new DigitalInput(0);
+  CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushless);
+  CANSparkMax IntakeMotor2 = new CANSparkMax(IntakeConstants.IntakeMotor2ID, MotorType.kBrushless);
+  CANSparkMax feederMotor = new CANSparkMax(IntakeConstants.feederMotorID, MotorType.kBrushed );
+  DigitalInput ringSensor = new DigitalInput(0); 
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {
     IntakeMotor1.restoreFactoryDefaults();
     IntakeMotor2.restoreFactoryDefaults();
+    feederMotor.restoreFactoryDefaults();
   }
 
   /**
@@ -57,20 +59,17 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void intake()
+
+
+  public void setIntake(double speed)
   {
-    IntakeMotor1.set(1);
-    IntakeMotor2.set(-1);
+    IntakeMotor1.set(-speed);
+    IntakeMotor2.set(-speed);
   }
-  public void outake()
+
+  public void setFeeder(double speed)
   {
-    IntakeMotor1.set(-1);
-    IntakeMotor1.set(1);
-  }
-  public void stopIntake()
-  {
-    IntakeMotor1.set(0);
-    IntakeMotor2.set(0);
+    feederMotor.set(-speed);
   }
 
 }
