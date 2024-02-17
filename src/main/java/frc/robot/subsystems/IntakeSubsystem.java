@@ -16,7 +16,7 @@ public class IntakeSubsystem extends SubsystemBase {
   
   CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushless);
   CANSparkMax IntakeMotor2 = new CANSparkMax(IntakeConstants.IntakeMotor2ID, MotorType.kBrushless);
-  CANSparkMax feederMotor = new CANSparkMax(IntakeConstants.feederMotorID, MotorType.kBrushed );
+  CANSparkMax feederMotor = new CANSparkMax(IntakeConstants.feederMotorID, MotorType.kBrushed);
   DigitalInput ringSensor = new DigitalInput(0); 
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {

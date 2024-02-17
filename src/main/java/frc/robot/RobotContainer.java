@@ -158,8 +158,9 @@ public class RobotContainer {
     new Trigger(m_operator.povDown()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLow)); //For when you need the real zoomin' speed or smth and wanna 0 the bot.
     new Trigger(m_operator.povRight()).onTrue(new InstantCommand(shooterSubsystem::shooterPosAmp)); //For when we are next to the amp
     new Trigger(m_operator.povUp()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLongShot)); //For when we are REALLLY far away
-
     new Trigger(m_operator.povLeft()).onTrue(new InstantCommand(shooterSubsystem::shooterPosRingPickup)); //For when we are not that far away but close enough to make it ok :3
+
+
 
     //INTAKE//
     new Trigger(m_operator.leftTrigger()).onTrue(m_intakeShooterCommand);
@@ -176,7 +177,10 @@ public class RobotContainer {
     new Trigger(m_diagnostic.leftStick()).onTrue(m_diagnosticCommand);
     new Trigger(m_diagnostic.rightStick()).onTrue(m_diagnosticCommand);
     
+    //Driver
 
+    new Trigger(m_driver.button(7)).onTrue(new InstantCommand(s_Swerve::zeroGyro)); //Imma be doin' both buttons since those driver goobers dont know what button to press and complain
+    new Trigger(m_driver.button(8)).onTrue(new InstantCommand(s_Swerve::zeroGyro)); //
 
     /* 
     new Trigger(m_diagnostic.rightTrigger()).whileTrue(new InstantCommand(armSubsystem::rightManualUp));

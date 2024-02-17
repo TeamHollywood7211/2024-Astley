@@ -30,8 +30,8 @@ public class RevSwerveConfig
         COTSFalconSwerveConstants.SDSMK4i(COTSFalconSwerveConstants.driveGearRatios.SDSMK4i_L2);
 
     /* Drivetrain Constants */
-    public static final double trackWidth = Units.inchesToMeters(23.75); 
-    public static final double wheelBase = Units.inchesToMeters(23.75); 
+    public static final double trackWidth = Units.inchesToMeters(19); 
+    public static final double wheelBase = Units.inchesToMeters(19); 
     public static final double wheelCircumference = chosenModule.wheelCircumference;
 
 
