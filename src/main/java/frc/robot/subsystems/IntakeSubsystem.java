@@ -18,7 +18,7 @@ public class IntakeSubsystem extends SubsystemBase {
   CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushless);
   CANSparkMax IntakeMotor2 = new CANSparkMax(IntakeConstants.IntakeMotor2ID, MotorType.kBrushless);
   CANSparkMax feederMotor = new CANSparkMax(IntakeConstants.feederMotorID, MotorType.kBrushed);
-  DigitalInput ringSensor = new DigitalInput(9); 
+  DigitalInput ringSensor = new DigitalInput(IntakeConstants.IRSensorID); //The sensor for the rings
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {
     IntakeMotor1.restoreFactoryDefaults();
@@ -52,7 +52,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Ring In Intake", !ringSensor.get());
+    SmartDashboard.putBoolean("Ring In Intake", !(ringSensor.get())); //Thing for the top sensor of the ring
     // This method will be called once per scheduler run
   }
 

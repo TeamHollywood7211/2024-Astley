@@ -94,8 +94,8 @@ public class RobotContainer {
                 s_Swerve, 
                 () -> -driver.getRawAxis(translationAxis), 
                 () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis), 
-                () -> false,
+                () -> -driver.getRawAxis(rotationAxis)*-1, //those stinky drivers whine to much, so I flipped there right joystick >:3 (jk they complained about controls being flipped)
+                () -> false, //Robot centric
                 () -> dampen.getAsBoolean(),
                 () -> 1 //speed multiplier 
             )
