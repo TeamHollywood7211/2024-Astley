@@ -48,7 +48,8 @@ public class RobotContainer {
     private final CommandXboxController m_operator = new CommandXboxController(1);
     private final CommandXboxController m_diagnostic = new CommandXboxController(2);
 
-    private final MoveShooterCommand m_moveShooter = new MoveShooterCommand(shooterSubsystem, m_operator);
+    //private final MoveShooterCommand m_moveShooter = new MoveShooterCommand(shooterSubsystem, m_operator);
+    private final MoveIntakeCommand m_moveIntake = new MoveIntakeCommand(intakeSubsystem, m_operator);
 
     private final diagnosticsCommand m_diagnosticCommand = new diagnosticsCommand(m_diagnostic, armSubsystem);
 
@@ -180,7 +181,8 @@ public class RobotContainer {
     new Trigger(m_operator.leftTrigger()).or(m_operator.leftBumper()).onFalse(m_intakeShooterCommand);
 
     //Move Arm
-    new Trigger(m_operator.rightStick()).whileTrue(m_moveShooter);
+    new Trigger(m_operator.rightStick()).whileTrue(m_moveIntake);
+    new Trigger(m_operator.leftStick()).whileTrue(m_moveIntake);
 
 
     //Diagnostics

@@ -65,10 +65,27 @@ public final class Constants {
     public static class IntakeConstants
     {
       public static final int IntakeMotor1ID = 41;
-      public static final int IntakeMotor2ID = 42;
-      public static final int feederMotorID = 43;
       public static final int IRSEnsorPowerID = 1;
       public static final int IRSensorSignalID = 0;
+
+      public static final int IntakeWristMotorID = 44;
+      public static final int IntakeArmExtensionMotorID = 47;
+      public static final int IntakeArmAngleMotorID = 43;
+
+      //Angle PID
+      public static final double armAngleP = 0.01;
+      public static final double armAngleI = 0;
+      public static final double armAngleD = 0.001;
+
+      //Extension PID 
+      public static final double armExtP = 0.01;
+      public static final double armExtI = 0;
+      public static final double armExtD = 0.001;
+
+      //Wrist PID
+      public static final double wristP = 0.01;
+      public static final double wristI = 0;
+      public static final double wristD = 0.001;
     }
     
     public static class ShooterConstants

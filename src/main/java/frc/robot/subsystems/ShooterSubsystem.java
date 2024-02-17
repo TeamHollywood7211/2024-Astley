@@ -99,7 +99,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void shooterPosLow() 
   {
     setpoint = 0;
-    
   }
 
   public void shooterPosMid()
