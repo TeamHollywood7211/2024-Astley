@@ -109,6 +109,8 @@ public class RevSwerve extends SubsystemBase {
                 translation.getX(),
                 translation.getY(),
                 rotation);
+
+        
         desiredChassisSpeeds = correctForDynamics(desiredChassisSpeeds);
 
         SwerveModuleState[] swerveModuleStates = RevSwerveConfig.swerveKinematics.toSwerveModuleStates(desiredChassisSpeeds);
@@ -118,7 +120,7 @@ public class RevSwerve extends SubsystemBase {
             mod.setDesiredState(swerveModuleStates[mod.getModuleNumber()], isOpenLoop);
         }
 
-    }    
+    }
     public ChassisSpeeds getRobotRelativeSpeeds()
     {
         SwerveModuleState[] myStates = 
@@ -128,19 +130,20 @@ public class RevSwerve extends SubsystemBase {
                 mSwerveMods[2].getState(),
                 mSwerveMods[3].getState()
             };
+        
         return RevSwerveConfig.swerveKinematics.toChassisSpeeds(myStates);
         //return null;
     }
     
-    public void autoDrive(ChassisSpeeds desiredChassisSpeeds) {
+    public void autoDrive(ChassisSpeeds wantedChassisSpeeds) {
         
-        desiredChassisSpeeds = correctForDynamics(desiredChassisSpeeds);
+        ChassisSpeeds desiredChassisSpeeds = correctForDynamics(wantedChassisSpeeds);
         
         SwerveModuleState[] swerveModuleStates = RevSwerveConfig.swerveKinematics.toSwerveModuleStates(desiredChassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, RevSwerveConfig.maxSpeed);
         
         for(SwerveModule mod : mSwerveMods){
-            mod.setDesiredState(swerveModuleStates[mod.getModuleNumber()], true);
+            mod.setDesiredState(swerveModuleStates[mod.getModuleNumber()], false);
         }
 
     } 
