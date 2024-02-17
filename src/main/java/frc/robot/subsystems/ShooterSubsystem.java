@@ -114,25 +114,31 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void shooterPosRingPickup()
   {
-    setpoint = 30;
-    RobotContainer.shooterSpeed = -0.75;
+    setpoint = 38;
+    RobotContainer.shooterSpeed = 0.60;
 
   }
-  public void shooterPosAmp()
+  public void shooterPosSpeaker()
   {
-    setpoint = 48;
-    RobotContainer.shooterSpeed = -0.60;
+    setpoint = 56;
+    RobotContainer.shooterSpeed = 0.50;
   }
   public void shooterPosLongShot()
   {
-    setpoint = 18;
-    RobotContainer.shooterSpeed = -1;
+    setpoint = 23;
+    RobotContainer.shooterSpeed = 1;
+  }
+
+  public void shooterPosSuperLongShot()
+  {
+    setpoint = 20;
+    RobotContainer.shooterSpeed = 1;
   }
   public void setShooterSpeed(double speed)
   {
     speed = MathUtil.clamp(speed, -1,1);
-    shooterMotor1.set(speed);
-    shooterMotor2.set(speed);
+    shooterMotor1.set(-speed);
+    shooterMotor2.set(-speed);
   }
 
 }

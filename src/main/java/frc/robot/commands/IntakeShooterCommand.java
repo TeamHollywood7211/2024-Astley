@@ -44,7 +44,7 @@ public class IntakeShooterCommand extends Command {
    } 
    if(m_controller.rightBumper().getAsBoolean())
    {
-      m_shooterSubsystem.setShooterSpeed(0.15);
+      m_shooterSubsystem.setShooterSpeed(-0.15);
       //m_intakeSubsystem.setFeeder(1);
    }
 

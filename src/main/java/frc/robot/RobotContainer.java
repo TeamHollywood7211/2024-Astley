@@ -147,9 +147,9 @@ public class RobotContainer {
     //new Trigger(m_driver.leftBumper()).onTrue(shooterCommand);
     //Arm Move Stuff
 
-    new Trigger(m_operator.a()).onTrue(new InstantCommand(armSubsystem::setPosLow)); 
-    new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::setPosMid));
-    new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::setPosHigh));
+    //new Trigger(m_operator.a()).onTrue(new InstantCommand(armSubsystem::setPosLow)); 
+    //new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::setPosMid));
+    //new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::setPosHigh));
 
 
 
@@ -167,10 +167,10 @@ public class RobotContainer {
     
 
     new Trigger(m_operator.povDown()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLow)); //For when you need the real zoomin' speed or smth and wanna 0 the bot.
-    new Trigger(m_operator.povRight()).onTrue(new InstantCommand(shooterSubsystem::shooterPosAmp)); //For when we are next to the amp
-    new Trigger(m_operator.povUp()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLongShot)); //For when we are REALLLY far away
-    new Trigger(m_operator.povLeft()).onTrue(new InstantCommand(shooterSubsystem::shooterPosRingPickup)); //For when we are not that far away but close enough to make it ok :3
-
+    new Trigger(m_operator.y()).onTrue(new InstantCommand(shooterSubsystem::shooterPosSpeaker)); //For when we are next to the speaker thingy
+    new Trigger(m_operator.x()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLongShot)); //For when we are REALLLY far away
+    new Trigger(m_operator.b()).onTrue(new InstantCommand(shooterSubsystem::shooterPosRingPickup)); //pickup
+    new Trigger(m_operator.a()).onTrue(new InstantCommand(shooterSubsystem::shooterPosSuperLongShot));
 
 
     //INTAKE//
