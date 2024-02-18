@@ -24,7 +24,7 @@ public class IntakeSubsystem extends SubsystemBase {
   PIDController ArmExtensionPID = new PIDController(IntakeConstants.armExtP, IntakeConstants.armExtI, IntakeConstants.armExtD);
   PIDController WristMotorPID = new PIDController(IntakeConstants.wristP, IntakeConstants.wristI, IntakeConstants.wristD);
   
-  CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushless);
+  CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushed);
   //CANSparkMax feederMotor = new CANSparkMax(IntakeConstants.feederMotorID, MotorType.kBrushed);
   CANSparkMax ArmAngleMotor = new CANSparkMax(IntakeConstants.IntakeArmAngleMotorID, MotorType.kBrushless);
   CANSparkMax ArmExtensionMotor = new CANSparkMax(IntakeConstants.IntakeArmExtensionMotorID, MotorType.kBrushless);
@@ -77,13 +77,13 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     SmartDashboard.putBoolean("Ring In Intake", !(ringSensor.get())); //Thing for the top sensor of the ring
 
-    //SmartDashboard.putNumber("Angle Pos: ", ArmAngleEncoder.getPosition());
-    //SmartDashboard.putNumber("Extension Pos: ", ArmExtensionEncoder.getPosition());
-    //sSmartDashboard.putNumber("Wrist Pos: ", WristEncoder.getPosition());
+    SmartDashboard.putNumber("Angle Pos: ", ArmAngleEncoder.getPosition());
+    SmartDashboard.putNumber("Extension Pos: ", ArmExtensionEncoder.getPosition());
+    SmartDashboard.putNumber("Wrist Pos: ", WristEncoder.getPosition());
     
-    angleSetpoint = MathUtil.clamp(angleSetpoint, 0, 100);
-    extensionSetpoint = MathUtil.clamp(extensionSetpoint, -50, 50);
-    wristSetpoint = MathUtil.clamp(wristSetpoint, 0, 100);
+    //angleSetpoint = MathUtil.clamp(angleSetpoint, 0, 100);
+    //extensionSetpoint = MathUtil.clamp(extensionSetpoint, -50, 50);
+    //wristSetpoint = MathUtil.clamp(wristSetpoint, 0, 100);
 
     ArmAngleMotor.set(MathUtil.clamp(ArmAnglePID.calculate(ArmAngleEncoder.getPosition(), angleSetpoint), -0.75, 0.75));
     ArmExtensionMotor.set(MathUtil.clamp(ArmExtensionPID.calculate(ArmExtensionEncoder.getPosition(), extensionSetpoint), -0.75, 0.75));
