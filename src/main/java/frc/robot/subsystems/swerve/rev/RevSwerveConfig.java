@@ -4,8 +4,12 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.SensorTimeBase;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkBase.IdleMode;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -15,7 +19,7 @@ import frc.lib.util.swerveUtil.COTSFalconSwerveConstants;
 public class RevSwerveConfig 
 {
     
-    public CANCoderConfiguration canCoderConfig;
+    public CANcoderConfiguration canCoderConfig;
 
     //
     public static final IdleMode driveIdleMode = IdleMode.kBrake;
@@ -110,11 +114,31 @@ public class RevSwerveConfig
 
     public RevSwerveConfig()
     {
+
+        SensorDirectionValue senDir;
+        CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
+        canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1; //No 0-360, gonna have to just multiply by 360 :pensive:
+        
+        if(canCoderInvert)
+        {
+            senDir = SensorDirectionValue.CounterClockwise_Positive;
+        }
+        else
+        {
+            senDir = SensorDirectionValue.Clockwise_Positive;
+        }
+        
+        canCoderConfig.MagnetSensor.SensorDirection = senDir;
+        //canCoderConfig.MagnetSensor.MagnetOffset =  angleOffset.getDegrees();
+       
+        /* 
         canCoderConfig = new CANCoderConfiguration();
         canCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         canCoderConfig.sensorDirection = canCoderInvert;
         canCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         canCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
+        */
+        
     }
 }
 

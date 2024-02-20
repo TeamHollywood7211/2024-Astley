@@ -135,9 +135,9 @@ public class RevSwerve extends SubsystemBase {
         //return null;
     }
     
-    public void autoDrive(ChassisSpeeds wantedChassisSpeeds) {
+    public void autoDrive(ChassisSpeeds desiredChassisSpeeds) {
         
-        ChassisSpeeds desiredChassisSpeeds = correctForDynamics(wantedChassisSpeeds);
+        desiredChassisSpeeds = correctForDynamics(desiredChassisSpeeds);  //possibly remove I got no clue if we need this
         
         SwerveModuleState[] swerveModuleStates = RevSwerveConfig.swerveKinematics.toSwerveModuleStates(desiredChassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, RevSwerveConfig.maxSpeed);
@@ -151,7 +151,7 @@ public class RevSwerve extends SubsystemBase {
     /* Used by SwerveControllerCommand in Auto */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
 
-       // System.out.println("setting module states: "+desiredStates[0]);
+        //System.out.println("setting module states: "+desiredStates[0]);
         SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, RevSwerveConfig.maxSpeed);
         
         for(SwerveModule mod : mSwerveMods){

@@ -24,6 +24,8 @@ public class ShooterSubsystem extends SubsystemBase {
   CANSparkMax shooterMotor1 = new CANSparkMax(ShooterConstants.shooterMotor1ID, MotorType.kBrushless);
   CANSparkMax shooterMotor2 = new CANSparkMax(ShooterConstants.shooterMotor2ID, MotorType.kBrushless);
 
+  //CANSparkMax armMotor = new CANSparkMax(ShooterConstants.armMotorID, MotorType.kBrushless);
+
   CANSparkMax shooterAngleMotor = new CANSparkMax(ShooterConstants.ShooterMoverMotorID, MotorType.kBrushless);
   public RelativeEncoder shooterAngleEncoder = shooterAngleMotor.getEncoder();
   
@@ -59,7 +61,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     
     SmartDashboard.putNumber("Shooter Angle: ", shooterAngleEncoder.getPosition());
-    setpoint = MathUtil.clamp(setpoint, 0, 60);
+    //setpoint = MathUtil.clamp(setpoint, 0, 60);
 
     shooterAngleMotor.set(MathUtil.clamp(pid.calculate(shooterAngleEncoder.getPosition(), setpoint), -0.75, 0.75));
 
@@ -141,4 +143,10 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor2.set(-speed);
   }
 
+  public void manMoveArm(double speed)
+  {
+
+    //armMotor.set(speed);
+  
+  }
 }

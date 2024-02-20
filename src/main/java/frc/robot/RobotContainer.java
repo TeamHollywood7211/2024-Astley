@@ -182,7 +182,7 @@ public class RobotContainer {
 
     //Move Arm
     new Trigger(m_operator.rightStick()).whileTrue(m_moveShooter);
-
+    new Trigger(m_operator.leftStick()).whileTrue(m_moveShooter);
 
     //Diagnostics
 

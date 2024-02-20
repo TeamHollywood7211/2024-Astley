@@ -9,10 +9,13 @@ import frc.lib.util.swerveUtil.CTREModuleState;
 import frc.lib.util.swerveUtil.RevSwerveModuleConstants;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkPIDController;
 import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkBase.FaultID;
 import com.revrobotics.CANSparkLowLevel.MotorType;
@@ -29,7 +32,7 @@ public class RevSwerveModule implements SwerveModule
     private CANSparkMax mAngleMotor;
     private CANSparkFlex mDriveMotor;
 
-    private CANCoder angleEncoder;
+    private CANcoder angleEncoder;
     private RelativeEncoder relAngleEncoder;
     private RelativeEncoder relDriveEncoder;
 
@@ -42,6 +45,7 @@ public class RevSwerveModule implements SwerveModule
         this.angleOffset = moduleConstants.angleOffset;
         
        
+
         /* Angle Motor Config */
         mAngleMotor = new CANSparkMax(moduleConstants.angleMotorID, MotorType.kBrushless);
         configAngleMotor();
@@ -52,7 +56,7 @@ public class RevSwerveModule implements SwerveModule
 
          /* Angle Encoder Config */
     
-        angleEncoder = new CANCoder(moduleConstants.cancoderID);
+        angleEncoder = new CANcoder(moduleConstants.cancoderID);
         configEncoders();
 
 
@@ -64,15 +68,21 @@ public class RevSwerveModule implements SwerveModule
     {     
         // absolute encoder   
       
+        //angleEncoder.getConfigurator().apply(new RevSwerveConfig().canCoderConfig);
+        
+        //old stuff for v5 
+        /* 
         angleEncoder.configFactoryDefault();
-        angleEncoder.configAllSettings(new RevSwerveConfig().canCoderConfig);
+        angleEncoder.configAllSettings(new RevSwerveConfig().canCoderConfig);*/
        
         relDriveEncoder = mDriveMotor.getEncoder();
         relDriveEncoder.setPosition(0);
 
-         
+
+
         relDriveEncoder.setPositionConversionFactor(RevSwerveConfig.driveRevToMeters);
         relDriveEncoder.setVelocityConversionFactor(RevSwerveConfig.driveRpmToMetersPerSecond);
+
 
         
         relAngleEncoder = mAngleMotor.getEncoder();
@@ -90,7 +100,7 @@ public class RevSwerveModule implements SwerveModule
     private void configAngleMotor()
     {
         mAngleMotor.restoreFactoryDefaults();
-        SparkMaxPIDController controller = mAngleMotor.getPIDController();
+        SparkPIDController controller = mAngleMotor.getPIDController();
         controller.setP(RevSwerveConfig.angleKP, 0);
         controller.setI(RevSwerveConfig.angleKI,0);
         controller.setD(RevSwerveConfig.angleKD,0);
@@ -108,7 +118,7 @@ public class RevSwerveModule implements SwerveModule
     private void configDriveMotor()
     {        
         mDriveMotor.restoreFactoryDefaults();
-        SparkMaxPIDController controller = mDriveMotor.getPIDController();
+        SparkPIDController controller = mDriveMotor.getPIDController();
         controller.setP(RevSwerveConfig.driveKP,0);
         controller.setI(RevSwerveConfig.driveKI,0);
         controller.setD(RevSwerveConfig.driveKD,0);
@@ -158,7 +168,7 @@ public class RevSwerveModule implements SwerveModule
  
         double velocity = desiredState.speedMetersPerSecond;
         
-        SparkMaxPIDController controller = mDriveMotor.getPIDController();
+        SparkPIDController controller = mDriveMotor.getPIDController();
         controller.setReference(velocity, ControlType.kVelocity, 0);
         
     }
@@ -174,7 +184,7 @@ public class RevSwerveModule implements SwerveModule
         Rotation2d angle = desiredState.angle; 
         //Prevent rotating module if speed is less then 1%. Prevents Jittering.
         
-        SparkMaxPIDController controller = mAngleMotor.getPIDController();
+        SparkPIDController controller = mAngleMotor.getPIDController();
         
         double degReference = angle.getDegrees();
      
@@ -193,8 +203,12 @@ public class RevSwerveModule implements SwerveModule
 
     public Rotation2d getCanCoder()
     {
-        
-        return Rotation2d.fromDegrees(angleEncoder.getAbsolutePosition());
+        var absPosSignal = angleEncoder.getAbsolutePosition(); //v6 change thingy
+
+        var absPos = absPosSignal.getValue()*360;
+
+        return Rotation2d.fromRadians(absPos); 
+        //return Rotation2d.fromRadians(angleEncoder.getAbsolutePosition());
         //return getAngle();
     }
 
@@ -208,11 +222,12 @@ public class RevSwerveModule implements SwerveModule
         this.moduleNumber = moduleNumber;
     }
 
-    private void resetToAbsolute()
+    private void resetToAbsolute() //This uses our offsets to fully set the code to the right thingy
     {
     
-        double absolutePosition =getCanCoder().getDegrees() - angleOffset.getDegrees();
+        double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
         relAngleEncoder.setPosition(absolutePosition);
+
     }
 
   

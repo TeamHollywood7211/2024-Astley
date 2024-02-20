@@ -36,6 +36,8 @@ public class MoveShooterCommand extends Command {
   public void execute() {
     m_subsystem.moveShooter(m_controller.getRightY());
 
+    m_subsystem.manMoveArm(m_controller.getRightX());
+
 
   }
 

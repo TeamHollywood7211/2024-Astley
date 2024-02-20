@@ -73,11 +73,13 @@ public final class Constants {
     
     public static class ShooterConstants
     {
-      public static final int ShooterMoverMotorID = 55;
+      public static final int ShooterMoverMotorID = 45;
       public static final double kP = 0.01;
       public static final double kI = 0;
       public static final double kD = 0.001;
       public static final int shooterMotor1ID = 50;
       public static final int shooterMotor2ID = 51;
+
+      public static final int armMotorID = 45;
     }
 }
