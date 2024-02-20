@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
 public class RevSwerve extends SubsystemBase {
 
 
@@ -137,7 +138,7 @@ public class RevSwerve extends SubsystemBase {
     
     public void autoDrive(ChassisSpeeds desiredChassisSpeeds) {
         
-        desiredChassisSpeeds = correctForDynamics(desiredChassisSpeeds);  //possibly remove I got no clue if we need this
+        //desiredChassisSpeeds = correctForDynamics(desiredChassisSpeeds);  //possibly remove I got no clue if we need this
         
         SwerveModuleState[] swerveModuleStates = RevSwerveConfig.swerveKinematics.toSwerveModuleStates(desiredChassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, RevSwerveConfig.maxSpeed);
@@ -145,6 +146,7 @@ public class RevSwerve extends SubsystemBase {
         for(SwerveModule mod : mSwerveMods){
             mod.setDesiredState(swerveModuleStates[mod.getModuleNumber()], false);
         }
+        
 
     } 
 
@@ -162,6 +164,11 @@ public class RevSwerve extends SubsystemBase {
         Pose2d p =  swerveOdometry.getPoseMeters();
         return new Pose2d(-p.getX(),-p.getY(),  p.getRotation());
     }
+
+    public Pose2d getPoseAuton() {
+        return swerveOdometry.getPoseMeters();
+    }
+
     public void resetOdometry(Pose2d pose) {
         
         swerveOdometry.resetPosition(new Rotation2d(), getModulePositions(), pose);
