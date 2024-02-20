@@ -116,7 +116,7 @@ public class RevSwerveConfig
     {
 
         SensorDirectionValue senDir;
-        CANcoderConfiguration canCoderConfig = new CANcoderConfiguration();
+        var canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1; //No 0-360, gonna have to just multiply by 360 :pensive:
         
         if(canCoderInvert)
@@ -127,7 +127,6 @@ public class RevSwerveConfig
         {
             senDir = SensorDirectionValue.Clockwise_Positive;
         }
-        
         canCoderConfig.MagnetSensor.SensorDirection = senDir;
         //canCoderConfig.MagnetSensor.MagnetOffset =  angleOffset.getDegrees();
        

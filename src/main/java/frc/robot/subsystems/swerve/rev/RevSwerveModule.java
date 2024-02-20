@@ -11,6 +11,8 @@ import frc.lib.util.swerveUtil.RevSwerveModuleConstants;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -67,9 +69,17 @@ public class RevSwerveModule implements SwerveModule
     private void configEncoders()
     {     
         // absolute encoder   
-      
-        //angleEncoder.getConfigurator().apply(new RevSwerveConfig().canCoderConfig);
+
+        var canCoderConfig = new CANcoderConfiguration();
+        canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1; //No 0-360, gonna have to just multiply by 360 :pensive:
+
+        canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        canCoderConfig.MagnetSensor.MagnetOffset = -angleOffset.getDegrees();
         
+
+        angleEncoder.getConfigurator().apply(canCoderConfig);
+        
+
         //old stuff for v5 
         /* 
         angleEncoder.configFactoryDefault();
@@ -91,7 +101,8 @@ public class RevSwerveModule implements SwerveModule
         relAngleEncoder.setVelocityConversionFactor(RevSwerveConfig.DegreesPerTurnRotation / 60);
     
 
-        resetToAbsolute();
+
+        //resetToAbsolute();
         mDriveMotor.burnFlash();
         mAngleMotor.burnFlash();
         
@@ -205,7 +216,7 @@ public class RevSwerveModule implements SwerveModule
     {
         var absPosSignal = angleEncoder.getAbsolutePosition(); //v6 change thingy
 
-        var absPos = absPosSignal.getValue()*360;
+        var absPos = absPosSignal.getValue()*360; //the cancoder only reads 0-1, so multiply by 360 should make it fit with the rest of the code :3
 
         return Rotation2d.fromRadians(absPos); 
         //return Rotation2d.fromRadians(angleEncoder.getAbsolutePosition());
@@ -228,6 +239,8 @@ public class RevSwerveModule implements SwerveModule
         double absolutePosition = getCanCoder().getDegrees() - angleOffset.getDegrees();
         relAngleEncoder.setPosition(absolutePosition);
 
+        //Theres a solid 50% chance we are no longer gonna need this if we do things the way I wanna do them B3
+        //like not applying config in code and instead apply config in phoenix tuner.
     }
 
   
