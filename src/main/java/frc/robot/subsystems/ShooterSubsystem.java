@@ -59,7 +59,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     
     SmartDashboard.putNumber("Shooter Angle: ", shooterAngleEncoder.getPosition());
-    setpoint = MathUtil.clamp(setpoint, 0, 60);
+    setpoint = MathUtil.clamp(setpoint, 0, 999);
 
     shooterAngleMotor.set(MathUtil.clamp(pid.calculate(shooterAngleEncoder.getPosition(), setpoint), -0.75, 0.75));
 
