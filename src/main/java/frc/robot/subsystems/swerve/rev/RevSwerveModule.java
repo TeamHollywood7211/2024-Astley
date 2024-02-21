@@ -100,7 +100,7 @@ public class RevSwerveModule implements SwerveModule
         relAngleEncoder.setVelocityConversionFactor(RevSwerveConfig.DegreesPerTurnRotation / 60);
     
 
-
+        //see its epic
         resetToAbsolute();
         mDriveMotor.burnFlash();
         mAngleMotor.burnFlash();
