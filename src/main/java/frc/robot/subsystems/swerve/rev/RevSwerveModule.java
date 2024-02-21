@@ -73,7 +73,7 @@ public class RevSwerveModule implements SwerveModule
         var canCoderConfig = new CANcoderConfiguration();
         canCoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1; //No 0-360, gonna have to just multiply by 360 :pensive:
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-        canCoderConfig.MagnetSensor.MagnetOffset = -angleOffset.getDegrees();
+        canCoderConfig.MagnetSensor.MagnetOffset = (angleOffset.getDegrees() / 360);
         
 
         angleEncoder.getConfigurator().apply(canCoderConfig);
@@ -214,9 +214,8 @@ public class RevSwerveModule implements SwerveModule
     public Rotation2d getCanCoder()
     {
         var absPosSignal = angleEncoder.getAbsolutePosition(); //v6 change thingy
-
-        var absPos = absPosSignal.getValue(); //the cancoder only reads 0-1, so multiply by 360 should make it fit with the rest of the code :3
-
+        var absPos = absPosSignal.waitForUpdate(0.015).getValue();
+        
         return Rotation2d.fromDegrees(absPos*360);
         //return Rotation2d.fromRadians(absPos); 
         //return Rotation2d.fromRadians(angleEncoder.getAbsolutePosition());
