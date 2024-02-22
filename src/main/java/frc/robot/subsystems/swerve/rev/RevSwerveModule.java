@@ -75,6 +75,8 @@ public class RevSwerveModule implements SwerveModule
         canCoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         canCoderConfig.MagnetSensor.MagnetOffset = (angleOffset.getDegrees() / 360);
         
+        System.out.print("ENCODER OFFSET THINGY: " + (angleOffset.getDegrees() / 360));
+        
 
         angleEncoder.getConfigurator().apply(canCoderConfig);
         
@@ -106,6 +108,9 @@ public class RevSwerveModule implements SwerveModule
         mAngleMotor.burnFlash();
         
     }
+
+
+
 
     private void configAngleMotor()
     {
@@ -214,7 +219,7 @@ public class RevSwerveModule implements SwerveModule
     public Rotation2d getCanCoder()
     {
         var absPosSignal = angleEncoder.getAbsolutePosition(); //v6 change thingy
-        var absPos = absPosSignal.waitForUpdate(0.015).getValue();
+        var absPos = absPosSignal.waitForUpdate(0.2).getValue();
         
         return Rotation2d.fromDegrees(absPos*360);
         //return Rotation2d.fromRadians(absPos); 
