@@ -33,7 +33,7 @@ public final class RevSwerveConstants
             public static final int driveMotorID = 1;
             public static final int angleMotorID = 2;
             public static final int canCoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.156494*360); //fromDegrees(0.540283*360); //Rotation2d.fromDegrees(37.7);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0*360); //fromDegrees(0.540283*360); //Rotation2d.fromDegrees(37.7);
             public static final RevSwerveModuleConstants constants = 
                 new RevSwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -43,7 +43,7 @@ public final class RevSwerveConstants
             public static final int driveMotorID = 11;
             public static final int angleMotorID = 12;
             public static final int canCoderID = 13;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.769043*360); //((0.391602*360) + 180.0);//These ones are a lil screwed
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0*360); //((0.391602*360) + 180.0);//These ones are a lil screwed
             public static final RevSwerveModuleConstants constants = 
                 new RevSwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
@@ -53,7 +53,7 @@ public final class RevSwerveConstants
             public static final int driveMotorID = 21;
             public static final int angleMotorID = 22;
             public static final int canCoderID = 23;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.412109*360); //((0.834473*360)); //These ones are a lil screwed
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0*360); //((0.834473*360)); //These ones are a lil screwed
             public static final RevSwerveModuleConstants constants = 
                 new RevSwerveModuleConstants(driveMotorID, angleMotorID, canCoderID, angleOffset);
         }
