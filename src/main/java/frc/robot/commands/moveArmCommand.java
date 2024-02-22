@@ -10,21 +10,20 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /** An example command that uses an example subsystem. */
-public class diagnosticsCommand extends Command {
+public class moveArmCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ArmSubsystem m_ArmSubsystem;
+  private final ArmSubsystem m_subsystem;
   private final CommandXboxController m_controller;
-
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public diagnosticsCommand(CommandXboxController controller,ArmSubsystem armSubsystem) {
-    m_ArmSubsystem = armSubsystem;
+  public moveArmCommand(ArmSubsystem subsystem, CommandXboxController controller) {
+    m_subsystem = subsystem;
     m_controller = controller;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(armSubsystem);
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -34,26 +33,8 @@ public class diagnosticsCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    if(m_controller.getLeftY() > 0.5)
-    {
-      m_ArmSubsystem.leftManualUp();
-    }
-    if(m_controller.getLeftY() < -0.5)
-    {
-      m_ArmSubsystem.leftManualDown();
-    }
-
-
-    if(m_controller.getRightY() > 0.5)
-    {
-      m_ArmSubsystem.rightManualDown();
-    }
-    if(m_controller.getRightY() < -0.5)
-    {
-      m_ArmSubsystem.rightManualUp();
-    }
-
+    m_subsystem.manuArm(m_controller.getLeftY());
+    m_subsystem.manuWrist(m_controller.getRightY());
   }
 
   // Called once the command ends or is interrupted.

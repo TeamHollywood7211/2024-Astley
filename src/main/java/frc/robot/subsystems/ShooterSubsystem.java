@@ -26,10 +26,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   //CANSparkMax armMotor = new CANSparkMax(ShooterConstants.armMotorID, MotorType.kBrushless);
 
-  CANSparkMax shooterAngleMotor = new CANSparkMax(ShooterConstants.ShooterMoverMotorID, MotorType.kBrushless);
-  public RelativeEncoder shooterAngleEncoder = shooterAngleMotor.getEncoder();
   
-  double setpoint = 0;
 
   public ShooterSubsystem() {
     shooterMotor1.restoreFactoryDefaults();
@@ -60,11 +57,14 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     
-    SmartDashboard.putNumber("Shooter Angle: ", shooterAngleEncoder.getPosition());
+  /*
+  
+  when wrist was here
+  SmartDashboard.putNumber("Shooter Angle: ", shooterAngleEncoder.getPosition());
     //setpoint = MathUtil.clamp(setpoint, 0, 60);
 
     shooterAngleMotor.set(MathUtil.clamp(pid.calculate(shooterAngleEncoder.getPosition(), setpoint), -0.75, 0.75));
-
+*/
     //mostly built on the cool pid.calculate() function. Clamps the speed AND the setpoints so
     //I, the operator, and the code doesnt smash itself into the robot, ultimately destroying
     //the fragile Neo Vortex (which can catch on fire :3)
@@ -93,25 +93,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
 
-  public void moveShooter(double speed)
-  {
-    setpoint += speed;
-  }
-
-  public void shooterPosLow() 
-  {
-    setpoint = 0;
-    
-  }
-
-  public void shooterPosMid()
-  {
-    setpoint = 30;
-  }
-  public void shooterPosHigh()
-  {
-    setpoint = 47;
-  }
+/* 
 
 
   public void shooterPosRingPickup()
@@ -136,6 +118,7 @@ public class ShooterSubsystem extends SubsystemBase {
     setpoint = 20;
     RobotContainer.shooterSpeed = 1;
   }
+  */
   public void setShooterSpeed(double speed)
   {
     speed = MathUtil.clamp(speed, -1,1);

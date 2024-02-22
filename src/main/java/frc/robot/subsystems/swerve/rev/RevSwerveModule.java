@@ -103,7 +103,6 @@ public class RevSwerveModule implements SwerveModule
         relAngleEncoder.setVelocityConversionFactor(RevSwerveConfig.DegreesPerTurnRotation / 60);
     
 
-        //see its epic
         resetToAbsolute();
         mDriveMotor.burnFlash();
         mAngleMotor.burnFlash();
@@ -241,11 +240,9 @@ public class RevSwerveModule implements SwerveModule
     private void resetToAbsolute() //This uses our offsets to fully set the code to the right thingy
     {
     
-        double absolutePosition = getCanCoder().getDegrees();
+        double absolutePosition = getCanCoder().getRotations();
         relAngleEncoder.setPosition(absolutePosition);
 
-        //Theres a solid 50% chance we are no longer gonna need this if we do things the way I wanna do them B3
-        //like not applying config in code and instead apply config in phoenix tuner.
     }
 
   

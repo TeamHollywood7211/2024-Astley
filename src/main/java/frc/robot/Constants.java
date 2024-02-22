@@ -54,12 +54,17 @@ public final class Constants {
     }
     public static class ArmConstants
     {
-      public static final int armMotor1ID = 60;
-      public static final int armMotor2ID = 61;
+      public static final int armMotorID = 45; //fill in with actual thing
+      public static final int wristMotorID = 47;
   
       public static final double armP = 0.01;
       public static final double armI = 0;
       public static final double armD = 0.001;
+
+      //wrist
+      public static final double wristP = 0.01;
+      public static final double wristI = 0;
+      public static final double wristD = 0.001;
   
     }
     public static class IntakeConstants

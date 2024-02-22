@@ -20,7 +20,6 @@ import frc.robot.commands.*;
 import frc.robot.subsystems.Articulation.PoseEstimator;
 import frc.robot.subsystems.swerve.rev.RevSwerve;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -35,9 +34,8 @@ public class RobotContainer {
     /* Subsystems */
 //    private final ClimberSubsystem m_ClimberSubsystem = new ClimberSubsystem();
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-    private final ArmSubsystem armSubsystem = new ArmSubsystem();
     private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
-  
+    private final ArmSubsystem armSubsystem = new ArmSubsystem();
     public static double shooterSpeed = 0.50;
 
     /* Controllers */
@@ -49,9 +47,7 @@ public class RobotContainer {
     private final CommandXboxController m_operator = new CommandXboxController(1);
     private final CommandXboxController m_diagnostic = new CommandXboxController(2);
 
-    private final MoveShooterCommand m_moveShooter = new MoveShooterCommand(shooterSubsystem, m_operator);
-
-    private final diagnosticsCommand m_diagnosticCommand = new diagnosticsCommand(m_diagnostic, armSubsystem);
+    private final moveArmCommand m_moveArm = new moveArmCommand(armSubsystem, m_operator);
 
     private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem, shooterSubsystem, m_operator);
     /* Commands */
@@ -166,13 +162,13 @@ public class RobotContainer {
 
 
     
-
+/* 
     new Trigger(m_operator.povDown()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLow)); //For when you need the real zoomin' speed or smth and wanna 0 the bot.
     new Trigger(m_operator.y()).onTrue(new InstantCommand(shooterSubsystem::shooterPosSpeaker)); //For when we are next to the speaker thingy
     new Trigger(m_operator.x()).onTrue(new InstantCommand(shooterSubsystem::shooterPosLongShot)); //For when we are REALLLY far away
     new Trigger(m_operator.b()).onTrue(new InstantCommand(shooterSubsystem::shooterPosRingPickup)); //pickup
     new Trigger(m_operator.a()).onTrue(new InstantCommand(shooterSubsystem::shooterPosSuperLongShot));
-
+*/
 
     //INTAKE//
     new Trigger(m_operator.leftTrigger()).onTrue(m_intakeShooterCommand);
@@ -181,13 +177,14 @@ public class RobotContainer {
     new Trigger(m_operator.leftTrigger()).or(m_operator.leftBumper()).onFalse(m_intakeShooterCommand);
 
     //Move Arm
-    new Trigger(m_operator.rightStick()).whileTrue(m_moveShooter);
-    new Trigger(m_operator.leftStick()).whileTrue(m_moveShooter);
+    new Trigger(m_operator.rightStick()).whileTrue(m_moveArm);
+    new Trigger(m_operator.leftStick()).whileTrue(m_moveArm);
 
-    //Diagnostics
+    new Trigger(m_operator.povUp()).onTrue(new InstantCommand(armSubsystem::posAmp));
+    new Trigger(m_operator.povDown()).onTrue(new InstantCommand(armSubsystem::posZero));
+    new Trigger(m_operator.povRight()).onTrue(new InstantCommand(armSubsystem::posMid));
+    new Trigger(m_operator.povLeft()).onTrue(new InstantCommand(armSubsystem::posLong));
 
-    new Trigger(m_diagnostic.leftStick()).onTrue(m_diagnosticCommand);
-    new Trigger(m_diagnostic.rightStick()).onTrue(m_diagnosticCommand);
     
     //Driver
 

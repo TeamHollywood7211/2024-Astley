@@ -13,24 +13,27 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.*;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.RobotContainer;
 
 public class ArmSubsystem extends SubsystemBase {
-  PIDController pid = new PIDController(ArmConstants.armP, ArmConstants.armI, ArmConstants.armD);
-  CANSparkMax ArmMotor1 = new CANSparkMax(ArmConstants.armMotor1ID, MotorType.kBrushless); //assigns the motors and stuff
-  CANSparkMax ArmMotor2 = new CANSparkMax(ArmConstants.armMotor2ID, MotorType.kBrushless);
-  public RelativeEncoder armEncoder1 = ArmMotor1.getEncoder();
-  public RelativeEncoder armEncoder2 = ArmMotor2.getEncoder();
-  double setpoint = 0;
-  double leftOffset = 0;
-  double rightOffset = 0;
-  /** Creates a new ExampleSubsystem. */
+  PIDController armPID = new PIDController(ArmConstants.armP, ArmConstants.armI, ArmConstants.armD);
+  PIDController wristPID = new PIDController(ArmConstants.wristP, ArmConstants.wristI, ArmConstants.wristD);
+
+
+  CANSparkMax ArmMotor = new CANSparkMax(ArmConstants.armMotorID, MotorType.kBrushless);
+  CANSparkMax WristMotor = new CANSparkMax(ArmConstants.wristMotorID, MotorType.kBrushless);
+  
+  public RelativeEncoder armEncoder = ArmMotor.getEncoder();
+  public RelativeEncoder wristEncoder = WristMotor.getEncoder();
+
+
+  double armSetpoint = armEncoder.getPosition(); //this makes it so when you repush code the robot doesnt get all wonky with arm pos
+  double wristSetpoint = wristEncoder.getPosition();
   public ArmSubsystem() {
-    ArmMotor1.restoreFactoryDefaults();
-    ArmMotor2.restoreFactoryDefaults();
-    
-    
-    //ArmMotor2.follow(ArmMotor1);
+    ArmMotor.restoreFactoryDefaults();
+    WristMotor.restoreFactoryDefaults();
 
 
   }
@@ -61,11 +64,13 @@ public class ArmSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Arm Pos", armEncoder1.getPosition());
-    
-    ArmMotor1.set(MathUtil.clamp(pid.calculate(armEncoder1.getPosition(), setpoint+leftOffset), -0.5, 0.5));
-    ArmMotor2.set(MathUtil.clamp(pid.calculate(armEncoder2.getPosition(), (-setpoint)+rightOffset), -0.5, 0.5));
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("wrist Pos", wristEncoder.getPosition());
+    SmartDashboard.putNumber("Arm Pos", armEncoder.getPosition());
+
+    WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75));
+    ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -0.75, 0.75));
+  
   }
 
   @Override
@@ -73,54 +78,46 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void setPosLow()
+  public void posZero()
   {
-    setpoint = 0;
+    wristSetpoint = 0;
+    armSetpoint = 0;
+    RobotContainer.shooterSpeed = 1;
   }
-  public void setPosMid()
+  public void posAmp()
   {
-    setpoint = 100;
-  }
-  public void setPosHigh()
-  {
-    setpoint = 177;
-  }
-
-  public void leftManualUp()
-  {
-    leftOffset++;
-    System.out.print("L: " + leftOffset);
-  }
-  public void leftManualDown()
-  {
-    leftOffset--;
-    System.out.print("L: " + leftOffset);
+    wristSetpoint = 9.02;
+    armSetpoint = 161.98;
+    RobotContainer.shooterSpeed = 1;
   }
 
+  public void posMid()
+  {
+    wristSetpoint = 0;
+    armSetpoint = 27;
+    RobotContainer.shooterSpeed = 0.66;
+  }
+
+  public void posLong()
+  {
+    wristSetpoint = 1;
+    armSetpoint = 35;
+    RobotContainer.shooterSpeed = 1;
+  }
+
+  public void manuArm(double speed)
+  {
+    armSetpoint += speed/2;
+  }
+
+  public void manuWrist(double speed)
+  {
+    wristSetpoint += speed/2;
+  }
 
 
-  public void rightManualUp()
-  {
-    rightOffset++;
-    System.out.print("R: " + rightOffset);
-  }
-  
-  public void rightManualDown()
-  {
-    rightOffset--;
-    System.out.print("R: " + rightOffset);
-  }
-  
-  public void resetOffsets()
-  {
-    rightOffset = 0;
-    leftOffset = 0;
-  }
-  public void resetZeros()
-  {
-    armEncoder1.setPosition(0);
-    armEncoder2.setPosition(0);
-    resetOffsets();
-  }
 
 }
+
+
+

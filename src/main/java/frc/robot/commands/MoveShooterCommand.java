@@ -34,9 +34,7 @@ public class MoveShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_subsystem.moveShooter(m_controller.getRightY());
 
-    m_subsystem.manMoveArm(m_controller.getRightX());
 
 
   }
