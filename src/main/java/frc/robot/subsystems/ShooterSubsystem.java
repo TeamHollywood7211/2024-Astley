@@ -13,7 +13,7 @@ import edu.wpi.first.math.controller.PIDController;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
+
 
 import frc.robot.Constants.ShooterConstants;
 
@@ -75,65 +75,28 @@ public class ShooterSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-  public void intake() //useless, reuse for pathplanner
-  {
-    shooterMotor1.set(0.25);
-    shooterMotor2.set(0.25);
-  }
-  public void outake()
-  {
-    shooterMotor1.set(-0.15);
-    shooterMotor2.set(-0.15);
-  }
-  public void stopShooter()
-  {
-    shooterMotor1.set(0);
-    shooterMotor2.set(0);
-
-  }
-
-  public Command autoShoot()
-  {
-    setShooterSpeed(1);
-    new WaitCommand(1.0);
-    setShooterSpeed(0);
-    return null;
-    
-  }
 
 
-/* 
-
-
-  public void shooterPosRingPickup()
-  {
-    setpoint = 38;
-    RobotContainer.shooterSpeed = 0.60;
-
-  }
-  public void shooterPosSpeaker()
-  {
-    setpoint = 56;
-    RobotContainer.shooterSpeed = 0.50;
-  }
-  public void shooterPosLongShot()
-  {
-    setpoint = 23;
-    RobotContainer.shooterSpeed = 1;
-  }
-
-  public void shooterPosSuperLongShot()
-  {
-    setpoint = 20;
-    RobotContainer.shooterSpeed = 1;
-  }
-  */
   public void setShooterSpeed(double speed)
   {
     speed = MathUtil.clamp(speed, -1,1);
     shooterMotor1.set(-speed);
     shooterMotor2.set(-speed);
   }
+
+  public void auto_shooterOn()
+  {
+    shooterMotor1.set(-1);
+    shooterMotor2.set(-1);
+  }
+  public void auto_shooterOff()
+  {
+    shooterMotor1.set(0);
+    shooterMotor2.set(0);
+  }
+
+
+
 
   public void manMoveArm(double speed)
   {

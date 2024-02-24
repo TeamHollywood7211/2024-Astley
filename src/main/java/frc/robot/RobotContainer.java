@@ -132,14 +132,30 @@ public class RobotContainer {
   public RobotContainer() {
 
 
-    //Auto Commands
+    ////Auto Commands////
+    //Auto Actions
     NamedCommands.registerCommand("act_shoot", au_shoot); //shoot that thang 
+    NamedCommands.registerCommand("act_intake_on", new InstantCommand(intakeSubsystem::auto_intakeOn));
+    NamedCommands.registerCommand("act_intake_off", new InstantCommand(intakeSubsystem::auto_intakeOff));
+    NamedCommands.registerCommand("act_shooter_on", new InstantCommand(shooterSubsystem::auto_shooterOn));
+    NamedCommands.registerCommand("act_shooter_off", new InstantCommand(shooterSubsystem::auto_shooterOff));
+
+    //Auto Positions
     NamedCommands.registerCommand("pos_amp", new InstantCommand(armSubsystem::posAmp)); //set position of that thangs
     NamedCommands.registerCommand("pos_exlong", new InstantCommand(armSubsystem::posExLong)); 
     NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
     NamedCommands.registerCommand("pos_long", new InstantCommand(armSubsystem::posLong));
     NamedCommands.registerCommand("pos_zero", new InstantCommand(armSubsystem::posZero)); 
-    
+
+
+    //Work on auto targetting to add the following commands
+    /*
+     * aim_speaker = aiming at speaker
+     * 
+     */
+    //NamedCommands.registerCommand("aim_speaker", new InstantCommand(drivetrain::aimSpeaker));
+
+
 
     //turns out you have to put autochooser AFTER the named commands thingy
     autoChooser = AutoBuilder.buildAutoChooser();
