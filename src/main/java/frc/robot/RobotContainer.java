@@ -5,32 +5,54 @@
 package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.IntakeShooterCommand;
+import frc.robot.commands.moveArmCommand;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
   private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+  public static double shooterSpeed = 1.00;
+  private final SendableChooser<Command> autoChooser;
 
-
+  //Subsystems
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
     
 
 
   /* Setting up bindings for necessary control of the swerve drive platform */
-  private final CommandXboxController joystick = new CommandXboxController(0); // My joystick
+  private final CommandXboxController m_driver = new CommandXboxController(0); // My joystick
+  private final CommandXboxController m_operator = new CommandXboxController(1);
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
 
-  private final ShooterCommand shooterCommand = new ShooterCommand(m_ShooterSubsystem, joystick);
+  //Commands
+
+
+  private final moveArmCommand m_moveArm = new moveArmCommand(armSubsystem, m_operator);
+  private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem, shooterSubsystem, m_operator);
+
+
+  
+
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
@@ -41,50 +63,89 @@ public class RobotContainer {
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
   /* Path follower */
-  private Command runAuto = drivetrain.getAutoPath("Tests");
+  //private Command runAuto = drivetrain.getAutoPath("Tests");
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
 
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
-            .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withVelocityY(-m_driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+            .withRotationalRate(-m_driver.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ).ignoringDisable(true));
 
-    joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    joystick.b().whileTrue(drivetrain
-        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))));
+    m_driver.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    m_driver.b().whileTrue(drivetrain
+        .applyRequest(() -> point.withModuleDirection(new Rotation2d(-m_driver.getLeftY(), -m_driver.getLeftX()))));
 
-    // reset the field-centric heading on left bumper press
-    joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    // reset the field-centric heading on left bumper press (reset gyro?)
+    m_driver.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     drivetrain.registerTelemetry(logger::telemeterize);
 
-    joystick.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
-    joystick.pov(180).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
+    m_driver.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
+    m_driver.pov(180).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
 
     /* Bindings for drivetrain characterization */
     /* These bindings require multiple buttons pushed to swap between quastatic and dynamic */
     /* Back/Start select dynamic/quasistatic, Y/X select forward/reverse direction */
-    joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-    joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-    joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-    joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+    m_driver.back().and(m_driver.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+    m_driver.back().and(m_driver.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+    m_driver.start().and(m_driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+    m_driver.start().and(m_driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
     
-    new Trigger(joystick.rightBumper()).onTrue(shooterCommand);
-    new Trigger(joystick.leftBumper()).onTrue(shooterCommand);
-  
+
+    //SHOOTER//
+    new Trigger(m_operator.rightTrigger()).onTrue(m_intakeShooterCommand);
+    new Trigger(m_operator.rightBumper()).onTrue(m_intakeShooterCommand);
+    
+    new Trigger(m_operator.rightTrigger()).and(m_operator.rightBumper()).onFalse(m_intakeShooterCommand);
+
+
+
+      //INTAKE//
+    new Trigger(m_operator.leftTrigger()).onTrue(m_intakeShooterCommand);
+    new Trigger(m_operator.leftBumper()).onTrue(m_intakeShooterCommand);
+    
+    new Trigger(m_operator.leftTrigger()).or(m_operator.leftBumper()).onFalse(m_intakeShooterCommand);
+
+    //Move Arm
+    new Trigger(m_operator.rightStick()).whileTrue(m_moveArm);
+    new Trigger(m_operator.leftStick()).whileTrue(m_moveArm);
+
+    new Trigger(m_operator.povUp()).onTrue(new InstantCommand(armSubsystem::posAmp));
+    new Trigger(m_operator.povDown()).onTrue(new InstantCommand(armSubsystem::posExLong));
+    new Trigger(m_operator.povRight()).onTrue(new InstantCommand(armSubsystem::posMid));
+    new Trigger(m_operator.povLeft()).onTrue(new InstantCommand(armSubsystem::posLong));
+
+    new Trigger(m_operator.b()).onTrue(new InstantCommand(armSubsystem::posZero));
+
   }
 
+  
+
   public RobotContainer() {
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
+
+    //Auto Commands
+
+    NamedCommands.registerCommand("Shoot", m_ShooterSubsystem.autoShoot());
+    NamedCommands.registerCommand("pos_Amp", new InstantCommand(armSubsystem::posAmp));
+    NamedCommands.registerCommand("pos_ExLong", new InstantCommand(armSubsystem::posExLong));
+    NamedCommands.registerCommand("pos_Mid", new InstantCommand(armSubsystem::posMid));
+    NamedCommands.registerCommand("pos_Long", new InstantCommand(armSubsystem::posLong));
+    NamedCommands.registerCommand("pos_Zero", new InstantCommand(armSubsystem::posZero));
+
+
     configureBindings();
   }
 
   public Command getAutonomousCommand() {
     /* First put the drivetrain into auto run mode, then run the auto */
-    return runAuto;
+    return autoChooser.getSelected();
+    //return runAuto;
   }
 }

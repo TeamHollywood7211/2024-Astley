@@ -4,20 +4,24 @@
 
 package frc.robot.commands;
 
-
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ArmSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /** An example command that uses an example subsystem. */
-public class ShooterCommand extends Command {
+public class moveArmCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ShooterSubsystem m_subsystem;
+  private final ArmSubsystem m_subsystem;
   private final CommandXboxController m_controller;
-
-  public ShooterCommand(ShooterSubsystem subsystem, CommandXboxController controller) {
+  /**
+   * Creates a new ExampleCommand.
+   *
+   * @param subsystem The subsystem used by this command.
+   */
+  public moveArmCommand(ArmSubsystem subsystem, CommandXboxController controller) {
     m_subsystem = subsystem;
-    this.m_controller = controller;
+    m_controller = controller;
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
@@ -28,23 +32,8 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
-    if(m_controller.leftBumper().getAsBoolean())
-    {
-      m_subsystem.runGripSpeed(1, 1); //max speed
-    }
-   else if(m_controller.getLeftTriggerAxis() > 0.05)
-   {
-    // If you want FULL SEND
-    m_subsystem.runGripSpeed(-1, -1 );
-    // If you want adjustable speed
-    //m_subsystem.runGripSpeed(-1* m_controller.getLeftTriggerAxis(), -1 * m_controller.getLeftTriggerAxis());
-  }
-  else
-  {
-      //m_gripSubsystem.setGripOut();
-      m_subsystem.runGripSpeed(0, 0);
-    }
+    m_subsystem.manuArm(m_controller.getLeftY());
+    m_subsystem.manuWrist(m_controller.getRightY());
   }
 
   // Called once the command ends or is interrupted.
@@ -55,14 +44,5 @@ public class ShooterCommand extends Command {
   @Override
   public boolean isFinished() {
     return false;
-  }
-
-  public void outTake() {
-
-   // m_subsystem.runGripSpeed(Constants.outakeSpeed);
-  }
-  public void inTake() {
-
-   // m_subsystem.runGripSpeed(Constants.intakeSpeed);
   }
 }

@@ -5,53 +5,140 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotContainer;
+import frc.robot.Constants.ShooterConstants;
+
+
 
 public class ShooterSubsystem extends SubsystemBase {
-  CANSparkMax IntakeMotor1 = new CANSparkMax(50, MotorType.kBrushless); //assigns the motors and stuff
-  CANSparkMax IntakeMotor2 = new CANSparkMax(51, MotorType.kBrushless);
+  PIDController pid = new PIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
+  //remember, P is like where you wanna get, I is smth and D is like some slow down thingy.
+  CANSparkMax shooterMotor1 = new CANSparkMax(ShooterConstants.shooterMotor1ID, MotorType.kBrushless);
+  CANSparkMax shooterMotor2 = new CANSparkMax(ShooterConstants.shooterMotor2ID, MotorType.kBrushless);
 
+  //CANSparkMax armMotor = new CANSparkMax(ShooterConstants.armMotorID, MotorType.kBrushless);
 
-  /** Creates a new ExampleSubsystem. */
+  
+
   public ShooterSubsystem() {
-    //IntakeMotor2.follow(IntakeMotor1); //use follow instead (controller groups are deprecated)
-    IntakeMotor1.restoreFactoryDefaults();
-    IntakeMotor2.restoreFactoryDefaults();
+    shooterMotor1.restoreFactoryDefaults();
+    shooterMotor2.restoreFactoryDefaults();
+
+    shooterMotor2.follow(shooterMotor1);
 
 
-    IntakeMotor2.setInverted(false); //set true if needs to be inverted
+
 
   }
 
   public Command exampleMethodCommand() {
-
+    // Inline construction of command goes here.
+    // Subsystem::RunOnce implicitly requires `this` subsystem.
     return runOnce(
         () -> {
-          /* one-time action goes here */
+          
         });
   }
 
+
   public boolean exampleCondition() {
+    // Query some boolean state, such as a digital sensor.
     return false;
   }
 
   @Override
   public void periodic() {
+    
+  /*
+  
+  when wrist was here
+  SmartDashboard.putNumber("Shooter Angle: ", shooterAngleEncoder.getPosition());
+    //setpoint = MathUtil.clamp(setpoint, 0, 60);
+
+    shooterAngleMotor.set(MathUtil.clamp(pid.calculate(shooterAngleEncoder.getPosition(), setpoint), -0.75, 0.75));
+*/
+    //mostly built on the cool pid.calculate() function. Clamps the speed AND the setpoints so
+    //I, the operator, and the code doesnt smash itself into the robot, ultimately destroying
+    //the fragile Neo Vortex (which can catch on fire :3)
   }
 
   @Override
   public void simulationPeriodic() {
+    // This method will be called once per scheduler run during simulation
   }
-
-  public void runGripSpeed(double speed1, double speed2)
+  public void intake() //useless, reuse for pathplanner
   {
-    IntakeMotor1.set(speed1); //sets the leader motor to the designated speed
-    IntakeMotor2.set(speed2);
+    shooterMotor1.set(0.25);
+    shooterMotor2.set(0.25);
+  }
+  public void outake()
+  {
+    shooterMotor1.set(-0.15);
+    shooterMotor2.set(-0.15);
+  }
+  public void stopShooter()
+  {
+    shooterMotor1.set(0);
+    shooterMotor2.set(0);
+
+  }
+
+  public Command autoShoot()
+  {
+    setShooterSpeed(1);
+    new WaitCommand(1.0);
+    setShooterSpeed(0);
+    return null;
+    
   }
 
 
+/* 
+
+
+  public void shooterPosRingPickup()
+  {
+    setpoint = 38;
+    RobotContainer.shooterSpeed = 0.60;
+
+  }
+  public void shooterPosSpeaker()
+  {
+    setpoint = 56;
+    RobotContainer.shooterSpeed = 0.50;
+  }
+  public void shooterPosLongShot()
+  {
+    setpoint = 23;
+    RobotContainer.shooterSpeed = 1;
+  }
+
+  public void shooterPosSuperLongShot()
+  {
+    setpoint = 20;
+    RobotContainer.shooterSpeed = 1;
+  }
+  */
+  public void setShooterSpeed(double speed)
+  {
+    speed = MathUtil.clamp(speed, -1,1);
+    shooterMotor1.set(-speed);
+    shooterMotor2.set(-speed);
+  }
+
+  public void manMoveArm(double speed)
+  {
+
+    //armMotor.set(speed);
+  
+  }
 }
