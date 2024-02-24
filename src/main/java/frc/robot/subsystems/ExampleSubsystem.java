@@ -4,28 +4,12 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.*;
 
-public class IntakeSubsystem extends SubsystemBase {
-  
-  CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushless);
-  CANSparkMax IntakeMotor2 = new CANSparkMax(IntakeConstants.IntakeMotor2ID, MotorType.kBrushless);
-  CANSparkMax feederMotor = new CANSparkMax(IntakeConstants.feederMotorID, MotorType.kBrushed);
-  DigitalInput ringSensor = new DigitalInput(IntakeConstants.IRSensorSignalID); //The sensor for the rings
+public class ExampleSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
-  public IntakeSubsystem() {
-    IntakeMotor1.restoreFactoryDefaults();
-    IntakeMotor2.restoreFactoryDefaults();
-    feederMotor.restoreFactoryDefaults();
-  }
+  public ExampleSubsystem() {}
 
   /**
    * Example command factory method.
@@ -53,7 +37,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Ring In Intake", !(ringSensor.get())); //Thing for the top sensor of the ring
     // This method will be called once per scheduler run
   }
 
@@ -61,18 +44,4 @@ public class IntakeSubsystem extends SubsystemBase {
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
   }
-
-
-
-  public void setIntake(double speed)
-  {
-    IntakeMotor1.set(-speed);
-    IntakeMotor2.set(-speed);
-  }
-
-  public void setFeeder(double speed)
-  {
-    feederMotor.set(-speed);
-  }
-
 }

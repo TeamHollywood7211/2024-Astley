@@ -127,18 +127,23 @@ public class RobotContainer {
   
 
   public RobotContainer() {
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+
 
     //Auto Commands
 
-    NamedCommands.registerCommand("Shoot", m_ShooterSubsystem.autoShoot());
-    NamedCommands.registerCommand("pos_Amp", new InstantCommand(armSubsystem::posAmp));
-    NamedCommands.registerCommand("pos_ExLong", new InstantCommand(armSubsystem::posExLong));
-    NamedCommands.registerCommand("pos_Mid", new InstantCommand(armSubsystem::posMid));
-    NamedCommands.registerCommand("pos_Long", new InstantCommand(armSubsystem::posLong));
-    NamedCommands.registerCommand("pos_Zero", new InstantCommand(armSubsystem::posZero));
 
+
+    NamedCommands.registerCommand("act_shoot", m_ShooterSubsystem.autoShoot()); //shoot that thang 
+    NamedCommands.registerCommand("pos_amp", new InstantCommand(armSubsystem::posAmp)); //set position of that thangs
+    NamedCommands.registerCommand("pos_exLong", new InstantCommand(armSubsystem::posExLong)); 
+    NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
+    NamedCommands.registerCommand("pos_long", new InstantCommand(armSubsystem::posLong));
+    NamedCommands.registerCommand("pos_zero", new InstantCommand(armSubsystem::posZero)); 
+    
+
+    //turns out you have to put autochooser AFTER the named commands thingy
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureBindings();
   }
