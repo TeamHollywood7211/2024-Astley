@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.IntakeShooterCommand;
 import frc.robot.commands.moveArmCommand;
+import frc.robot.commands.autos.Auto_shoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -51,6 +52,8 @@ public class RobotContainer {
   private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem, shooterSubsystem, m_operator);
 
 
+  //AUTO COMMANDS
+  private final Auto_shoot au_shoot = new Auto_shoot(m_ShooterSubsystem, intakeSubsystem);
   
 
 
@@ -124,16 +127,13 @@ public class RobotContainer {
 
   }
 
-  
+
 
   public RobotContainer() {
 
 
     //Auto Commands
-
-
-
-    NamedCommands.registerCommand("act_shoot", m_ShooterSubsystem.autoShoot()); //shoot that thang 
+    NamedCommands.registerCommand("act_shoot", au_shoot); //shoot that thang 
     NamedCommands.registerCommand("pos_amp", new InstantCommand(armSubsystem::posAmp)); //set position of that thangs
     NamedCommands.registerCommand("pos_exlong", new InstantCommand(armSubsystem::posExLong)); 
     NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
