@@ -3,38 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0,
-        "y": 7.0
+        "x": 0.732099284103781,
+        "y": 6.6822116582621796
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 7.0
+        "x": 1.7320992841037817,
+        "y": 6.6822116582621796
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.112909566760645,
-        "y": 6.159900023081073
+        "x": 2.881689933995981,
+        "y": 5.553919733431884
       },
       "prevControl": {
-        "x": 3.112909566760645,
-        "y": 6.159900023081073
+        "x": 1.8816899339959812,
+        "y": 5.553919733431884
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.4,
-      "rotationDegrees": -45.0,
-      "rotateFast": false
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,13 +39,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Far Side To Notes",
   "previewStartingState": {
-    "rotation": 0,
+    "rotation": -119.89890183861449,
     "velocity": 0
   },
   "useDefaultConstraints": true

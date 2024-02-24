@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7807325567257765,
+      "y": 6.691938312786578
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Center Side To Note 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2 Piece Auton",
+  "choreoAuto": false
+}

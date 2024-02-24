@@ -141,12 +141,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("act_shooter_off", new InstantCommand(shooterSubsystem::auto_shooterOff));
 
     //Auto Positions
-    NamedCommands.registerCommand("pos_amp", new InstantCommand(armSubsystem::posAmp)); //set position of that thangs
+    NamedCommands.registerCommand("pos_amp", new InstantCommand(armSubsystem::posAmp)); //set position of that thangs//
     NamedCommands.registerCommand("pos_exlong", new InstantCommand(armSubsystem::posExLong)); 
     NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
     NamedCommands.registerCommand("pos_long", new InstantCommand(armSubsystem::posLong));
     NamedCommands.registerCommand("pos_zero", new InstantCommand(armSubsystem::posZero)); 
 
+    
 
     //Work on auto targetting to add the following commands
     /*

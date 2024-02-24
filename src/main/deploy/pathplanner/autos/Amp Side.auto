@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7170742665184753,
+      "y": 6.658798453847941
+    },
+    "rotation": -119.43777214781386
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Side To Note 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "amp_intake_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "2 Piece Auton",
+  "choreoAuto": false
+}
