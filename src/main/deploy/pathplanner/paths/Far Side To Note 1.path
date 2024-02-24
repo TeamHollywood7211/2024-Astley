@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Far Side To Notes",
+  "folder": null,
   "previewStartingState": {
     "rotation": 119.9315118405078,
     "velocity": 0

@@ -4,11 +4,14 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveDrivetrain;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,9 +31,13 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
-  private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-  public static double shooterSpeed = 1.00;
+  //private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
+  public static double shooterSpeed = 0.60;
   private final SendableChooser<Command> autoChooser;
+
+  private static boolean doTelemetry = true;
+
+
 
   //Subsystems
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
@@ -53,8 +60,19 @@ public class RobotContainer {
 
 
   //AUTO COMMANDS
-  private final Auto_shoot au_shoot = new Auto_shoot(m_ShooterSubsystem, intakeSubsystem);
+  private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
   
+
+
+
+
+
+  public void createFrontUsbCamera(){
+    UsbCamera frontUsbCamera = new UsbCamera("frontUsbCamObject", 0);
+    frontUsbCamera.setResolution(Constants.cameraResolution, Constants.cameraResolution);
+    CameraServer.startAutomaticCapture(frontUsbCamera);
+  } 
+
 
 
   private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -65,11 +83,14 @@ public class RobotContainer {
   private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric().withDriveRequestType(DriveRequestType.OpenLoopVoltage);
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
+
+
+
+
   /* Path follower */
   //private Command runAuto = drivetrain.getAutoPath("Tests");
 
   private final Telemetry logger = new Telemetry(MaxSpeed);
-
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed) // Drive forward with
@@ -91,6 +112,7 @@ public class RobotContainer {
     m_driver.pov(180).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
 
+
     /* Bindings for drivetrain characterization */
     /* These bindings require multiple buttons pushed to swap between quastatic and dynamic */
     /* Back/Start select dynamic/quasistatic, Y/X select forward/reverse direction */
@@ -99,7 +121,6 @@ public class RobotContainer {
     m_driver.start().and(m_driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
     m_driver.start().and(m_driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
     
-
     //SHOOTER//
     new Trigger(m_operator.rightTrigger()).onTrue(m_intakeShooterCommand);
     new Trigger(m_operator.rightBumper()).onTrue(m_intakeShooterCommand);

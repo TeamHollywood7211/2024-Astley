@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7807325567257765,
-      "y": 6.691938312786578
+      "x": 1.3351518646165252,
+      "y": 5.544193078907484
     },
     "rotation": 180.0
   },
@@ -38,6 +38,6 @@
       ]
     }
   },
-  "folder": "2 Piece Auton",
+  "folder": null,
   "choreoAuto": false
 }

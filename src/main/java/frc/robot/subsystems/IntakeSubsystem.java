@@ -72,20 +72,22 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void setFeeder(double speed)
   {
-    feederMotor.set(-speed);
+    feederMotor.set(speed);
   }
 
-  public void auto_intakeOn()
+  public boolean auto_intakeOn()
   {
     IntakeMotor1.set(-1);
     IntakeMotor2.set(-1);
     feederMotor.set(-1);
+    return true;
   }
-  public void auto_intakeOff()
+  public boolean auto_intakeOff()
   {
-    IntakeMotor1.set(-1);
-    IntakeMotor2.set(-1);
-    feederMotor.set(-1);
+    IntakeMotor1.set(0.01);
+    IntakeMotor2.set(0.01);
+    feederMotor.set(0.01);
+    return true;
   }
 
 

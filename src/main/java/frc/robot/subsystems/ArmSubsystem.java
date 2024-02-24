@@ -87,20 +87,20 @@ public class ArmSubsystem extends SubsystemBase {
   {
     wristSetpoint = 9.02;
     armSetpoint = 161.98;
-    RobotContainer.shooterSpeed = 1;
+    RobotContainer.shooterSpeed = 0.2;
   }
 
   public void posMid()
   {
     wristSetpoint = 0;
-    armSetpoint = 27;
+    armSetpoint = 38.6;
     RobotContainer.shooterSpeed = 0.66;
   }
 
   public void posLong()
   {
     wristSetpoint = 0;
-    armSetpoint = 59; //56.47;
+    armSetpoint = 60.4; //56.47;
     RobotContainer.shooterSpeed = 1;
   }
 
