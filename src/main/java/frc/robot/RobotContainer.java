@@ -135,7 +135,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("act_shoot", m_ShooterSubsystem.autoShoot()); //shoot that thang 
     NamedCommands.registerCommand("pos_amp", new InstantCommand(armSubsystem::posAmp)); //set position of that thangs
-    NamedCommands.registerCommand("pos_exLong", new InstantCommand(armSubsystem::posExLong)); 
+    NamedCommands.registerCommand("pos_exlong", new InstantCommand(armSubsystem::posExLong)); 
     NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
     NamedCommands.registerCommand("pos_long", new InstantCommand(armSubsystem::posLong));
     NamedCommands.registerCommand("pos_zero", new InstantCommand(armSubsystem::posZero)); 
