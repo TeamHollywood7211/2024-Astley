@@ -66,13 +66,6 @@ public class Auto_shoot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(time.get() > 1.5)
-    {
-     return true;
-    }
-    else
-    {
-      return false;
-    }
+    return time.get() > 1.5;
   }
 }
