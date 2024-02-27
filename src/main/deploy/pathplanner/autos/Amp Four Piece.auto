@@ -1,0 +1,157 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7170742665184753,
+      "y": 6.658798453847941
+    },
+    "rotation": -125.17685499318526
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Side To Note 1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_zero"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 1 to Note 2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_zero"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 2 to Note 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_zero"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Four Piece",
+  "choreoAuto": false
+}

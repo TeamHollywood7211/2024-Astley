@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7170742665184753,
+      "y": 6.658798453847941
+    },
+    "rotation": -120.76505265790651
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp Side To Note 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "One Piece",
+  "choreoAuto": false
+}

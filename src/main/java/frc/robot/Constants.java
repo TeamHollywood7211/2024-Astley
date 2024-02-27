@@ -46,6 +46,6 @@ public final class Constants {
 
     public static final int ledID = 59; //immature temp value will replace later before push 
 
-    public static final int cameraResolution = 480;
+    public static final int cameraResolution = 240;
 
 }

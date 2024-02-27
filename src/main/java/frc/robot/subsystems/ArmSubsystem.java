@@ -81,26 +81,26 @@ public class ArmSubsystem extends SubsystemBase {
   {
     wristSetpoint = 0;
     armSetpoint = 0;
-    RobotContainer.shooterSpeed = 1;
+    RobotContainer.shooterSpeed = 0.4;
   }
   public void posAmp()
   {
     wristSetpoint = 9.02;
-    armSetpoint = 161.98;
+    armSetpoint = 180;
     RobotContainer.shooterSpeed = 0.2;
   }
 
   public void posMid()
   {
     wristSetpoint = 0;
-    armSetpoint = 38.6;
+    armSetpoint = 43.6;
     RobotContainer.shooterSpeed = 0.66;
   }
 
   public void posLong()
   {
     wristSetpoint = 0;
-    armSetpoint = 60.4; //56.47;
+    armSetpoint = 60.4; //56.47;  
     RobotContainer.shooterSpeed = 1;
   }
 
@@ -110,6 +110,13 @@ public class ArmSubsystem extends SubsystemBase {
     armSetpoint = 53;
     RobotContainer.shooterSpeed = 1;
   }
+  public void posClimb()
+  {
+    wristSetpoint = 0;
+    armSetpoint = 186;
+    RobotContainer.shooterSpeed = 1;
+  }
+
   public void manuArm(double speed)
   {
     armSetpoint += speed/2;
@@ -119,9 +126,6 @@ public class ArmSubsystem extends SubsystemBase {
   {
     wristSetpoint += speed/2;
   }
-
-
-
 }
 
 

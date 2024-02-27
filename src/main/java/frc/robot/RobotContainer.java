@@ -11,6 +11,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -22,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.IntakeShooterCommand;
 import frc.robot.commands.moveArmCommand;
+import frc.robot.commands.autos.Auto_intake;
 import frc.robot.commands.autos.Auto_shoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -61,17 +64,13 @@ public class RobotContainer {
 
   //AUTO COMMANDS
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
-  
+  private final Auto_intake au_intake = new Auto_intake(intakeSubsystem);
 
 
 
 
 
-  public void createFrontUsbCamera(){
-    UsbCamera frontUsbCamera = new UsbCamera("frontUsbCamObject", 0);
-    frontUsbCamera.setResolution(Constants.cameraResolution, Constants.cameraResolution);
-    CameraServer.startAutomaticCapture(frontUsbCamera);
-  } 
+
 
 
 
@@ -85,12 +84,21 @@ public class RobotContainer {
 
 
 
+  public void createFrontUsbCamera(){
+    //UsbCamera frontUsbCamera = new UsbCamera("frontUsbCamObject", 0 );
+    //frontUsbCamera.setResolution(160, 120);
+    CameraServer.startAutomaticCapture();
+    CvSink cvSink = CameraServer.getVideo();
+
+    CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+  }
+
 
 
   /* Path follower */
   //private Command runAuto = drivetrain.getAutoPath("Tests");
 
-  private final Telemetry logger = new Telemetry(MaxSpeed);
+  //private final Telemetry logger = new Telemetry(MaxSpeed);
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed) // Drive forward with
@@ -106,7 +114,7 @@ public class RobotContainer {
     // reset the field-centric heading on left bumper press (reset gyro?)
     m_driver.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
-    drivetrain.registerTelemetry(logger::telemeterize);
+    //drivetrain.registerTelemetry(logger::telemeterize);
 
     m_driver.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
     m_driver.pov(180).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
@@ -146,6 +154,8 @@ public class RobotContainer {
 
     new Trigger(m_operator.b()).onTrue(new InstantCommand(armSubsystem::posZero));
 
+    new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
+
   }
 
 
@@ -156,10 +166,13 @@ public class RobotContainer {
     ////Auto Commands////
     //Auto Actions
     NamedCommands.registerCommand("act_shoot", au_shoot); //shoot that thang 
+    NamedCommands.registerCommand("act_intake", au_intake); //does sick auto intake stuff
     NamedCommands.registerCommand("act_intake_on", new InstantCommand(intakeSubsystem::auto_intakeOn));
     NamedCommands.registerCommand("act_intake_off", new InstantCommand(intakeSubsystem::auto_intakeOff));
     NamedCommands.registerCommand("act_shooter_on", new InstantCommand(shooterSubsystem::auto_shooterOn));
     NamedCommands.registerCommand("act_shooter_off", new InstantCommand(shooterSubsystem::auto_shooterOff));
+
+
 
     //Auto Positions
     NamedCommands.registerCommand("pos_amp", new InstantCommand(armSubsystem::posAmp)); //set position of that thangs//
@@ -179,10 +192,11 @@ public class RobotContainer {
 
 
 
+
     //turns out you have to put autochooser AFTER the named commands thingy
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
-
+    createFrontUsbCamera();
     configureBindings();
   }
 

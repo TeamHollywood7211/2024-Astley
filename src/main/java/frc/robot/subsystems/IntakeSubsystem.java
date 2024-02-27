@@ -90,5 +90,10 @@ public class IntakeSubsystem extends SubsystemBase {
     return true;
   }
 
+  public boolean readRingSensor()
+  {
+    return !ringSensor.get();
+  }
+
 
 }

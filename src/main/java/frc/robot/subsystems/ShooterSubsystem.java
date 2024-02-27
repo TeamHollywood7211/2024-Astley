@@ -24,7 +24,7 @@ public class ShooterSubsystem extends SubsystemBase {
   //remember, P is like where you wanna get, I is smth and D is like some slow down thingy.
   CANSparkMax shooterMotor1 = new CANSparkMax(ShooterConstants.shooterMotor1ID, MotorType.kBrushless);
   CANSparkMax shooterMotor2 = new CANSparkMax(ShooterConstants.shooterMotor2ID, MotorType.kBrushless);
-
+  
   //CANSparkMax armMotor = new CANSparkMax(ShooterConstants.armMotorID, MotorType.kBrushless);
 
   
@@ -35,6 +35,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     shooterMotor2.follow(shooterMotor1);
 
+    
 
 
 
