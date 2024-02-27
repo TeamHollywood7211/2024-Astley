@@ -68,11 +68,12 @@ public class IntakeShooterCommand extends Command {
    if((!m_controller.leftTrigger().getAsBoolean()) && (!m_controller.leftBumper().getAsBoolean()))
    {
     m_intakeSubsystem.setIntake(0);
+    m_intakeSubsystem.setFeeder(0);
    }
 
 
 
-
+/* 
   if((!m_controller.leftTrigger().getAsBoolean()) && (!m_controller.leftBumper().getAsBoolean()))
    {
       if((!m_controller.rightTrigger().getAsBoolean()) && (!m_controller.rightBumper().getAsBoolean()))
@@ -80,7 +81,7 @@ public class IntakeShooterCommand extends Command {
       m_intakeSubsystem.setFeeder(0);
         
     }
-   }
+   }*/
 
 
 

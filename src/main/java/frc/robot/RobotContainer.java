@@ -28,6 +28,7 @@ import frc.robot.commands.autos.Auto_intake;
 import frc.robot.commands.autos.Auto_shoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -46,12 +47,13 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
-    
+  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController m_driver = new CommandXboxController(0); // My joystick
   private final CommandXboxController m_operator = new CommandXboxController(1);
+  private final CommandXboxController m_dev = new CommandXboxController(2);
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
 
@@ -88,7 +90,7 @@ public class RobotContainer {
     //UsbCamera frontUsbCamera = new UsbCamera("frontUsbCamObject", 0 );
     //frontUsbCamera.setResolution(160, 120);
     CameraServer.startAutomaticCapture();
-    CvSink cvSink = CameraServer.getVideo();
+    CvSink cvSink = CameraServer.getVideo(); //I dont know what cvsink is, I dont know what it is, but it makes the camera work.
 
     CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
   }
@@ -156,6 +158,16 @@ public class RobotContainer {
 
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
 
+
+    new Trigger(m_operator.x()).onTrue(new InstantCommand(climberSubsystem::raiseClimbers));
+    new Trigger(m_operator.a()).onTrue(new InstantCommand(climberSubsystem::lowerClimbers));
+
+
+    //manual 3rd controller
+
+    new Trigger(m_dev.povUp()).onTrue(new InstantCommand(climberSubsystem::manuClimberUp));
+    new Trigger(m_dev.povDown()).onTrue(new InstantCommand(climberSubsystem::manuClimberDown));
+
   }
 
 
@@ -171,7 +183,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("act_intake_off", new InstantCommand(intakeSubsystem::auto_intakeOff));
     NamedCommands.registerCommand("act_shooter_on", new InstantCommand(shooterSubsystem::auto_shooterOn));
     NamedCommands.registerCommand("act_shooter_off", new InstantCommand(shooterSubsystem::auto_shooterOff));
-
 
 
     //Auto Positions

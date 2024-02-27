@@ -48,4 +48,14 @@ public final class Constants {
 
     public static final int cameraResolution = 240;
 
+    public static class ClimberConstants
+    {
+      public static final double kP = 0.01;
+      public static final double kI = 0;
+      public static final double kD = 0.001;
+
+      public static final int arm1ID = 60;
+      public static final int arm2ID = 61;
+    }
+
 }
