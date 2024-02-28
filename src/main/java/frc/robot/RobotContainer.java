@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.IntakeShooterCommand;
 import frc.robot.commands.moveArmCommand;
+import frc.robot.commands.moveClimberCommand;
 import frc.robot.commands.autos.Auto_intake;
 import frc.robot.commands.autos.Auto_shoot;
 import frc.robot.generated.TunerConstants;
@@ -31,6 +32,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.vision.Limelight;
 
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -39,7 +41,6 @@ public class RobotContainer {
   public static double shooterSpeed = 0.60;
   private final SendableChooser<Command> autoChooser;
 
-  private static boolean doTelemetry = true;
 
 
 
@@ -62,7 +63,7 @@ public class RobotContainer {
 
   private final moveArmCommand m_moveArm = new moveArmCommand(armSubsystem, m_operator);
   private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem, shooterSubsystem, m_operator);
-
+  private final moveClimberCommand m_climber = new moveClimberCommand(climberSubsystem, m_dev);
 
   //AUTO COMMANDS
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
@@ -100,6 +101,7 @@ public class RobotContainer {
   /* Path follower */
   //private Command runAuto = drivetrain.getAutoPath("Tests");
 
+  Limelight vision = new Limelight(drivetrain);
   //private final Telemetry logger = new Telemetry(MaxSpeed);
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
@@ -162,11 +164,15 @@ public class RobotContainer {
     new Trigger(m_operator.x()).onTrue(new InstantCommand(climberSubsystem::raiseClimbers));
     new Trigger(m_operator.a()).onTrue(new InstantCommand(climberSubsystem::lowerClimbers));
 
+    new Trigger(m_operator.button(8)).onTrue(new InstantCommand(vision::useLimelight)); //activates the limelight camera
+
 
     //manual 3rd controller
 
-    new Trigger(m_dev.povUp()).onTrue(new InstantCommand(climberSubsystem::manuClimberUp));
-    new Trigger(m_dev.povDown()).onTrue(new InstantCommand(climberSubsystem::manuClimberDown));
+    new Trigger(m_dev.a()).onTrue(m_climber);
+    new Trigger(m_dev.y()).whileTrue(m_climber);
+    new Trigger(m_dev.b()).whileTrue(new InstantCommand(climberSubsystem::resetClimberZero));
+
 
   }
 

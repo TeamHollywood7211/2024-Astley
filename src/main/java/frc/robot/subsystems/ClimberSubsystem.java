@@ -10,6 +10,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
@@ -20,13 +21,16 @@ public class ClimberSubsystem extends SubsystemBase {
     CANSparkMax ClimberMotor2 = new CANSparkMax(ClimberConstants.arm2ID, MotorType.kBrushless);
     PIDController pid = new PIDController(ClimberConstants.kP, ClimberConstants.kI, ClimberConstants.kD);
     RelativeEncoder ClimberEncoder = ClimberMotor1.getEncoder();
-    double setpoint = ClimberEncoder.getPosition();
+    double setpoint = 0;
 
   public ClimberSubsystem() {
     ClimberMotor1.restoreFactoryDefaults();
     ClimberMotor2.restoreFactoryDefaults();
-    ClimberMotor2.follow(ClimberMotor1);
-    ClimberMotor2.setInverted(true);
+    //ClimberMotor2.follow(ClimberMotor1);
+    ClimberMotor2.setInverted(false);
+    ClimberMotor1.setInverted(false);
+    
+    
 
   }
 
@@ -56,7 +60,9 @@ public class ClimberSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    ClimberMotor1.set(pid.calculate(ClimberEncoder.getPosition(), setpoint));
+    SmartDashboard.putNumber("Climber Pos", ClimberEncoder.getPosition());
+    //ClimberMotor1.set(pid.calculate(ClimberEncoder.getPosition(), setpoint));
+    //ClimberMotor2.set(pid.calculate(ClimberEncoder.getPosition(),-setpoint));
     // This method will be called once per scheduler run
   }
 
@@ -78,10 +84,21 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void manuClimberUp()
   {
-    setpoint++;
+    //setpoint ++;
   }
   public void manuClimberDown()
   {
-    setpoint--;
+    //setpoint --;
+  }
+
+  public void climberSet(double speed)
+  {
+    ClimberMotor1.set(speed);
+    ClimberMotor2.set(-speed);
+  }
+
+  public void resetClimberZero()
+  {
+    ClimberEncoder.setPosition(0);
   }
 }
