@@ -12,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.RobotContainer;
@@ -70,6 +71,9 @@ public class ArmSubsystem extends SubsystemBase {
     WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75));
     ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -0.75, 0.75));
   
+
+
+
   }
 
   @Override
@@ -81,7 +85,7 @@ public class ArmSubsystem extends SubsystemBase {
   {
     wristSetpoint = 0;
     armSetpoint = 0;
-    RobotContainer.shooterSpeed = 0.4;
+    RobotContainer.shooterSpeed = 0.6;
   }
   public void posAmp()
   {
@@ -125,6 +129,19 @@ public class ArmSubsystem extends SubsystemBase {
   public void manuWrist(double speed)
   {
     wristSetpoint += speed/2;
+  }
+
+
+  public double calcAngle(double distance)
+  {
+
+    return -0.705625 * (distance*distance) + 14.4712* distance + -46.5725;
+  }
+
+  public void testCalcAngle()
+  {
+    //armSetpoint = calcAngle();
+    wristSetpoint = 0;
   }
 }
 

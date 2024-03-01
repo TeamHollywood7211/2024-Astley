@@ -16,41 +16,19 @@ public class VisionSubsystem extends SubsystemBase {
     NetworkTableEntry ty = table.getEntry("ty");
     NetworkTableEntry ta = table.getEntry("ta");
     boolean runLimeLight = false;
+    
+    // how many degrees back is your limelight rotated from perfectly vertical?
+      
+    double limelightMountAngleDegrees = 25.0; 
+
+        // distance from the center of the Limelight lens to the floor
+    double limelightLensHeightInches = 20.0; 
   /** Creates a new ExampleSubsystem. */
   public VisionSubsystem() {
 
 
   }
 
-  /**
-   * Example command factory method.
-   *
-   * @return a command
-   */
-  public Command exampleMethodCommand() {
-    // Inline construction of command goes here.
-    // Subsystem::RunOnce implicitly requires `this` subsystem.
-    return runOnce(
-        () -> {
-          /* one-time action goes here */
-        });
-  }
-
-  /**
-   * An example method querying a boolean state of the subsystem (for example, a digital sensor).
-   *
-   * @return value of some boolean subsystem state, such as a digital sensor.
-   */
-  public boolean exampleCondition() {
-    // Query some boolean state, such as a digital sensor.
-    return false;
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    //table = NetworkTable.getTable("limelight");
-  }
 
   @Override
   public void simulationPeriodic() {

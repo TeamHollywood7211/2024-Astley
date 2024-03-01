@@ -14,13 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "act_intake_on"
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "act_shooter_on"
+            "name": "act_intake_on"
           }
         },
         {

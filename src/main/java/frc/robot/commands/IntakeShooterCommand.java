@@ -38,7 +38,7 @@ public class IntakeShooterCommand extends Command {
 
    if(m_controller.rightTrigger().getAsBoolean())
    {
-      var val = m_controller.getRightTriggerAxis();
+      var val = 1;//m_controller.getRightTriggerAxis();
       m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed * val); //when in doubt, -0.6
       //m_intakeSubsystem.setFeeder(-1);
    } 

@@ -44,11 +44,11 @@ public final class Constants {
       public static final int armMotorID = 45;
     }
 
-    public static final int ledID = 59; //immature temp value will replace later before push 
+    public static final int ledID = 59; 
 
     public static final int cameraResolution = 240;
 
-    public static class ClimberConstants
+    public static class ClimberConstants //Remove climber next time if need be
     {
       public static final double kP = 0.01;
       public static final double kI = 0;
@@ -60,5 +60,5 @@ public final class Constants {
 
 
 
-    
+
 }

@@ -31,8 +31,9 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.vision.Limelight;
+
 
 public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -48,13 +49,14 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
-  private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
+  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController m_driver = new CommandXboxController(0); // My joystick
   private final CommandXboxController m_operator = new CommandXboxController(1);
-  private final CommandXboxController m_dev = new CommandXboxController(2);
+  //private final CommandXboxController m_dev = new CommandXboxController(2);
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
 
@@ -63,7 +65,7 @@ public class RobotContainer {
 
   private final moveArmCommand m_moveArm = new moveArmCommand(armSubsystem, m_operator);
   private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem, shooterSubsystem, m_operator);
-  private final moveClimberCommand m_climber = new moveClimberCommand(climberSubsystem, m_dev);
+  //private final moveClimberCommand m_climber = new moveClimberCommand(climberSubsystem, m_dev);
 
   //AUTO COMMANDS
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
@@ -77,7 +79,10 @@ public class RobotContainer {
 
 
 
-  private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+  public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+
+
+
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
                                                                // driving in open loop
@@ -101,7 +106,7 @@ public class RobotContainer {
   /* Path follower */
   //private Command runAuto = drivetrain.getAutoPath("Tests");
 
-  Limelight vision = new Limelight(drivetrain);
+
   //private final Telemetry logger = new Telemetry(MaxSpeed);
   private void configureBindings() {
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
@@ -160,18 +165,20 @@ public class RobotContainer {
 
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
 
+    //new Trigger(m_operator.x()).onTrue(new InstantCommand(limelightSubsystem::findDistanceToTarget));
 
-    new Trigger(m_operator.x()).onTrue(new InstantCommand(climberSubsystem::raiseClimbers));
-    new Trigger(m_operator.a()).onTrue(new InstantCommand(climberSubsystem::lowerClimbers));
 
-    new Trigger(m_operator.button(8)).onTrue(new InstantCommand(vision::useLimelight)); //activates the limelight camera
+    //new Trigger(m_operator.x()).onTrue(new InstantCommand(climberSubsystem::raiseClimbers));
+    //new Trigger(m_operator.a()).onTrue(new InstantCommand(climberSubsystem::lowerClimbers));
+
+    
 
 
     //manual 3rd controller
 
-    new Trigger(m_dev.a()).onTrue(m_climber);
-    new Trigger(m_dev.y()).whileTrue(m_climber);
-    new Trigger(m_dev.b()).whileTrue(new InstantCommand(climberSubsystem::resetClimberZero));
+    //new Trigger(m_dev.a()).onTrue(m_climber);
+    //new Trigger(m_dev.y()).whileTrue(m_climber);
+    //new Trigger(m_dev.b()).whileTrue(new InstantCommand(climberSubsystem::resetClimberZero));
 
 
   }
@@ -197,6 +204,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
     NamedCommands.registerCommand("pos_long", new InstantCommand(armSubsystem::posLong));
     NamedCommands.registerCommand("pos_zero", new InstantCommand(armSubsystem::posZero)); 
+
 
     
 
