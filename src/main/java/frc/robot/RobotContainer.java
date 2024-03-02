@@ -16,6 +16,7 @@ import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -72,7 +73,7 @@ public class RobotContainer {
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
   private final Auto_intake au_intake = new Auto_intake(intakeSubsystem);
   private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
-  private final PhoenixPIDController autoTurnPID = new PhoenixPIDController(3.2, 0, 0);
+  private final PhoenixPIDController autoTurnPID = new PhoenixPIDController(3.2, 0, 0.2);
   
 
 
@@ -113,7 +114,7 @@ public class RobotContainer {
   private void configureBindings() {
 
     autoAim.HeadingController = autoTurnPID;
-    autoAim.HeadingController.enableContinuousInput(-180, 180);
+    autoAim.HeadingController.enableContinuousInput(0, 360);
     
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed) // Drive forward with
@@ -134,14 +135,17 @@ public class RobotContainer {
     m_driver.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
     m_driver.pov(180).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
-    m_driver.rightBumper().whileTrue(
-      drivetrain.applyRequest(() -> autoAim.withTargetDirection(Rotation2d.fromDegrees(0))
+    m_driver.rightBumper().whileTrue( //Auto target for driver
+      drivetrain.applyRequest(() -> autoAim.withTargetDirection(drivetrain.directionToGoal())
       .withVelocityX(-m_driver.getLeftY() * MaxSpeed)
       .withVelocityY(-m_driver.getLeftX() * MaxSpeed)
       
       )
+ 
+      
 
     );
+    
 
     //m_driver.rightBumper().whileTrue(drivetrain.run(() -> drivetrain.drive_autoAim(0)));    
 
@@ -180,8 +184,7 @@ public class RobotContainer {
 
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
 
-    new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::calcAngle));
-
+    new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::calcAngle)); //Run this for auto aim 
     //new Trigger(m_operator.x()).onTrue(new InstantCommand(limelightSubsystem::findDistanceToTarget));
 
 
@@ -207,6 +210,7 @@ public class RobotContainer {
 
     ////Auto Commands////
     //Auto Actions
+    
     NamedCommands.registerCommand("act_shoot", au_shoot); //shoot that thang 
     NamedCommands.registerCommand("act_intake", au_intake); //does sick auto intake stuff
     NamedCommands.registerCommand("act_intake_on", new InstantCommand(intakeSubsystem::auto_intakeOn));

@@ -137,8 +137,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void posLong()
   {
-    wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint Long", 60.4); //56.47;  
+    wristSetpoint = 0; //hey this is like 8.45 from target
+    armSetpoint = SmartDashboard.getNumber("Setpoint Long", 42.77); //56.47;  
     RobotContainer.shooterSpeed = 1;
   }
 
@@ -171,7 +171,7 @@ public class ArmSubsystem extends SubsystemBase {
     
     Pose3d pos = LimelightHelpers.getBotPose3d("limelight");
     double botX = pos.getX();  
-    double botY = pos.getY();  
+    double botY = pos.getY();  //Gets X and Y from Limelight
 
     DriverStation.getAlliance().ifPresent((allianceColor) -> {
           if(allianceColor != Alliance.Red)
@@ -187,11 +187,11 @@ public class ArmSubsystem extends SubsystemBase {
             targetY = 1.325;
             
           }
-    });
+    }); //Alliance position
 
     SmartDashboard.putNumber("target X", targetX);
     SmartDashboard.putNumber("target Y", targetY);
-    double distance = Math.sqrt(((targetX-botX) * (targetX-botX)) + ((targetY - botY) * (targetY - botY)));
+    double distance = Math.sqrt(((targetX-botX) * (targetX-botX)) + ((targetY - botY) * (targetY - botY))); 
 
     SmartDashboard.putNumber("Disntace to Target", distance);
     //You cant ^ in Java :pensive:

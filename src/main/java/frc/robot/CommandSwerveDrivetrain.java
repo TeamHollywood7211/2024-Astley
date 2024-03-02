@@ -20,14 +20,18 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.generated.TunerConstants;
@@ -61,6 +65,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private final SwerveRequest.SysIdSwerveSteerGains SteerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
 
     //private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
+    double targetX = 0;
+    double targetY = 0;
 
     /* Use one of these sysidroutines for your particular test */
     private SysIdRoutine SysIdRoutineTranslation = new SysIdRoutine(
@@ -204,4 +210,38 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
         autoAim.TargetDirection = angle;
     }*/
+
+    public Rotation2d directionToGoal()
+    {
+
+        
+
+        Pose3d pos = LimelightHelpers.getBotPose3d("limelight");
+        double botX = pos.getX();  
+        double botY = pos.getY();  
+        Pose2d botPose = new Pose2d(botX, botY, Rotation2d.fromDegrees(0));
+        DriverStation.getAlliance().ifPresent((allianceColor) -> {
+              if(allianceColor != Alliance.Red)
+              {
+                
+                targetX = -7.799;
+                targetY = 1.445;
+                
+              }
+              else
+              {
+                targetX = 7.799;
+                targetY = 1.445;
+                
+              }
+        });
+
+        Pose2d targetPose = new Pose2d(targetX, targetY, Rotation2d.fromDegrees(0));
+        Translation2d targetAngle = targetPose.getTranslation();
+        Rotation2d rotationNeeded = targetAngle.minus(botPose.getTranslation()).getAngle();
+        //rotationNeeded.minus(Rotation2d.fromDegrees(180));
+        SmartDashboard.putNumber("Rotation To Goal", rotationNeeded.getDegrees());
+        SmartDashboard.putNumber("Gyro", m_pigeon2.getYaw().getValue());
+        return rotationNeeded;
+    }
 }
