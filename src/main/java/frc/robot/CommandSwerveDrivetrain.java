@@ -60,7 +60,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private final SwerveRequest.SysIdSwerveRotation RotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
     private final SwerveRequest.SysIdSwerveSteerGains SteerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
 
-    private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
+    //private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
 
     /* Use one of these sysidroutines for your particular test */
     private SysIdRoutine SysIdRoutineTranslation = new SysIdRoutine(
@@ -193,13 +193,15 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         }
     }
  
-    public void drive_autoAim(double degrees)
+    /*public void drive_autoAim(double degrees)
     {
-        Rotation2d angle = Rotation2d.fromDegrees(degrees); 
-        autoAim.TargetDirection = angle;
+        Rotation2d angle = Rotation2d.fromDegrees(degrees);
+        
         autoAim.Deadband = 1;
         autoAim.RotationalDeadband = 1;
         autoAim.HeadingController = new PhoenixPIDController(0.1, 0, 0.01);
+        
 
-    }
+        autoAim.TargetDirection = angle;
+    }*/
 }

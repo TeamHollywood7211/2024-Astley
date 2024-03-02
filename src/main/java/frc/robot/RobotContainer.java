@@ -9,6 +9,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.mechanisms.swerve.utility.PhoenixPIDController;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
@@ -70,9 +71,9 @@ public class RobotContainer {
   //AUTO COMMANDS
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
   private final Auto_intake au_intake = new Auto_intake(intakeSubsystem);
-
-
-
+  private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
+  private final PhoenixPIDController autoTurnPID = new PhoenixPIDController(3.2, 0, 0);
+  
 
 
 
@@ -110,12 +111,16 @@ public class RobotContainer {
 
   //private final Telemetry logger = new Telemetry(MaxSpeed);
   private void configureBindings() {
+
+    autoAim.HeadingController = autoTurnPID;
+    autoAim.HeadingController.enableContinuousInput(-180, 180);
+    
     drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-m_driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
             .withRotationalRate(-m_driver.getRightX() * MaxAngularRate)  // Drive counterclockwise with negative X (left)
-        ).ignoringDisable(true));
+            ).ignoringDisable(true));
 
     m_driver.a().whileTrue(drivetrain.applyRequest(() -> brake));
     m_driver.b().whileTrue(drivetrain
@@ -129,7 +134,16 @@ public class RobotContainer {
     m_driver.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
     m_driver.pov(180).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
-    m_driver.rightBumper().whileTrue(drivetrain.run(() -> drivetrain.drive_autoAim(0)));    
+    m_driver.rightBumper().whileTrue(
+      drivetrain.applyRequest(() -> autoAim.withTargetDirection(Rotation2d.fromDegrees(0))
+      .withVelocityX(-m_driver.getLeftY() * MaxSpeed)
+      .withVelocityY(-m_driver.getLeftX() * MaxSpeed)
+      
+      )
+
+    );
+
+    //m_driver.rightBumper().whileTrue(drivetrain.run(() -> drivetrain.drive_autoAim(0)));    
 
     /* Bindings for drivetrain characterization */
     /* These bindings require multiple buttons pushed to swap between quastatic and dynamic */
