@@ -45,7 +45,6 @@ public class ArmSubsystem extends SubsystemBase {
 
   double targetX = 0;
   double targetY = 0;
-  int  invertValue = 1;
   public ArmSubsystem() {
     ArmMotor.restoreFactoryDefaults();
     WristMotor.restoreFactoryDefaults();
@@ -169,6 +168,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void calcAngle()
   {
+    
     Pose3d pos = LimelightHelpers.getBotPose3d("limelight");
     double botX = pos.getX();  
     double botY = pos.getY();  
@@ -179,13 +179,13 @@ public class ArmSubsystem extends SubsystemBase {
             
             targetX = -8.305;
             targetY = 1.562;
-            invertValue = -1;
+            
           }
           else
           {
             targetX = 8.305;
             targetY = 1.325;
-            invertValue = 1;
+            
           }
     });
 
@@ -195,7 +195,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Disntace to Target", distance);
     //You cant ^ in Java :pensive:
-    armSetpoint = -25.948 * (distance * distance) + 147.805 * distance - 161.623;
+    armSetpoint = -6.62955 * (distance * distance) + 47.4922 * distance + -55.4878;
     
     //-0.705625 * (distance*distance) + 14.4712* distance + -46.5725;
   }

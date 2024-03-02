@@ -96,6 +96,7 @@ public class RobotContainer {
     //UsbCamera frontUsbCamera = new UsbCamera("frontUsbCamObject", 0 );
     //frontUsbCamera.setResolution(160, 120);
     CameraServer.startAutomaticCapture();
+    
     //CvSink cvSink = CameraServer.getVideo(); //I dont know what cvsink is, I dont know what it is, but it makes the camera work.
 
     //CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
@@ -113,7 +114,7 @@ public class RobotContainer {
         drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-m_driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-            .withRotationalRate(-m_driver.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            .withRotationalRate(-m_driver.getRightX() * MaxAngularRate)  // Drive counterclockwise with negative X (left)
         ).ignoringDisable(true));
 
     m_driver.a().whileTrue(drivetrain.applyRequest(() -> brake));
@@ -128,7 +129,7 @@ public class RobotContainer {
     m_driver.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
     m_driver.pov(180).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
 
-
+    m_driver.rightBumper().whileTrue(drivetrain.run(() -> drivetrain.drive_autoAim(0)));    
 
     /* Bindings for drivetrain characterization */
     /* These bindings require multiple buttons pushed to swap between quastatic and dynamic */
@@ -206,7 +207,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
     NamedCommands.registerCommand("pos_long", new InstantCommand(armSubsystem::posLong));
     NamedCommands.registerCommand("pos_zero", new InstantCommand(armSubsystem::posZero)); 
-
+    NamedCommands.registerCommand("pos_auto", new InstantCommand(armSubsystem::calcAngle)); 
 
     
 
