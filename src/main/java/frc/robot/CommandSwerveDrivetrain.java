@@ -17,6 +17,8 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -27,7 +29,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.generated.TunerConstants;
-import frc.robot.vision.LimelightHelpers;
 
 
 
@@ -56,6 +57,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
     private final SwerveRequest.SysIdSwerveTranslation TranslationCharacterization = new SwerveRequest.SysIdSwerveTranslation();
     private final SwerveRequest.SysIdSwerveRotation RotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
     private final SwerveRequest.SysIdSwerveSteerGains SteerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
+
+    
 
     /* Use one of these sysidroutines for your particular test */
     private SysIdRoutine SysIdRoutineTranslation = new SysIdRoutine(
@@ -90,6 +93,9 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                     null,
                     this));
 
+
+
+                    
     /* Change this to the sysid routine you want to test */
     private final SysIdRoutine RoutineToApply = SysIdRoutineTranslation;
 
@@ -184,10 +190,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
             });
         }
     }
-
-
-    public void aimSpeaker()
-    {
-
-    }
+ 
+    
 }

@@ -165,6 +165,8 @@ public class RobotContainer {
 
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
 
+    new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::calcAngle));
+
     //new Trigger(m_operator.x()).onTrue(new InstantCommand(limelightSubsystem::findDistanceToTarget));
 
 
