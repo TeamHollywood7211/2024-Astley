@@ -45,6 +45,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   double targetX = 0;
   double targetY = 0;
+  int  invertValue = 1;
   public ArmSubsystem() {
     ArmMotor.restoreFactoryDefaults();
     WristMotor.restoreFactoryDefaults();
@@ -172,23 +173,31 @@ public class ArmSubsystem extends SubsystemBase {
     double botX = pos.getX();  
     double botY = pos.getY();  
 
-
     DriverStation.getAlliance().ifPresent((allianceColor) -> {
-          if(allianceColor == Alliance.Red)
+          if(allianceColor != Alliance.Red)
           {
+            
             targetX = -8.305;
             targetY = 1.562;
+            invertValue = -1;
           }
           else
           {
             targetX = 8.305;
             targetY = 1.325;
+            invertValue = 1;
           }
     });
+
+    SmartDashboard.putNumber("target X", targetX);
+    SmartDashboard.putNumber("target Y", targetY);
     double distance = Math.sqrt(((targetX-botX) * (targetX-botX)) + ((targetY - botY) * (targetY - botY)));
 
+    SmartDashboard.putNumber("Disntace to Target", distance);
     //You cant ^ in Java :pensive:
-    armSetpoint =  -0.705625 * (distance*distance) + 14.4712* distance + -46.5725;
+    armSetpoint = -25.948 * (distance * distance) + 147.805 * distance - 161.623;
+    
+    //-0.705625 * (distance*distance) + 14.4712* distance + -46.5725;
   }
 
   public void testCalcAngle()

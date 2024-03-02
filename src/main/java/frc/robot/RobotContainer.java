@@ -39,7 +39,7 @@ public class RobotContainer {
   private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
   //private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
-  public static double shooterSpeed = 0.60;
+  public static double shooterSpeed = 0.65;
   private final SendableChooser<Command> autoChooser;
 
 
@@ -96,9 +96,9 @@ public class RobotContainer {
     //UsbCamera frontUsbCamera = new UsbCamera("frontUsbCamObject", 0 );
     //frontUsbCamera.setResolution(160, 120);
     CameraServer.startAutomaticCapture();
-    CvSink cvSink = CameraServer.getVideo(); //I dont know what cvsink is, I dont know what it is, but it makes the camera work.
+    //CvSink cvSink = CameraServer.getVideo(); //I dont know what cvsink is, I dont know what it is, but it makes the camera work.
 
-    CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+    //CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
   }
 
 
