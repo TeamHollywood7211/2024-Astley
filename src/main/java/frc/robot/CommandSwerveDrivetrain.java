@@ -224,14 +224,14 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
               if(allianceColor != Alliance.Red)
               {
                 
-                targetX = -7.799;
-                targetY = 1.445;
+                targetX = -8.135;
+                targetY = 1.245;
                 
               }
               else
               {
-                targetX = 7.799;
-                targetY = 1.445;
+                targetX = 8.135;
+                targetY = 1.245;
                 
               }
         });

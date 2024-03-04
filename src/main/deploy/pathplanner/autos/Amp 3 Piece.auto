@@ -1,0 +1,157 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.73073282397597,
+      "y": 6.6724570113054344
+    },
+    "rotation": -120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Amp To Note 1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 1 To Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.4
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 1 Shoot To Note 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 2 To Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Amp 2-4 Piece",
+  "choreoAuto": false
+}

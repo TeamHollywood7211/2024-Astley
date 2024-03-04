@@ -1,0 +1,109 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.35,
+      "y": 5.56
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Front To Note 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note 2 To Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_zero"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Front 2-3 Piece",
+  "choreoAuto": false
+}
