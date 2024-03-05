@@ -213,9 +213,6 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
 
     public Rotation2d directionToGoal()
     {
-
-        
-
         Pose3d pos = LimelightHelpers.getBotPose3d("limelight");
         double botX = pos.getX();  
         double botY = pos.getY();  
@@ -239,9 +236,22 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
         Pose2d targetPose = new Pose2d(targetX, targetY, Rotation2d.fromDegrees(0));
         Translation2d targetAngle = targetPose.getTranslation();
         Rotation2d rotationNeeded = targetAngle.minus(botPose.getTranslation()).getAngle();
-        //rotationNeeded.minus(Rotation2d.fromDegrees(180));
+        rotationNeeded.minus(Rotation2d.fromDegrees(180));
+        //rotationNeeded.div(-1);
         SmartDashboard.putNumber("Rotation To Goal", rotationNeeded.getDegrees());
         SmartDashboard.putNumber("Gyro", m_pigeon2.getYaw().getValue());
         return rotationNeeded;
+    }
+
+
+
+
+    public void slowRobot()
+    {
+        RobotContainer.MaxSpeed = TunerConstants.kSpeedAt12VoltsMps/2;
+    }
+    public void fastRobot()
+    {
+        RobotContainer.MaxSpeed = TunerConstants.kSpeedAt12VoltsMps;
     }
 }

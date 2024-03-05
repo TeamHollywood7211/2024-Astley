@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+//import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.LimelightHelpers;
@@ -48,11 +48,11 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
     ArmMotor.restoreFactoryDefaults();
     WristMotor.restoreFactoryDefaults();
-    SmartDashboard.putNumber("Setpoint Amp Arm", 180);
+    SmartDashboard.putNumber("Setpoint Amp Arm", 180); //Allows us to mid-comp change robot arm positions w/o redeploy
     SmartDashboard.putNumber("Setpoint Amp Wrist", 9.02);
 
-    SmartDashboard.putNumber("Setpoint Mid", 43.6);
-    SmartDashboard.putNumber("Setpoint Long", 60.4);
+    SmartDashboard.putNumber("Setpoint Mid", 22.127);
+    SmartDashboard.putNumber("Setpoint Long", 42.77);
 
     SmartDashboard.putNumber("Setpoint ExLong", 53);
 
@@ -88,21 +88,21 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-     Pose3d pos = LimelightHelpers.getBotPose3d("limelight");
+     Pose3d pos = LimelightHelpers.getBotPose3d("limelight"); //Limelight stuff
 
-     SmartDashboard.putNumber("Limelight X", pos.getX());
+     SmartDashboard.putNumber("Limelight X", pos.getX()); //tells us the bots X,Y
      SmartDashboard.putNumber("Limelight Y", pos.getY());
 
-    SmartDashboard.putNumber("wrist Pos", wristEncoder.getPosition());
+    SmartDashboard.putNumber("wrist Pos", wristEncoder.getPosition()); //Tells us encoder positions
     SmartDashboard.putNumber("Arm Pos", armEncoder.getPosition());
 
-    SmartDashboard.putNumber("Wrist Setpoint", wristSetpoint);
+    SmartDashboard.putNumber("Wrist Setpoint", wristSetpoint); //Tells us setpoints
     SmartDashboard.putNumber("ArmSetpoint", armSetpoint);
 
-    armSetpoint = MathUtil.clamp(armSetpoint,0,186);
+    armSetpoint = MathUtil.clamp(armSetpoint,0,186); //Locks the arm setpoint between its 0 and a 
 
-    WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75));
-    ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -0.75, 0.75));
+    WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
+    ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -0.75, 0.75));         //
   
 
 
@@ -114,7 +114,7 @@ public class ArmSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
-  public void posZero()
+  public void posZero() //Different positions for Arm (also changes speeds of motors)
   {
     wristSetpoint = 0;
     armSetpoint = 0;
@@ -123,7 +123,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void posAmp()
   {
     
-    wristSetpoint = SmartDashboard.getNumber("Setpoint Amp Wrist",9.02);
+    wristSetpoint = SmartDashboard.getNumber("Setpoint Amp Wrist",9.02); //Pulls the values from SmartDashboard 
     armSetpoint = SmartDashboard.getNumber("Setpoint Amp Arm",180);
     RobotContainer.shooterSpeed = 0.2;
   }
@@ -131,7 +131,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void posMid()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint Mid", 43.6);
+    armSetpoint = SmartDashboard.getNumber("Setpoint Mid", 22.127);
     RobotContainer.shooterSpeed = 0.66;
   }
 
@@ -141,7 +141,7 @@ public class ArmSubsystem extends SubsystemBase {
     armSetpoint = SmartDashboard.getNumber("Setpoint Long", 42.77); //56.47;  
     RobotContainer.shooterSpeed = 1;
   }
-  
+
   public void posExLong()
   {
     wristSetpoint = 0;

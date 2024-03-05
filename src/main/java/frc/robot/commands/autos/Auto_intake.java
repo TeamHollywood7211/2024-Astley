@@ -37,9 +37,9 @@ public class Auto_intake extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if((m_intake.readRingSensor() == false) && (time.get() < 2))
+    if((m_intake.readShooterRingSensor() == false) && (time.get() < 2))
     {
-      m_intake.setIntake(-1);
+      m_intake.setIntake(0.15);
       m_intake.setFeeder(-1);
     }
     else
@@ -52,7 +52,7 @@ public class Auto_intake extends Command {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
     }
-    if((time.get() > 2.1) || (m_intake.readRingSensor() == true))
+    if((time.get() > 2.1) || (m_intake.readShooterRingSensor() == true))
     {
       finished = true;
     }

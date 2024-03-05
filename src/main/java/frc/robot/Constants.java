@@ -20,7 +20,7 @@ public final class Constants {
       //wrist
       public static final double wristP = 0.02;
       public static final double wristI = 0;
-      public static final double wristD = 0.001;
+      public static final double wristD = 0.003;
   
     }
     public static class IntakeConstants
@@ -28,8 +28,11 @@ public final class Constants {
       public static final int IntakeMotor1ID = 41;
       public static final int IntakeMotor2ID = 42;
       public static final int feederMotorID = 43;
-      public static final int IRSEnsorPowerID = 1;
-      public static final int IRSensorSignalID = 0;
+      public static final int IRSensorIntakePowerID = 1;
+      public static final int IRSensorIntakeSignalID = 0;
+
+      public static final int IRSensorShooterSignal = 3;
+      public static final int IRSensorShooterSignalID = 2;
     }
     
     public static class ShooterConstants
@@ -40,6 +43,7 @@ public final class Constants {
       public static final double kD = 0.001;
       public static final int shooterMotor1ID = 52;
       public static final int shooterMotor2ID = 51;
+      
 
       public static final int armMotorID = 45;
     }

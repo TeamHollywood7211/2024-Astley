@@ -26,20 +26,21 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.IntakeShooterCommand;
 import frc.robot.commands.moveArmCommand;
-import frc.robot.commands.moveClimberCommand;
+//import frc.robot.commands.moveClimberCommand;
 import frc.robot.commands.autos.Auto_intake;
 import frc.robot.commands.autos.Auto_shoot;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.ClimberSubsystem;
+//import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
+//import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 
 public class RobotContainer {
-  private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
+  static double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
   private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+  static Rotation2d cachedAngle = Rotation2d.fromDegrees(0);
   //private final ShooterSubsystem m_ShooterSubsystem = new ShooterSubsystem();
   public static double shooterSpeed = 0.65;
   private final SendableChooser<Command> autoChooser;
@@ -51,7 +52,7 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
-  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
+  //private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
   //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
 
@@ -111,12 +112,15 @@ public class RobotContainer {
 
 
   //private final Telemetry logger = new Telemetry(MaxSpeed);
+  
   private void configureBindings() {
 
     autoAim.HeadingController = autoTurnPID;
-    autoAim.HeadingController.enableContinuousInput(0, 360);
+    autoAim.HeadingController.enableContinuousInput(-180, 180);
     
-    drivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+    drivetrain.setDefaultCommand(
+    //#region standard drivetrain 
+    // Drivetrain will execute this command periodically
         drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
             .withVelocityY(-m_driver.getLeftX() * MaxSpeed) // Drive left with negative X (left)
@@ -128,21 +132,23 @@ public class RobotContainer {
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-m_driver.getLeftY(), -m_driver.getLeftX()))));
 
     // reset the field-centric heading on left bumper press (reset gyro?)
-    m_driver.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    m_driver.button(7).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     //drivetrain.registerTelemetry(logger::telemeterize);
 
+    //The slow mode type things we implemented
     m_driver.pov(0).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0.5).withVelocityY(0)));
     m_driver.pov(180).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(-0.5).withVelocityY(0)));
+    m_driver.pov(270).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX(0).withVelocityY(0.5)));
+    m_driver.pov(90).whileTrue(drivetrain.applyRequest(() -> forwardStraight.withVelocityX( 0).withVelocityY(-0.5)));
 
-    m_driver.rightBumper().whileTrue( //Auto target for driver
+    m_driver.rightBumper().whileTrue( //Auto target for driver 
       drivetrain.applyRequest(() -> autoAim.withTargetDirection(drivetrain.directionToGoal())
       .withVelocityX(-m_driver.getLeftY() * MaxSpeed)
       .withVelocityY(-m_driver.getLeftX() * MaxSpeed)
       
       )
- 
-      
+  
 
     );
     
@@ -156,6 +162,9 @@ public class RobotContainer {
     m_driver.back().and(m_driver.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
     m_driver.start().and(m_driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
     m_driver.start().and(m_driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+
+    m_driver.rightBumper().whileTrue(new InstantCommand(drivetrain::slowRobot)); //slow/fast mode system
+    m_driver.rightBumper().whileFalse(new InstantCommand(drivetrain::fastRobot));
     
     //SHOOTER//
     new Trigger(m_operator.rightTrigger()).onTrue(m_intakeShooterCommand);
@@ -185,6 +194,10 @@ public class RobotContainer {
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
 
     new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::calcAngle)); //Run this for auto aim 
+
+
+    
+
     //new Trigger(m_operator.x()).onTrue(new InstantCommand(limelightSubsystem::findDistanceToTarget));
 
 
@@ -212,7 +225,8 @@ public class RobotContainer {
     //Auto Actions
     
     NamedCommands.registerCommand("act_shoot", au_shoot); //shoot that thang 
-    NamedCommands.registerCommand("act_intake", au_intake); //does sick auto intake stuff
+    NamedCommands.registerCommand("act_intakeIR", au_intake); //does sick auto intake stuff
+
     NamedCommands.registerCommand("act_intake_on", new InstantCommand(intakeSubsystem::auto_intakeOn));
     NamedCommands.registerCommand("act_intake_off", new InstantCommand(intakeSubsystem::auto_intakeOff));
     NamedCommands.registerCommand("act_shooter_on", new InstantCommand(shooterSubsystem::auto_shooterOn));
@@ -225,6 +239,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
     NamedCommands.registerCommand("pos_long", new InstantCommand(armSubsystem::posLong));
     NamedCommands.registerCommand("pos_zero", new InstantCommand(armSubsystem::posZero)); 
+
     NamedCommands.registerCommand("pos_auto", new InstantCommand(armSubsystem::calcAngle)); 
 
     

@@ -33,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor1.restoreFactoryDefaults();
     shooterMotor2.restoreFactoryDefaults();
 
-    shooterMotor2.follow(shooterMotor1);
+    shooterMotor2.follow(shooterMotor1); 
 
     
 
@@ -78,14 +78,14 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
 
-  public void setShooterSpeed(double speed)
+  public void setShooterSpeed(double speed)  //sets motor speed based on var
   {
-    speed = MathUtil.clamp(speed, -1,1);
-    shooterMotor1.set(-speed);
+    speed = MathUtil.clamp(speed, -1,1); //Those things are effing powerful, dont wanna overshoot their range
+    shooterMotor1.set(-speed); 
     shooterMotor2.set(-speed);
   }
 
-  public boolean auto_shooterOn()
+  public boolean auto_shooterOn() //auton shooter for pathplanner
   {
     shooterMotor1.set(-1);
     shooterMotor2.set(-1);
@@ -102,10 +102,4 @@ public class ShooterSubsystem extends SubsystemBase {
 
 
 
-  public void manMoveArm(double speed)
-  {
-
-    //armMotor.set(speed);
-  
-  }
 }
