@@ -34,11 +34,21 @@ public class IntakeShooterCommand extends Command {
   @Override
   public void execute() {
 
+
+
+    if(m_intakeSubsystem.readShooterRingSensor() == true) //If we have a ring in the system, spool the shooter
+   {
+    m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed/2);
+   }
     //Shooter
 
    if(m_controller.rightTrigger().getAsBoolean())
    {
       m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed); //when in doubt, -0.6
+      if(m_intakeSubsystem.readShooterRingSensor())
+      {
+        m_intakeSubsystem.setFeeder(-0.1);
+      }
       //m_intakeSubsystem.setFeeder(-1);
    } 
    if(m_controller.rightBumper().getAsBoolean())
@@ -47,7 +57,7 @@ public class IntakeShooterCommand extends Command {
       //m_intakeSubsystem.setFeeder(1);
    }
 
-   if((!m_controller.rightTrigger().getAsBoolean()) && (!m_controller.rightBumper().getAsBoolean()))
+   if((!m_controller.rightTrigger().getAsBoolean()) && (!m_controller.rightBumper().getAsBoolean()) && (!m_intakeSubsystem.readShooterRingSensor()))
    {
       m_shooterSubsystem.setShooterSpeed(0);
       
@@ -59,12 +69,12 @@ public class IntakeShooterCommand extends Command {
    {
     if(m_intakeSubsystem.readShooterRingSensor() == false) //Only  intake till there is a ring near the shooter
     {
-      m_intakeSubsystem.setIntake(-0.2);
-      m_intakeSubsystem.setFeeder(-0.2);
+      m_intakeSubsystem.setIntake(-0.10);
+      m_intakeSubsystem.setFeeder(-0.10);
     }
     else
     {
-      m_intakeSubsystem.setIntake(-0.2);
+      m_intakeSubsystem.setIntake(0);
       m_intakeSubsystem.setFeeder(0);
     }
   }
@@ -73,17 +83,14 @@ public class IntakeShooterCommand extends Command {
     m_intakeSubsystem.setIntake(0.15);
     m_intakeSubsystem.setFeeder(0.15);
    }
-   if((!m_controller.leftTrigger().getAsBoolean()) && (!m_controller.leftBumper().getAsBoolean()))
+   if((!m_controller.leftTrigger().getAsBoolean()) && (!m_controller.leftBumper().getAsBoolean()) && (!m_controller.rightTrigger().getAsBoolean()))
    {
     m_intakeSubsystem.setIntake(0);
     m_intakeSubsystem.setFeeder(0);
    }
 
 
-   if(m_intakeSubsystem.readShooterRingSensor() == true) //If we have a ring in the system, spool the shooter
-   {
-    m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed/2);
-   }
+
 
 
 /* 
