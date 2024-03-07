@@ -48,15 +48,16 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
     ArmMotor.restoreFactoryDefaults();
     WristMotor.restoreFactoryDefaults();
-    SmartDashboard.putNumber("Setpoint Amp Arm", 180); //Allows us to mid-comp change robot arm positions w/o redeploy
+    SmartDashboard.putNumber("Setpoint Amp Arm", -180); //Allows us to mid-comp change robot arm positions w/o redeploy
     SmartDashboard.putNumber("Setpoint Amp Wrist", 9.02);
 
-    SmartDashboard.putNumber("Setpoint Mid", 22.127);
-    SmartDashboard.putNumber("Setpoint Long", 42.77);
+    SmartDashboard.putNumber("Setpoint Mid", -17.57);
+    SmartDashboard.putNumber("Setpoint Long", -38.28);
 
-    SmartDashboard.putNumber("Setpoint ExLong", 53);
+    SmartDashboard.putNumber("Setpoint ExLong", -53);
 
-    SmartDashboard.putNumber("Setpoint Climb", 186);
+    SmartDashboard.putNumber("Setpoint Climb", -186);
+    SmartDashboard.putNumber("Setpoint offshot", -25.142);
 
 
   }
@@ -99,7 +100,7 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Wrist Setpoint", wristSetpoint); //Tells us setpoints
     SmartDashboard.putNumber("ArmSetpoint", armSetpoint);
 
-    armSetpoint = MathUtil.clamp(armSetpoint,0,186); //Locks the arm setpoint between its 0 and a 
+    armSetpoint = MathUtil.clamp(armSetpoint,-186,0); //Locks the arm setpoint between its 0 and a 
 
     WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
     ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -0.75, 0.75));         //
@@ -124,35 +125,41 @@ public class ArmSubsystem extends SubsystemBase {
   {
     
     wristSetpoint = SmartDashboard.getNumber("Setpoint Amp Wrist",9.02); //Pulls the values from SmartDashboard 
-    armSetpoint = SmartDashboard.getNumber("Setpoint Amp Arm",180);
+    armSetpoint = SmartDashboard.getNumber("Setpoint Amp Arm",-180);
     RobotContainer.shooterSpeed = 0.2;
   }
 
   public void posMid()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint Mid", 22.127);
+    armSetpoint = SmartDashboard.getNumber("Setpoint Mid", -17.57);
     RobotContainer.shooterSpeed = 0.66;
   }
 
   public void posLong()
   {
     wristSetpoint = 0; //hey this is like 8.45 from target
-    armSetpoint = SmartDashboard.getNumber("Setpoint Long", 42.77); //56.47;  
+    armSetpoint = SmartDashboard.getNumber("Setpoint Long", -38.28); //56.47;  
     RobotContainer.shooterSpeed = 1;
   }
 
   public void posExLong()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint ExLong", 53);
+    armSetpoint = SmartDashboard.getNumber("Setpoint ExLong", -53);
     RobotContainer.shooterSpeed = 1;
   }
   public void posClimb()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint Climb", 186);
+    armSetpoint = SmartDashboard.getNumber("Setpoint Climb", -186);
     RobotContainer.shooterSpeed = 1;
+  }
+  public void posOff()
+  {
+    wristSetpoint = 0;
+    armSetpoint = SmartDashboard.getNumber("Setpoint offshot", -25.142);
+    RobotContainer.shooterSpeed = 0.6;
   }
 
   public void manuArm(double speed)
@@ -162,7 +169,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void manuWrist(double speed)
   {
-    wristSetpoint += speed/2;
+    wristSetpoint -= speed/2;
   }
 
 

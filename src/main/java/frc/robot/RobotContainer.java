@@ -28,7 +28,9 @@ import frc.robot.commands.IntakeShooterCommand;
 import frc.robot.commands.moveArmCommand;
 //import frc.robot.commands.moveClimberCommand;
 import frc.robot.commands.autos.Auto_intake;
+import frc.robot.commands.autos.Auto_intake_safe;
 import frc.robot.commands.autos.Auto_shoot;
+import frc.robot.commands.autos.Auto_shoot_safe;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
@@ -72,7 +74,9 @@ public class RobotContainer {
 
   //AUTO COMMANDS
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
+  private final Auto_shoot_safe au_shoot_safe = new Auto_shoot_safe(shooterSubsystem, intakeSubsystem);
   private final Auto_intake au_intake = new Auto_intake(intakeSubsystem);
+  private final Auto_intake_safe au_intake_safe = new Auto_intake_safe(intakeSubsystem);
   private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
   private final PhoenixPIDController autoTurnPID = new PhoenixPIDController(3.2, 0, 0.2);
   
@@ -225,7 +229,12 @@ public class RobotContainer {
     //Auto Actions
     
     NamedCommands.registerCommand("act_shoot", au_shoot); //shoot that thang 
+    NamedCommands.registerCommand("act_shoot_s", au_shoot_safe);
+
     NamedCommands.registerCommand("act_intakeIR", au_intake); //does sick auto intake stuff
+    NamedCommands.registerCommand("act_intakeIR_s", au_intake_safe);
+
+    
 
     NamedCommands.registerCommand("act_intake_on", new InstantCommand(intakeSubsystem::auto_intakeOn));
     NamedCommands.registerCommand("act_intake_off", new InstantCommand(intakeSubsystem::auto_intakeOff));

@@ -4,32 +4,27 @@
 
 package frc.robot.commands.autos;
 
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class Auto_shoot extends Command {
+public class Auto_intake_safe extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ShooterSubsystem m_shooter;
   private final IntakeSubsystem m_intake;
   Timer time;
-  Boolean finished = false;
+  boolean finished = false;
 
   /**
    * Creates a new ExampleCommand.
    *
    * @param subsystem The subsystem used by this command.
    */
-
-  public Auto_shoot(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem) {
-    m_shooter = shooterSubsystem;
-    m_intake = intakeSubsystem;
-    time = new Timer();
+  public Auto_intake_safe(IntakeSubsystem subsystem) {
+    m_intake = subsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooterSubsystem, intakeSubsystem);
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -42,22 +37,28 @@ public class Auto_shoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.print("TIMER :" + time.get() + "\n");
-    if(time.get() < 0.5)
-    {
-      m_shooter.setShooterSpeed(RobotContainer.shooterSpeed);
-    }
-    if((time.get() > 0.5) && (m_intake.readShooterRingSensor()))
+    if((m_intake.readShooterRingSensor() == false) && (time.get() < 2))
     {
       m_intake.setIntake(0.15);
       m_intake.setFeeder(0.15);
     }
-    if(!m_intake.readShooterRingSensor())
+    else
     {
-      m_shooter.setShooterSpeed(0);
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
+    }
+    if(time.get() > 2)
+    {
+      m_intake.setIntake(0);
+      m_intake.setFeeder(0);
+    }
+    if((time.get() > 2.1) || (m_intake.readShooterRingSensor() == true))
+    {
       finished = true;
+    }
+    else
+    {
+      finished = false;
     }
 
   }
@@ -69,6 +70,6 @@ public class Auto_shoot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finished;
+    return finished; 
   }
 }

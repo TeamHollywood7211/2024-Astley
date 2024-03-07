@@ -18,7 +18,8 @@ public class IntakeSubsystem extends SubsystemBase {
   
   CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushless);
   CANSparkMax IntakeMotor2 = new CANSparkMax(IntakeConstants.IntakeMotor2ID, MotorType.kBrushless);
-  CANSparkMax feederMotor = new CANSparkMax(IntakeConstants.feederMotorID, MotorType.kBrushed);
+  CANSparkMax feederMotor = new CANSparkMax(IntakeConstants.feederMotor1ID, MotorType.kBrushless);
+  CANSparkMax feederMotor2 = new CANSparkMax(IntakeConstants.feederMotor2ID, MotorType.kBrushless);
   DigitalInput ringIntakeSensor = new DigitalInput(IntakeConstants.IRSensorIntakeSignalID); //The IR sensor for the rings
   DigitalInput ringShooterSensor = new DigitalInput(IntakeConstants.IRSensorShooterSignalID);
   /** Creates a new ExampleSubsystem. */
@@ -26,6 +27,10 @@ public class IntakeSubsystem extends SubsystemBase {
     IntakeMotor1.restoreFactoryDefaults();
     IntakeMotor2.restoreFactoryDefaults();
     feederMotor.restoreFactoryDefaults();
+    feederMotor2.restoreFactoryDefaults();
+    
+    feederMotor2.setInverted(false);
+    //feederMotor2.follow(feederMotor);
   }
 
   /**
@@ -54,7 +59,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Ring In Intake", !(readIntakeRingSensor())); //tells drivers if there is a ring detected by top IR sensor
+    SmartDashboard.putBoolean("Ring In Shooter", !(readIntakeRingSensor())); //tells drivers if there is a ring detected by top IR sensor
+    SmartDashboard.putBoolean("Ring In Intake", !(readShooterRingSensor()));
     // This method will be called once per scheduler run
   }
 
@@ -74,13 +80,15 @@ public class IntakeSubsystem extends SubsystemBase {
   public void setFeeder(double speed) //Same thing but feeder
   {
     feederMotor.set(speed);
+    feederMotor2.set(-speed);
   }
 
   public boolean auto_intakeOn() //These two are for manually turning intake on/off for pathplanner
   {
     IntakeMotor1.set(0.15);
     IntakeMotor2.set(0.15);
-    feederMotor.set(-1);
+    feederMotor.set(-0.15);
+    feederMotor2.set(0.15);
     return true;
   }
   public boolean auto_intakeOff()
@@ -88,16 +96,17 @@ public class IntakeSubsystem extends SubsystemBase {
     IntakeMotor1.set(0.01);
     IntakeMotor2.set(0.01);
      feederMotor.set(0.01);
+     feederMotor2.set(0.01);
     return true;
   }
 
   public boolean readIntakeRingSensor()
   {
-    return !ringIntakeSensor.get(); //IR sensors reads true if beam isnt broken. We invert this since we want to say "FALSE, WE SEE NO RING"
+    return !ringShooterSensor.get(); //IR sensors reads true if beam isnt broken. We invert this since we want to say "FALSE, WE SEE NO RING"
   }
   public boolean readShooterRingSensor()
   {
-    return !ringShooterSensor.get();
+    return !ringIntakeSensor.get();
   }
 
 }

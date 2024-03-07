@@ -11,12 +11,11 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /** An example command that uses an example subsystem. */
-public class Auto_shoot extends Command {
+public class Auto_shoot_safe extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final ShooterSubsystem m_shooter;
   private final IntakeSubsystem m_intake;
   Timer time;
-  Boolean finished = false;
 
   /**
    * Creates a new ExampleCommand.
@@ -24,7 +23,7 @@ public class Auto_shoot extends Command {
    * @param subsystem The subsystem used by this command.
    */
 
-  public Auto_shoot(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem) {
+  public Auto_shoot_safe(ShooterSubsystem shooterSubsystem, IntakeSubsystem intakeSubsystem) {
     m_shooter = shooterSubsystem;
     m_intake = intakeSubsystem;
     time = new Timer();
@@ -47,17 +46,16 @@ public class Auto_shoot extends Command {
     {
       m_shooter.setShooterSpeed(RobotContainer.shooterSpeed);
     }
-    if((time.get() > 0.5) && (m_intake.readShooterRingSensor()))
+    if((time.get() > 0.5) && (time.get() < 1) )
     {
       m_intake.setIntake(0.15);
       m_intake.setFeeder(0.15);
     }
-    if(!m_intake.readShooterRingSensor())
+    if(time.get() > 1)
     {
       m_shooter.setShooterSpeed(0);
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
-      finished = true;
     }
 
   }
@@ -69,6 +67,6 @@ public class Auto_shoot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return finished;
+    return time.get() > 1.5;
   }
 }
