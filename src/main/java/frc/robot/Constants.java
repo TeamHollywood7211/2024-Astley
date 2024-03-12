@@ -8,6 +8,9 @@ import edu.wpi.first.math.numbers.N3;
 public final class Constants {
     public static final double stickDeadband = 0.1;;
 
+    public static final int bot = 0; //0 = Practice, 1 = Main 
+
+
     public static class ArmConstants
     {
       public static final int armMotorID = 45; //fill in with actual thing
@@ -49,7 +52,6 @@ public final class Constants {
       public static final int armMotorID = 45;
     }
 
-    public static final int ledID = 59; 
 
     public static final int cameraResolution = 240;
 
@@ -63,7 +65,18 @@ public final class Constants {
       public static final int arm2ID = 61;
     }
 
-    public static final int CANdleID = 51;
+    public static class LED
+    {
+      public static final int CANdleID = 51;
+      public static final int numLED = 69;
+
+      public static final int teamR = 146;
+      public static final int teamG = 27;
+      public static final int teamB = 2;
+
+
+    }
+    
 
 
 }

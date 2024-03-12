@@ -13,15 +13,18 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LEDSubsystem;
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private RobotContainer m_robotContainer;
+  public static boolean runBootAnimation = false;
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    runBootAnimation = true;
 
   }
 
@@ -49,6 +52,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    runBootAnimation = false;
   }
 
   @Override
@@ -64,6 +68,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    runBootAnimation = false;
   }
 
   @Override

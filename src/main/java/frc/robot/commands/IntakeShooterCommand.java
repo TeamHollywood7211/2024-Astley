@@ -7,6 +7,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
@@ -15,13 +16,15 @@ public class IntakeShooterCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final IntakeSubsystem m_intakeSubsystem;
   private final ShooterSubsystem m_shooterSubsystem;
+  private final LEDSubsystem m_led;
   private final CommandXboxController m_controller;
 
 
-  public IntakeShooterCommand(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem, CommandXboxController controller) {
+  public IntakeShooterCommand(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem, LEDSubsystem ledSubsystem, CommandXboxController controller) {
     m_intakeSubsystem = intakeSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_controller = controller;
+    m_led = ledSubsystem;
     addRequirements(intakeSubsystem);
   }
 
@@ -99,11 +102,14 @@ public class IntakeShooterCommand extends Command {
     m_intakeSubsystem.setIntake(0);
     m_intakeSubsystem.setFeeder(0);
    }
-
-
-
-
-
+   if(m_intakeSubsystem.readShooterRingSensor() == true)
+   {
+      m_led.setOrange();
+   }
+   else
+   {
+    m_led.setTeam();
+   }
   }
 
   // Called once the command ends or is interrupted.

@@ -6,38 +6,49 @@ package frc.robot.commands.autos;
 
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
-/** An example command that uses an example subsystem. */
 public class Auto_intake_safe extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final IntakeSubsystem m_intake;
-  Timer time;
-  boolean finished = false;
 
-  /**
-   * Creates a new ExampleCommand.
-   *
-   * @param subsystem The subsystem used by this command.
-   */
+  Double startTime; //TL;DR timers suck. (They are useful just not here)
+  boolean finished = false;
+  boolean resetTimer = true;
+  //Timer time;
+ // double timer = 0;
+
   public Auto_intake_safe(IntakeSubsystem subsystem) {
     m_intake = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
+
     addRequirements(subsystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time.reset();
-    time.start();
+    System.out.println("START THE INTAKE!!");
+    //time.reset();
+    startTime = DriverStation.getMatchTime();
   }
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if((m_intake.readShooterRingSensor() == false) && (time.get() < 2))
+    System.out.println("t: " + (startTime - DriverStation.getMatchTime()) + "\n");
+    System.out.println("ring? :" + m_intake.readShooterRingSensor());
+    
+
+    if(resetTimer)
+    {
+      startTime = DriverStation.getMatchTime();
+      resetTimer = false;
+    }
+
+    double timer = (startTime - DriverStation.getMatchTime());
+    //time.start();
+    //timer = time.get();
+    if((m_intake.readShooterRingSensor() == false) && (timer < 2))
     {
       m_intake.setIntake(0.15);
       m_intake.setFeeder(0.15);
@@ -47,13 +58,14 @@ public class Auto_intake_safe extends Command {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
     }
-    if(time.get() > 2)
+    if(timer > 2)
     {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
     }
-    if((time.get() > 2.1) || (m_intake.readShooterRingSensor() == true))
+    if((timer > 2.1) || (m_intake.readShooterRingSensor() == true))
     {
+      System.out.println("Im giving up on the auton, no ring 3:");
       finished = true;
     }
     else
@@ -63,13 +75,17 @@ public class Auto_intake_safe extends Command {
 
   }
 
-  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    resetTimer = true;
+    //time.stop();
+    //time.reset();
+  }
 
-  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    //startTime = DriverStation.getMatchTime();
+
     return finished; 
   }
 }

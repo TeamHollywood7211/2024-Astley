@@ -36,6 +36,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.LEDSubsystem;
 //import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -50,6 +51,7 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
+  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController m_driver = new CommandXboxController(0); // My joystick
@@ -61,7 +63,7 @@ public class RobotContainer {
 
   private final moveArmCommand m_moveArm = new moveArmCommand(armSubsystem, m_operator);
   private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem,
-      shooterSubsystem, m_operator);
+      shooterSubsystem, ledSubsystem, m_operator);
   // private final moveClimberCommand m_climber = new
   // moveClimberCommand(climberSubsystem, m_dev);
 
@@ -88,7 +90,7 @@ public class RobotContainer {
   public void createFrontUsbCamera() {
     // UsbCamera frontUsbCamera = new UsbCamera("frontUsbCamObject", 0 );
     // frontUsbCamera.setResolution(160, 120);
-    CameraServer.startAutomaticCapture();
+    //CameraServer.startAutomaticCapture();
 
     // CvSink cvSink = CameraServer.getVideo(); //I dont know what cvsink is, I dont
     // know what it is, but it makes the camera work.

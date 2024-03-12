@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 //import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 
@@ -37,13 +38,21 @@ public class ArmSubsystem extends SubsystemBase {
   double armSetpoint = armEncoder.getPosition(); //this makes it so when you repush code the robot doesnt get all wonky with arm pos
   double wristSetpoint = wristEncoder.getPosition();
 
-  
+  int invertArmPos = -1;
 
 
 
   double targetX = 0;
   double targetY = 0;
   public ArmSubsystem() {
+    if(Constants.bot == 0)
+    {
+      invertArmPos = -1;
+    }
+    else
+    {
+      invertArmPos = 1;
+    }
     ArmMotor.restoreFactoryDefaults();
     WristMotor.restoreFactoryDefaults();
 
@@ -52,18 +61,18 @@ public class ArmSubsystem extends SubsystemBase {
     ArmMotor.setSmartCurrentLimit(40);
     WristMotor.setSmartCurrentLimit(40);
 
-    SmartDashboard.putNumber("Setpoint Amp Arm", -180.14); //Allows us to mid-comp change robot arm positions w/o redeploy 
+    SmartDashboard.putNumber("Setpoint Amp Arm", -180.14*invertArmPos); //Allows us to mid-comp change robot arm positions w/o redeploy 
     SmartDashboard.putNumber("Setpoint Amp Wrist", 18.14);
 
-    SmartDashboard.putNumber("Setpoint Mid", -17.57);
-    SmartDashboard.putNumber("Setpoint Long", -38.28);
+    SmartDashboard.putNumber("Setpoint Mid", -17.57*invertArmPos);
+    SmartDashboard.putNumber("Setpoint Long", -38.28*invertArmPos);
 
-    SmartDashboard.putNumber("Setpoint ExLong", -53);
+    SmartDashboard.putNumber("Setpoint ExLong", -53*invertArmPos);
 
-    SmartDashboard.putNumber("Setpoint Climb", -186);
-    SmartDashboard.putNumber("Setpoint offshot", -25.142);
+    SmartDashboard.putNumber("Setpoint Climb", -186*invertArmPos);
+    SmartDashboard.putNumber("Setpoint offshot", -25.142*invertArmPos);
 
-    SmartDashboard.putNumber("Setpoint CTF", -71.285);
+    SmartDashboard.putNumber("Setpoint CTF", -71.285*invertArmPos);
 
 
   }
@@ -131,46 +140,46 @@ public class ArmSubsystem extends SubsystemBase {
   {
     
     wristSetpoint = SmartDashboard.getNumber("Setpoint Amp Wrist",19.14); //Pulls the values from SmartDashboard 
-    armSetpoint = SmartDashboard.getNumber("Setpoint Amp Arm",-180.14);
+    armSetpoint = SmartDashboard.getNumber("Setpoint Amp Arm",-180.14*invertArmPos);
     RobotContainer.shooterSpeed = 0.2;
   }
 
   public void posMid()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint Mid", -17.57);
+    armSetpoint = SmartDashboard.getNumber("Setpoint Mid", -17.57*invertArmPos);
     RobotContainer.shooterSpeed = 0.66;
   }
 
   public void posLong()
   {
     wristSetpoint = 0; //hey this is like 8.45 from target
-    armSetpoint = SmartDashboard.getNumber("Setpoint Long", -38.28); //56.47;  
+    armSetpoint = SmartDashboard.getNumber("Setpoint Long", -38.28*invertArmPos); //56.47;  
     RobotContainer.shooterSpeed = 1;
   }
 
   public void posExLong()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint ExLong", -53);
+    armSetpoint = SmartDashboard.getNumber("Setpoint ExLong", -53*invertArmPos);
     RobotContainer.shooterSpeed = 1;
   }
   public void posClimb()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint Climb", -186);
+    armSetpoint = SmartDashboard.getNumber("Setpoint Climb", -186*invertArmPos);
     RobotContainer.shooterSpeed = 1;
   }
   public void posOff()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint offshot", -25.142);
+    armSetpoint = SmartDashboard.getNumber("Setpoint offshot", -25.142*invertArmPos);
     RobotContainer.shooterSpeed = 0.6;
   }
   public void posCross()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint CTF", -71.285);
+    armSetpoint = SmartDashboard.getNumber("Setpoint CTF", -71.285*invertArmPos);
   }
 
   public void manuArm(double speed)

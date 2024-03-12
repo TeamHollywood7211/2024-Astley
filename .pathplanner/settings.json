@@ -10,6 +10,7 @@
     "Amp Side",
     "Far Side",
     "Front Side",
+    "Debug (Delete Later",
     "Off Side"
   ],
   "defaultMaxVel": 5.2,
