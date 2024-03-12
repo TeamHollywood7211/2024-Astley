@@ -7,16 +7,14 @@
     "test autos"
   ],
   "autoFolders": [
-    "Four Piece",
-    "Specifics",
-    "One Piece",
-    "Three Piece",
-    "Two Piece",
-    "test autos"
+    "Amp Side",
+    "Far Side",
+    "Front Side",
+    "Off Side"
   ],
-  "defaultMaxVel": 3.0,
-  "defaultMaxAccel": 3.0,
+  "defaultMaxVel": 5.2,
+  "defaultMaxAccel": 5.2,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
-  "maxModuleSpeed": 4.5
+  "maxModuleSpeed": 5.0
 }

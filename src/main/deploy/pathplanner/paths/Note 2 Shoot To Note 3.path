@@ -17,11 +17,11 @@
     {
       "anchor": {
         "x": 2.6156137531102477,
-        "y": 4.0363554220089455
+        "y": 4.1
       },
       "prevControl": {
         "x": 1.5912219437981403,
-        "y": 3.851964896332766
+        "y": 3.91560947432382
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.2,
+    "maxAcceleration": 5.2,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "Amp 2-4 Piece",
+  "folder": null,
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

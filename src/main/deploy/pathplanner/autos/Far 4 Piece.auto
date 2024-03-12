@@ -32,14 +32,45 @@
                 "data": {
                   "name": "act_intake_on"
                 }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_off"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intake_off"
+                }
               }
             ]
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Far Side To Note 3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Far Side To Note 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR"
+                }
+              }
+            ]
           }
         },
         {
@@ -50,12 +81,6 @@
                 "type": "wait",
                 "data": {
                   "waitTime": 0.6
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_off"
                 }
               },
               {
@@ -105,7 +130,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
+                  "waitTime": 0.5
                 }
               },
               {
@@ -124,9 +149,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Note 3 Shoot To Note 2"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 3 Shoot To Note 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR"
+                }
+              }
+            ]
           }
         },
         {
@@ -136,13 +174,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.55
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_off"
+                  "waitTime": 0.25
                 }
               },
               {
@@ -204,6 +236,12 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "act_intake_off"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "pos_zero"
                 }
               }
@@ -211,9 +249,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Note 2 Shoot To Note 1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 2 Shoot To Note 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR"
+                }
+              }
+            ]
           }
         },
         {
@@ -224,12 +275,6 @@
                 "type": "wait",
                 "data": {
                   "waitTime": 0.5
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_off"
                 }
               },
               {
@@ -279,13 +324,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "pos_zero"
+                  "waitTime": 0.25
                 }
               },
               {
@@ -299,6 +338,12 @@
                 "data": {
                   "name": "act_intake_off"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "pos_zero"
+                }
               }
             ]
           }
@@ -306,6 +351,6 @@
       ]
     }
   },
-  "folder": "Far 1-4 Piece",
+  "folder": "Far Side",
   "choreoAuto": false
 }

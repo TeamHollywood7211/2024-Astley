@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7170742665184753,
-      "y": 6.658798453847941
+      "x": 1.35,
+      "y": 5.56
     },
-    "rotation": -120.5406155476277
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -15,6 +15,92 @@
           "type": "named",
           "data": {
             "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Front Side To Note 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 2 To Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_on"
+                }
+              }
+            ]
           }
         },
         {
@@ -42,15 +128,15 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Copy of Amp Side To Note 1"
+            "name": "act_intake_off"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.1
+            "name": "pos_zero"
           }
         },
         {
@@ -60,19 +146,38 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Amp to Mid Shot"
+                  "pathName": "Note 2 Shoot To Note 3"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intake_off"
+                  "name": "act_intakeIR"
                 }
-              },
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "pos_long"
+                  "pathName": "Note 3 To Shoot"
                 }
               },
               {
@@ -87,7 +192,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.4
+            "waitTime": 0.5
           }
         },
         {
@@ -99,7 +204,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 1.25
           }
         },
         {
@@ -119,96 +224,10 @@
           "data": {
             "name": "pos_zero"
           }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Mid Shot To Center 1"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_on"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "act_intake_off"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "pos_long"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_shooter_on"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Center 1 To Mid Shot"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "act_intake_on"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "act_shooter_off"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "act_intake_off"
-          }
         }
       ]
     }
   },
-  "folder": "Amp Side",
+  "folder": "Front Side",
   "choreoAuto": false
 }

@@ -30,6 +30,12 @@ public class IntakeSubsystem extends SubsystemBase {
     feederMotor2.restoreFactoryDefaults();
     
     feederMotor2.setInverted(false);
+
+    IntakeMotor1.setSmartCurrentLimit(50);
+    IntakeMotor2.setSmartCurrentLimit(50);
+    feederMotor.setSmartCurrentLimit(40);
+    feederMotor2.setSmartCurrentLimit(40);
+
     //feederMotor2.follow(feederMotor);
   }
 

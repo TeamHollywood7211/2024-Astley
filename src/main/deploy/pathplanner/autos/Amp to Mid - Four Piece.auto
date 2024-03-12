@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Amp Side To Note 1"
+            "pathName": "Amp Side To Note 1"
           }
         },
         {
@@ -170,7 +170,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Inverse Mid Shot To Center 1"
+                  "pathName": "Center 1 To Mid Shot"
                 }
               }
             ]
@@ -250,7 +250,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Inverse Mid Shot To Center 2"
+                  "pathName": "Center 2 To Mid Shot"
                 }
               }
             ]
@@ -289,6 +289,6 @@
       ]
     }
   },
-  "folder": "Center Line Auto",
+  "folder": "Amp Side",
   "choreoAuto": false
 }

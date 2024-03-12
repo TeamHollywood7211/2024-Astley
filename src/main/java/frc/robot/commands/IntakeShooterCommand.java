@@ -22,42 +22,51 @@ public class IntakeShooterCommand extends Command {
     m_intakeSubsystem = intakeSubsystem;
     m_shooterSubsystem = shooterSubsystem;
     m_controller = controller;
-    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(intakeSubsystem);
   }
 
-  // Called when the command is initially scheduled.
   @Override
   public void initialize() {}
 
-  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-
+    //CONTROLS -
+    // (I take controls like a FPS)
+    // Shooter = right 
+    // Intake  = left
+    //
+    // Triggers are the actual pulling in and shooting
+    // Bumpers are "We need to backup" / retraction
+    //
+    //----
 
     if(m_intakeSubsystem.readShooterRingSensor() == true) //If we have a ring in the system, spool the shooter
    {
-    m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed/2);
+   // m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed*0.75);
    }
-    //Shooter
-
-   if(m_controller.rightTrigger().getAsBoolean())
+    //Shooter\
+   if(m_controller.x().getAsBoolean()) //If we have a ring in the system, spool the shooter
    {
-      m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed); //when in doubt, -0.6
+    m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed);
+   }
+
+
+   if(m_controller.rightTrigger().getAsBoolean()) //On standard shoot
+   {
+      m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed);
       if(m_intakeSubsystem.readShooterRingSensor())
       {
         m_intakeSubsystem.setFeeder(-0.1);
       }
-      //m_intakeSubsystem.setFeeder(-1);
    } 
-   if(m_controller.rightBumper().getAsBoolean())
+   if(m_controller.rightBumper().getAsBoolean()) //Retracing from shooter
    {
       m_shooterSubsystem.setShooterSpeed(-0.15);
-      //m_intakeSubsystem.setFeeder(1);
    }
 
-   if((!m_controller.rightTrigger().getAsBoolean()) && (!m_controller.rightBumper().getAsBoolean()) && (!m_intakeSubsystem.readShooterRingSensor()))
+   //Stopping shooter under any circumstance that it isnt on
+   if((!m_controller.rightTrigger().getAsBoolean()) && (!m_controller.rightBumper().getAsBoolean()) && (!m_intakeSubsystem.readShooterRingSensor()) && (!m_controller.x().getAsBoolean()))
    {
       m_shooterSubsystem.setShooterSpeed(0);
       
@@ -65,12 +74,12 @@ public class IntakeShooterCommand extends Command {
 
    //Intake
 
-   if(m_controller.leftTrigger().getAsBoolean())
+   if(m_controller.leftTrigger().getAsBoolean()) //Intaking in a piece
    {
-    if(m_intakeSubsystem.readShooterRingSensor() == false) //Only  intake till there is a ring near the shooter
+    if(m_intakeSubsystem.readShooterRingSensor() == false) //Only  intake till there isnt a ring near the shooter
     {
-      m_intakeSubsystem.setIntake(-0.10);
-      m_intakeSubsystem.setFeeder(-0.10);
+      m_intakeSubsystem.setIntake(-0.1);
+      m_intakeSubsystem.setFeeder(-0.1);
     }
     else
     {
@@ -78,30 +87,18 @@ public class IntakeShooterCommand extends Command {
       m_intakeSubsystem.setFeeder(0);
     }
   }
-   if(m_controller.leftBumper().getAsBoolean())
+
+   if(m_controller.leftBumper().getAsBoolean()) //Pulling a ring out
    {
-    m_intakeSubsystem.setIntake(0.15);
+    m_intakeSubsystem.setIntake(0.30);
     m_intakeSubsystem.setFeeder(0.15);
    }
+   //Stop intake under any circumstance that it shouldnt be running
    if((!m_controller.leftTrigger().getAsBoolean()) && (!m_controller.leftBumper().getAsBoolean()) && (!m_controller.rightTrigger().getAsBoolean()))
    {
     m_intakeSubsystem.setIntake(0);
     m_intakeSubsystem.setFeeder(0);
    }
-
-
-
-
-
-/* 
-  if((!m_controller.leftTrigger().getAsBoolean()) && (!m_controller.leftBumper().getAsBoolean()))
-   {
-      if((!m_controller.rightTrigger().getAsBoolean()) && (!m_controller.rightBumper().getAsBoolean()))
-    {
-      m_intakeSubsystem.setFeeder(0);
-        
-    }
-   }*/
 
 
 

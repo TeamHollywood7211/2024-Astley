@@ -32,7 +32,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 0.5
           }
         },
         {
@@ -42,9 +42,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Copy of Amp Side To Note 1"
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Amp Side To Note 1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR"
+                }
+              }
+            ]
           }
         },
         {
@@ -66,12 +85,6 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intake_off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
                   "name": "pos_long"
                 }
               },
@@ -87,7 +100,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.4
+            "waitTime": 0.45
           }
         },
         {
@@ -99,7 +112,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
@@ -133,7 +146,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intake_on"
+                  "name": "act_intakeIR"
                 }
               }
             ]
@@ -142,13 +155,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "act_intake_off"
+            "waitTime": 0.45
           }
         },
         {
@@ -162,15 +169,15 @@
           "data": {
             "commands": [
               {
-                "type": "named",
-                "data": {
-                  "name": "act_shooter_on"
-                }
-              },
-              {
                 "type": "path",
                 "data": {
                   "pathName": "Center 1 To Mid Shot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_on"
                 }
               }
             ]
@@ -191,7 +198,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.5
           }
         },
         {
@@ -204,6 +211,98 @@
           "type": "named",
           "data": {
             "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Mid Shot To Center 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "pos_zero"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "pos_long"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_on"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Center 2 To Mid Shot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_zero"
           }
         }
       ]

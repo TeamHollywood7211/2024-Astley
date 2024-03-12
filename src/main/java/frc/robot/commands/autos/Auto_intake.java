@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class Auto_intake extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final IntakeSubsystem m_intake;
-  Timer time;
+  //Timer time;
   boolean finished = false;
 
   /**
@@ -30,8 +30,8 @@ public class Auto_intake extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    time.reset();
-    time.start();
+    //time.reset();
+    //time.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,8 +39,8 @@ public class Auto_intake extends Command {
   public void execute() {
     if(m_intake.readShooterRingSensor() == false)
     {
-      m_intake.setIntake(0.15);
-      m_intake.setFeeder(0.15);
+      m_intake.setIntake(-0.2);
+      m_intake.setFeeder(-0.1);
     }
     else
     {

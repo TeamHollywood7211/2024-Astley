@@ -22,20 +22,18 @@ import frc.robot.LimelightHelpers;
 import frc.robot.RobotContainer;
 
 public class ArmSubsystem extends SubsystemBase {
+  //Assigns PID
   PIDController armPID = new PIDController(ArmConstants.armP, ArmConstants.armI, ArmConstants.armD);
   PIDController wristPID = new PIDController(ArmConstants.wristP, ArmConstants.wristI, ArmConstants.wristD);
 
-
+  //Assigns Motors
   CANSparkMax ArmMotor = new CANSparkMax(ArmConstants.armMotorID, MotorType.kBrushless);
   CANSparkMax WristMotor = new CANSparkMax(ArmConstants.wristMotorID, MotorType.kBrushless);
-  
-
-
-  
+  //Assigns encoders from motor
   public RelativeEncoder armEncoder = ArmMotor.getEncoder();
   public RelativeEncoder wristEncoder = WristMotor.getEncoder();
 
-
+  //Sets the setpoints to encoder positions so that we can redeploy code without issue
   double armSetpoint = armEncoder.getPosition(); //this makes it so when you repush code the robot doesnt get all wonky with arm pos
   double wristSetpoint = wristEncoder.getPosition();
 
@@ -48,8 +46,14 @@ public class ArmSubsystem extends SubsystemBase {
   public ArmSubsystem() {
     ArmMotor.restoreFactoryDefaults();
     WristMotor.restoreFactoryDefaults();
-    SmartDashboard.putNumber("Setpoint Amp Arm", -180); //Allows us to mid-comp change robot arm positions w/o redeploy
-    SmartDashboard.putNumber("Setpoint Amp Wrist", 9.02);
+
+
+
+    ArmMotor.setSmartCurrentLimit(40);
+    WristMotor.setSmartCurrentLimit(40);
+
+    SmartDashboard.putNumber("Setpoint Amp Arm", -180.14); //Allows us to mid-comp change robot arm positions w/o redeploy 
+    SmartDashboard.putNumber("Setpoint Amp Wrist", 18.14);
 
     SmartDashboard.putNumber("Setpoint Mid", -17.57);
     SmartDashboard.putNumber("Setpoint Long", -38.28);
@@ -58,6 +62,8 @@ public class ArmSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Setpoint Climb", -186);
     SmartDashboard.putNumber("Setpoint offshot", -25.142);
+
+    SmartDashboard.putNumber("Setpoint CTF", -71.285);
 
 
   }
@@ -124,8 +130,8 @@ public class ArmSubsystem extends SubsystemBase {
   public void posAmp()
   {
     
-    wristSetpoint = SmartDashboard.getNumber("Setpoint Amp Wrist",9.02); //Pulls the values from SmartDashboard 
-    armSetpoint = SmartDashboard.getNumber("Setpoint Amp Arm",-180);
+    wristSetpoint = SmartDashboard.getNumber("Setpoint Amp Wrist",19.14); //Pulls the values from SmartDashboard 
+    armSetpoint = SmartDashboard.getNumber("Setpoint Amp Arm",-180.14);
     RobotContainer.shooterSpeed = 0.2;
   }
 
@@ -160,6 +166,11 @@ public class ArmSubsystem extends SubsystemBase {
     wristSetpoint = 0;
     armSetpoint = SmartDashboard.getNumber("Setpoint offshot", -25.142);
     RobotContainer.shooterSpeed = 0.6;
+  }
+  public void posCross()
+  {
+    wristSetpoint = 0;
+    armSetpoint = SmartDashboard.getNumber("Setpoint CTF", -71.285);
   }
 
   public void manuArm(double speed)

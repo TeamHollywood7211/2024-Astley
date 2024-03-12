@@ -139,7 +139,7 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                                             TunerConstants.kSpeedAt12VoltsMps,
                                             driveBaseRadius,
                                             new ReplanningConfig()),
-            ()->false, // Change this if the path needs to be flipped on red vs blue
+            Robot::isRed, // Change this if the path needs to be flipped on red vs blue
             this); // Subsystem for requirements
     }
 
@@ -197,6 +197,8 @@ public class CommandSwerveDrivetrain extends SwerveDrivetrain implements Subsyst
                 hasAppliedOperatorPerspective = true;
             });
         }
+
+        SmartDashboard.putNumber("Gyro", m_pigeon2.getYaw().getValue()); 
     }
  
     /*public void drive_autoAim(double degrees)
