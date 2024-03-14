@@ -159,7 +159,7 @@ public class RobotContainer {
     m_driver.rightBumper().whileTrue(new InstantCommand(drivetrain::slowRobot)); // slow/fast mode system
     m_driver.rightBumper().whileFalse(new InstantCommand(drivetrain::fastRobot));
 
-    // SHOOTER//
+    // SHOOTER// GOD I WISH I GOT A BUTTON BOX
     new Trigger(m_operator.rightTrigger()).onTrue(m_intakeShooterCommand);
     new Trigger(m_operator.rightBumper()).onTrue(m_intakeShooterCommand);
 

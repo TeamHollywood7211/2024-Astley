@@ -97,12 +97,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean auto_shooterOff()
   {
-    shooterMotor1.set(0.01);
-    shooterMotor2.set(0.01);
+    shooterMotor1.set(0.0);
+    shooterMotor2.set(0.0);
     return true;
   }
-
-
-
-
+  
 }

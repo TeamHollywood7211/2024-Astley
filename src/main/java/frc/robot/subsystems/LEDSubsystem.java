@@ -143,9 +143,9 @@ public class LEDSubsystem extends SubsystemBase {
         {
           
           
-          baLEDR = MathUtil.interpolate(baLEDR, 0, 0.005); //dimming time baby
-          baLEDG = MathUtil.interpolate(baLEDG, 0, 0.005);
-          baLEDB = MathUtil.interpolate(baLEDB, 0, 0.005);
+          baLEDR = MathUtil.interpolate(baLEDR, 0, 0.05); //dimming time baby
+          baLEDG = MathUtil.interpolate(baLEDG, 0, 0.05);
+          baLEDB = MathUtil.interpolate(baLEDB, 0, 0.05);
 
           baLEDR = MathUtil.clamp(baLEDR, 0, 255); //clamping time baby
           baLEDB = MathUtil.clamp(baLEDB, 0, 255);
@@ -153,7 +153,7 @@ public class LEDSubsystem extends SubsystemBase {
 
           candle.setLEDs((int)baLEDR, (int)baLEDG, (int)baLEDB);
           
-          if(baLEDR+baLEDG+baLEDB <= 0) //Haha look at me doing something partially smart
+          if(baLEDR+baLEDG+baLEDB <= 1) //Haha look at me doing something partially smart
           {
             animRedFade();
             baCalledRedFade = true;

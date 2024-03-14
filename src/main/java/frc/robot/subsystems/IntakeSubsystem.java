@@ -99,10 +99,10 @@ public class IntakeSubsystem extends SubsystemBase {
   }
   public boolean auto_intakeOff()
   {
-    IntakeMotor1.set(0.01);
-    IntakeMotor2.set(0.01);
-     feederMotor.set(0.01);
-     feederMotor2.set(0.01);
+    IntakeMotor1.set(0.0);
+    IntakeMotor2.set(0.0);
+     feederMotor.set(0.0);
+     feederMotor2.set(0.1);
     return true;
   }
 

@@ -17,6 +17,8 @@ public class Auto_intake_safe extends Command {
   Double startTime; //TL;DR timers suck. (They are useful just not here)
   boolean finished = false;
   boolean resetTimer = true;
+  int timesRan = 1;
+  double timer = 0;
   //Timer time;
  // double timer = 0;
 
@@ -36,36 +38,40 @@ public class Auto_intake_safe extends Command {
   @Override
   public void execute() {
     System.out.println("t: " + (startTime - DriverStation.getMatchTime()) + "\n");
-    System.out.println("ring? :" + m_intake.readShooterRingSensor());
-    
+    System.out.println("ring? :" + m_intake.readShooterRingSensor() + "\n");
+
+
 
     if(resetTimer)
     {
       startTime = DriverStation.getMatchTime();
       resetTimer = false;
+      System.out.println("AUTO INTAKE: RESETING TIMER");
+      timer = 0;
     }
 
-    double timer = (startTime - DriverStation.getMatchTime());
+    timer = (startTime - DriverStation.getMatchTime());
     //time.start();
     //timer = time.get();
     if((m_intake.readShooterRingSensor() == false) && (timer < 2))
     {
-      m_intake.setIntake(0.15);
-      m_intake.setFeeder(0.15);
+      m_intake.setIntake(-0.2); //0.15 is the original speed
+      m_intake.setFeeder(-0.15);
     }
     else
     {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
     }
-    if(timer > 2)
+    if(timer > 3)
     {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
     }
-    if((timer > 2.1) || (m_intake.readShooterRingSensor() == true))
+    if((timer > 3.1) || (m_intake.readShooterRingSensor() == true))
     {
       System.out.println("Im giving up on the auton, no ring 3:");
+      System.out.println("Times ran: " + timesRan);
       finished = true;
     }
     else
@@ -78,6 +84,7 @@ public class Auto_intake_safe extends Command {
   @Override
   public void end(boolean interrupted) {
     resetTimer = true;
+    timesRan++;
     //time.stop();
     //time.reset();
   }
