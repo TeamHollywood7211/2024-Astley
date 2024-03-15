@@ -69,6 +69,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
     runBootAnimation = false;
+    m_robotContainer.ledSubsystem.setRed();
   }
 
   @Override

@@ -19,6 +19,7 @@ public class Auto_intake_safe extends Command {
   boolean resetTimer = true;
   int timesRan = 1;
   double timer = 0;
+  double timeToKill = 15;
   //Timer time;
  // double timer = 0;
 
@@ -30,15 +31,15 @@ public class Auto_intake_safe extends Command {
 
   @Override
   public void initialize() {
-    System.out.println("START THE INTAKE!!");
+    System.out.println("AUTO INTAKE: START THE INTAKE!!");
     //time.reset();
     startTime = DriverStation.getMatchTime();
   }
 
   @Override
   public void execute() {
-    System.out.println("t: " + (startTime - DriverStation.getMatchTime()) + "\n");
-    System.out.println("ring? :" + m_intake.readShooterRingSensor() + "\n");
+    System.out.println("AUTO INTAKE: TIME: " + (startTime - DriverStation.getMatchTime()) + "  ");
+    System.out.println("AUTO INTAKE: RING? :" + m_intake.readShooterRingSensor() + "\n");
 
 
 
@@ -53,7 +54,7 @@ public class Auto_intake_safe extends Command {
     timer = (startTime - DriverStation.getMatchTime());
     //time.start();
     //timer = time.get();
-    if((m_intake.readShooterRingSensor() == false) && (timer < 2))
+    if((m_intake.readShooterRingSensor() == false) && (timer < timeToKill))
     {
       m_intake.setIntake(-0.2); //0.15 is the original speed
       m_intake.setFeeder(-0.15);
@@ -63,15 +64,15 @@ public class Auto_intake_safe extends Command {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
     }
-    if(timer > 3)
+    if(timer > timeToKill)
     {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
     }
-    if((timer > 3.1) || (m_intake.readShooterRingSensor() == true))
+    if((timer > timeToKill + 0.1) || (m_intake.readShooterRingSensor() == true))
     {
-      System.out.println("Im giving up on the auton, no ring 3:");
-      System.out.println("Times ran: " + timesRan);
+      System.out.println("AUTO INTAKE: MAY OR MAY NOT HAVE THE RING, IDC WE MOVIN' "); 
+      System.out.println("AUTO INTAKE: TIME RAN: " + timesRan);                          
       finished = true;
     }
     else

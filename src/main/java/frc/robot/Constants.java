@@ -37,6 +37,7 @@ public final class Constants {
 
       public static final int IRSensorShooterSignal = 2;
       public static final int IRSensorShooterSignalID = 3;
+
     }
     
     public static class ShooterConstants
@@ -68,7 +69,7 @@ public final class Constants {
     public static class LED
     {
       public static final int CANdleID = 51;
-      public static final int numLED = 8;
+      public static final int numLED = 68;
 
       public static final int teamR = 255;
       public static final int teamG = 0;

@@ -51,7 +51,7 @@ public class RobotContainer {
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
-  private final LEDSubsystem ledSubsystem = new LEDSubsystem();
+  public final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
   /* Setting up bindings for necessary control of the swerve drive platform */
   private final CommandXboxController m_driver = new CommandXboxController(0); // My joystick

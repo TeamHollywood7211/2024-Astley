@@ -57,6 +57,7 @@ public class LEDSubsystem extends SubsystemBase {
     CANdleConfiguration config = new CANdleConfiguration(); //Configs
     config.stripType = LEDStripType.RGB; //Who the heck likes RBG?
     config.brightnessScalar = 0.5; 
+
     candle.configAllSettings(config);
 
 
@@ -134,8 +135,8 @@ public class LEDSubsystem extends SubsystemBase {
       {
         candle.setLEDs((int)baLEDR, (int)baLEDG, (int)baLEDB, 0, baLEDLeft, 1);
         candle.setLEDs((int)baLEDR, (int)baLEDG, (int)baLEDB, 0, baLEDRight, 1);
-        baLEDLeft++;
-        baLEDRight--;
+        baLEDLeft += 0.05;
+        baLEDRight -= 0.05;
       }
       else
       {

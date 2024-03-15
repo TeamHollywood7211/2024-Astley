@@ -144,12 +144,6 @@
                 "data": {
                   "name": "pos_zero"
                 }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_off"
-                }
               }
             ]
           }
@@ -167,7 +161,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intakeIR"
+                  "name": "act_intakeIR_s"
                 }
               }
             ]
@@ -218,7 +212,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.25
+                  "waitTime": 0.4
                 }
               },
               {
@@ -261,7 +255,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intakeIR"
+                  "name": "act_intakeIR_s"
                 }
               }
             ]
