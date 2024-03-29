@@ -4,8 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkMax;
-
+import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
@@ -22,8 +23,8 @@ import frc.robot.Constants.ShooterConstants;
 public class ShooterSubsystem extends SubsystemBase {
   PIDController pid = new PIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD);
   //remember, P is like where you wanna get, I is smth and D is like some slow down thingy.
-  CANSparkMax shooterMotor1 = new CANSparkMax(ShooterConstants.shooterMotor1ID, MotorType.kBrushless);
-  CANSparkMax shooterMotor2 = new CANSparkMax(ShooterConstants.shooterMotor2ID, MotorType.kBrushless);
+  CANSparkFlex shooterMotor1 = new CANSparkFlex(ShooterConstants.shooterMotor1ID, MotorType.kBrushless); 
+  CANSparkFlex shooterMotor2 = new CANSparkFlex(ShooterConstants.shooterMotor2ID, MotorType.kBrushless);
   
   //CANSparkMax armMotor = new CANSparkMax(ShooterConstants.armMotorID, MotorType.kBrushless);
 
@@ -36,6 +37,8 @@ public class ShooterSubsystem extends SubsystemBase {
     shooterMotor1.setSmartCurrentLimit(40);
     shooterMotor2.setSmartCurrentLimit(40);
 
+    shooterMotor1.setIdleMode(IdleMode.kCoast);
+    shooterMotor2.setIdleMode(IdleMode.kCoast);
     //shooterMotor2.follow(shooterMotor1); 
 
     
@@ -90,6 +93,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean auto_shooterOn() //auton shooter for pathplanner
   {
+    shooterMotor1.setIdleMode(IdleMode.kCoast);
+    shooterMotor2.setIdleMode(IdleMode.kCoast);
+
     shooterMotor1.set(-1);
     shooterMotor2.set(1);
     return true;
@@ -97,8 +103,12 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean auto_shooterOff()
   {
+    shooterMotor1.setIdleMode(IdleMode.kBrake);
+    shooterMotor2.setIdleMode(IdleMode.kBrake);
+
     shooterMotor1.set(0.0);
     shooterMotor2.set(0.0);
+
     return true;
   }
   

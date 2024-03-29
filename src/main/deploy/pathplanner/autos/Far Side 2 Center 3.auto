@@ -24,7 +24,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.25
+                  "waitTime": 0.5
                 }
               },
               {
@@ -276,9 +276,21 @@
                 }
               },
               {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_off"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intake_off"
+                }
+              },
+              {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.0
+                  "waitTime": 2.0
                 }
               }
             ]

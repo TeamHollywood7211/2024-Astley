@@ -72,7 +72,6 @@ public class IntakeShooterCommand extends Command {
    if((!m_controller.rightTrigger().getAsBoolean()) && (!m_controller.rightBumper().getAsBoolean()) && (!m_intakeSubsystem.readShooterRingSensor()) && (!m_controller.x().getAsBoolean()))
    {
       m_shooterSubsystem.setShooterSpeed(0);
-      
    }
 
    //Intake
@@ -81,8 +80,8 @@ public class IntakeShooterCommand extends Command {
    {
     if(m_intakeSubsystem.readShooterRingSensor() == false) //Only  intake till there isnt a ring near the shooter
     {
-      m_intakeSubsystem.setIntake(-0.1);
-      m_intakeSubsystem.setFeeder(-0.1);
+      m_intakeSubsystem.setIntake(-0.20);
+      m_intakeSubsystem.setFeeder(-0.10);
     }
     else
     {
@@ -102,11 +101,15 @@ public class IntakeShooterCommand extends Command {
     m_intakeSubsystem.setIntake(0);
     m_intakeSubsystem.setFeeder(0);
    }
-   if(m_intakeSubsystem.readShooterRingSensor() == true)
+   if(m_intakeSubsystem.readIntakeRingSensor() == true)
    {
-      m_led.setOrange();
+    m_led.setPurple();
    }
-   else
+  if(m_intakeSubsystem.readShooterRingSensor() == true)
+   {
+      m_led.setGreen();
+   }
+   if((!m_intakeSubsystem.readIntakeRingSensor()) && (!m_intakeSubsystem.readShooterRingSensor()))
    {
     m_led.setTeam();
    }

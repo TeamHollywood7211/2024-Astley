@@ -24,7 +24,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.1
+                  "waitTime": 0.75
                 }
               },
               {
@@ -61,7 +61,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intakeIR"
+                  "name": "act_intakeIR_s"
                 }
               }
             ]

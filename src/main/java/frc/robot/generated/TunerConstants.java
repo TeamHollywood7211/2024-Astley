@@ -35,17 +35,17 @@ public class TunerConstants {
 
     // The stator current at which the wheels start to slip;
     // This needs to be tuned to your individual robot
-    private static final double kSlipCurrentA = 60.0;
+    private static final double kSlipCurrentA = 40.0;
 
     // Theoretical free speed (m/s) at 12v applied output;
     // This needs to be tuned to your individual robot
-    public static final double kSpeedAt12VoltsMps = 5.21;
+    public static final double kSpeedAt12VoltsMps = 5.41; //5.21;
 
     // Every 1 rotation of the azimuth results in kCoupleRatio drive motor turns;
     // This may need to be tuned to your individual robot
-    private static final double kCoupleRatio = 3.5714285714285716;
+    private static final double kCoupleRatio = 3.125;//3.5714285714285716;
 
-    private static final double kDriveGearRatio = 6.746031746031747; //5.357142857142857; //6.122448979591837;
+    private static final double kDriveGearRatio = 5.902777777777778; //6.746031746031747; //5.357142857142857; //6.122448979591837;
     private static final double kSteerGearRatio = 21.428571428571427; //21.428571428571427;
     private static final double kWheelRadiusInches = 2;
 
@@ -56,14 +56,13 @@ public class TunerConstants {
     private static final String kCANbusName = "";
     private static final int kPigeonId = 18;
 
-
     // These are only used for simulation
     private static final double kSteerInertia = 0.00001;
     private static final double kDriveInertia = 0.001;
     // Simulated voltage necessary to overcome friction
     private static final double kSteerFrictionVoltage = 0.25;
     private static final double kDriveFrictionVoltage = 0.25;
-
+        
     private static final SwerveDrivetrainConstants DrivetrainConstants = new SwerveDrivetrainConstants()
             .withPigeon2Id(kPigeonId)
             .withCANbusName(kCANbusName);

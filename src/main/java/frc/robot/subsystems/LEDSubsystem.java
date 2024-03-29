@@ -7,9 +7,11 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.ColorFlowAnimation;
+import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.SingleFadeAnimation;
 import com.ctre.phoenix.led.CANdle.LEDStripType;
+import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
 import edu.wpi.first.hal.PowerJNI;
 import edu.wpi.first.math.MathUtil;
@@ -27,10 +29,13 @@ public class LEDSubsystem extends SubsystemBase {
   ColorFlowAnimation redFlowAnimation;
   RainbowAnimation rainbowAnim;
   SingleFadeAnimation redFadeAnim;
+  LarsonAnimation disabledLarson;
+  LarsonAnimation alliedAnimation;
+  
 
   int numLED = LED.numLED;
 
-  int baLEDLeft = 0; //Boot Animation LED Left
+  int baLEDLeft = 1; //Boot Animation LED Left
   int baLEDRight = numLED; //Boot ANimated LED Right
   boolean baCalledRedFade = false;
   double baLEDR = LED.teamR;
@@ -47,6 +52,8 @@ public class LEDSubsystem extends SubsystemBase {
    * Fire - FLAMES!!!! YEAH!!! EXPLOSIONS!!!!!!! WOOO!!!!!
    * Strobe - Its a strobe, likely don't use
    * RGB Fade - Fades ALL LEDs between R, G, and B.
+   * ColorFlow - Starts from one point and fills all the LEDs as it moves down the strip
+   * 
    * 
    * 
    */
@@ -72,29 +79,43 @@ public class LEDSubsystem extends SubsystemBase {
     redFadeAnim = new SingleFadeAnimation(LED.teamR, LED.teamG, LED.teamB);
     redFadeAnim.setSpeed(0.5);
     redFadeAnim.setNumLed(numLED);
-    
 
+    disabledLarson = new LarsonAnimation(0, 0, 255);
+    disabledLarson.setNumLed(numLED);
+    disabledLarson.setSize(12);
+    disabledLarson.setSpeed(0.5);
+    
+    alliedAnimation = new LarsonAnimation(255, 255, 0);
+    alliedAnimation.setNumLed(60);
+    alliedAnimation.setSize(5);
+    alliedAnimation.setSpeed(0.25);
+    alliedAnimation.setBounceMode(BounceMode.Center);
+    alliedAnimation.setLedOffset(309);
+    
 
 
   }
 
   public void animRedFire()
   {
-    candle.clearAnimation(0);
+    resetAnim();
     candle.animate(redFlowAnimation);
   }
   public void animRedFade()
   {
-    candle.clearAnimation(0);
+    resetAnim();
     candle.animate(redFadeAnim);
-
   }
 
   public void setLEDs(int r, int g, int b) //kinda redundant but good if we need some additional settings
   {
     candle.clearAnimation(0);
+    candle.clearAnimation(1);
+    candle.clearAnimation(2);
     candle.setLEDs(r, g, b);
-
+    //Reassure these LEDS are set tho
+    //setBumper();
+    candle.animate(alliedAnimation);
   }
 
   public void setRed() //it cool B)
@@ -105,6 +126,13 @@ public class LEDSubsystem extends SubsystemBase {
   {
     setLEDs(32,0,191);
   }
+
+public void setDisabled()
+{
+  candle.clearAnimation(0);
+  candle.animate(disabledLarson);
+}
+
   public void setGreen() //Idk when we want green I guess??
   {
     setLEDs(0,255,0);
@@ -114,19 +142,42 @@ public class LEDSubsystem extends SubsystemBase {
     setLEDs(255,149,65);
   }
 
+  public void setPurple()
+  {
+    setLEDs(255, 0, 255);
+  }
 
   public void setTeam() //When we want to be our team color
   {
+    //animRedFire();
     setLEDs(LED.teamR, LED.teamG, LED.teamB);
+  }
+  public void setBumper()
+  {
+    candle.setLEDs(0, 0, 255, 0, 200, 80); //plz set to actual bumper amount
+  }
+
+  public void setShooter()
+  {
+    candle.animate(alliedAnimation, 1);
+  }
+
+  public void resetAnim(){
+    candle.clearAnimation(0);
+    candle.clearAnimation(1);
+    candle.clearAnimation(2);
+    candle.clearAnimation(3);
+    candle.animate(alliedAnimation);
   }
 
 
   @Override
   public void periodic() {
     double batteryVoltage = PowerJNI.getVinVoltage();
-    if(batteryVoltage < 9) //That one thing that sees the drop in battery voltage and stops LEDs if low uwu
+    if(batteryVoltage < 7) //That one thing that sees the drop in battery voltage and stops LEDs if low uwu
     {
       setLEDs(0, 0, 0);
+      //System.out.println("AHHH!!! BATTERY DIPPING!!!!");
     }
 
     if(Robot.runBootAnimation)
@@ -135,8 +186,9 @@ public class LEDSubsystem extends SubsystemBase {
       {
         candle.setLEDs((int)baLEDR, (int)baLEDG, (int)baLEDB, 0, baLEDLeft, 1);
         candle.setLEDs((int)baLEDR, (int)baLEDG, (int)baLEDB, 0, baLEDRight, 1);
-        baLEDLeft += 0.05;
-        baLEDRight -= 0.05;
+        baLEDLeft += 0.005;
+        baLEDRight -= 0.0005;
+        //System.out.println("left: " + Double.toString(baLEDLeft) + ", right: " + Double.toString(baLEDRight));
       }
       else
       {

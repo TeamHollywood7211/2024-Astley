@@ -24,7 +24,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.25
+                  "waitTime": 0.5
                 }
               },
               {
@@ -69,6 +69,12 @@
                 "data": {
                   "name": "act_intakeIR_s"
                 }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_off"
+                }
               }
             ]
           }
@@ -80,7 +86,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.6
+                  "waitTime": 0.75
                 }
               },
               {
@@ -138,6 +144,18 @@
                 "data": {
                   "name": "pos_zero"
                 }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_off"
+                }
               }
             ]
           }
@@ -156,6 +174,12 @@
                 "type": "named",
                 "data": {
                   "name": "act_intakeIR_s"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_off"
                 }
               }
             ]

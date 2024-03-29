@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
@@ -28,8 +29,8 @@ public class ArmSubsystem extends SubsystemBase {
   PIDController wristPID = new PIDController(ArmConstants.wristP, ArmConstants.wristI, ArmConstants.wristD);
 
   //Assigns Motors
-  CANSparkMax ArmMotor = new CANSparkMax(ArmConstants.armMotorID, MotorType.kBrushless);
-  CANSparkMax WristMotor = new CANSparkMax(ArmConstants.wristMotorID, MotorType.kBrushless);
+  CANSparkFlex ArmMotor = new CANSparkFlex(ArmConstants.armMotorID, MotorType.kBrushless);
+  CANSparkFlex WristMotor = new CANSparkFlex(ArmConstants.wristMotorID, MotorType.kBrushless);
   //Assigns encoders from motor
   public RelativeEncoder armEncoder = ArmMotor.getEncoder();
   public RelativeEncoder wristEncoder = WristMotor.getEncoder();
@@ -64,15 +65,17 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Setpoint Amp Arm", -180.14*invertArmPos); //Allows us to mid-comp change robot arm positions w/o redeploy 
     SmartDashboard.putNumber("Setpoint Amp Wrist", 18.14);
 
-    SmartDashboard.putNumber("Setpoint Mid", -17.57*invertArmPos);
-    SmartDashboard.putNumber("Setpoint Long", -38.28*invertArmPos);
+    SmartDashboard.putNumber("Setpoint Mid", -18.14*invertArmPos);
+    SmartDashboard.putNumber("Setpoint Long", -48.28*invertArmPos);
 
-    SmartDashboard.putNumber("Setpoint ExLong", -53*invertArmPos);
+    SmartDashboard.putNumber("Setpoint ExLong", -49.35*invertArmPos);
 
     SmartDashboard.putNumber("Setpoint Climb", -186*invertArmPos);
-    SmartDashboard.putNumber("Setpoint offshot", -25.142*invertArmPos);
+    SmartDashboard.putNumber("Setpoint offshot", -33.14*invertArmPos);
 
     SmartDashboard.putNumber("Setpoint CTF", -71.285*invertArmPos);
+
+    SmartDashboard.putNumber("Setpoint HPS", -69*invertArmPos); //human player station
 
 
   }
@@ -115,7 +118,7 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Wrist Setpoint", wristSetpoint); //Tells us setpoints
     SmartDashboard.putNumber("ArmSetpoint", armSetpoint);
 
-    armSetpoint = MathUtil.clamp(armSetpoint,-186,0); //Locks the arm setpoint between its 0 and a 
+    armSetpoint = MathUtil.clamp(armSetpoint,-250,0); //Locks the arm setpoint between its 0 and a 
 
     WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
     ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -0.75, 0.75));         //
@@ -147,21 +150,21 @@ public class ArmSubsystem extends SubsystemBase {
   public void posMid()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint Mid", -17.57*invertArmPos);
+    armSetpoint = SmartDashboard.getNumber("Setpoint Mid", -18.14*invertArmPos);
     RobotContainer.shooterSpeed = 0.66;
   }
 
   public void posLong()
   {
     wristSetpoint = 0; //hey this is like 8.45 from target
-    armSetpoint = SmartDashboard.getNumber("Setpoint Long", -38.28*invertArmPos); //56.47;  
+    armSetpoint = SmartDashboard.getNumber("Setpoint Long", -45.28*invertArmPos); //56.47;  
     RobotContainer.shooterSpeed = 1;
   }
 
   public void posExLong()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint ExLong", -53*invertArmPos);
+    armSetpoint = SmartDashboard.getNumber("Setpoint ExLong", -49.35*invertArmPos);
     RobotContainer.shooterSpeed = 1;
   }
   public void posClimb()
@@ -173,13 +176,19 @@ public class ArmSubsystem extends SubsystemBase {
   public void posOff()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint offshot", -25.142*invertArmPos);
+    armSetpoint = SmartDashboard.getNumber("Setpoint offshot", -33.14*invertArmPos);
     RobotContainer.shooterSpeed = 0.6;
   }
   public void posCross()
   {
     wristSetpoint = 0;
     armSetpoint = SmartDashboard.getNumber("Setpoint CTF", -71.285*invertArmPos);
+  }
+
+  public void posHPS()
+  {
+    wristSetpoint =  18.4;
+    armSetpoint = -210.48;
   }
 
   public void manuArm(double speed)
@@ -218,11 +227,14 @@ public class ArmSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("target X", targetX);
     SmartDashboard.putNumber("target Y", targetY);
-    double distance = Math.sqrt(((targetX-botX) * (targetX-botX)) + ((targetY - botY) * (targetY - botY))); 
+    //double distance = Math.sqrt(((targetX-botX) * (targetX-botX)) + ((targetY - botY) * (targetY - botY))); 
+    
+    double distance = Math.sqrt(Math.pow(targetX-botX, 2) + Math.pow(targetY - botY, 2));
+
+    //Math.pow() allows you to have exponents :3
 
     SmartDashboard.putNumber("Disntace to Target", distance);
-    //You cant ^ in Java :pensive:
-    armSetpoint = -6.62955 * (distance * distance) + 47.4922 * distance + -55.4878;
+    armSetpoint = -6.62955 * (distance * distance) + 47.4922 * distance + -55.4878; //This calculation is used for the april tag auto aim for the arm
     
     //-0.705625 * (distance*distance) + 14.4712* distance + -46.5725;
   }

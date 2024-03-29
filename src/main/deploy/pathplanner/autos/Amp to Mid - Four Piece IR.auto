@@ -20,7 +20,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.75
           }
         },
         {
@@ -60,7 +60,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intakeIR"
+                  "name": "act_intakeIR_s"
                 }
               }
             ]
@@ -69,7 +69,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.1
+            "waitTime": 0.2
           }
         },
         {
@@ -146,16 +146,22 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intakeIR"
+                  "name": "act_intakeIR_s"
                 }
               }
             ]
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 0.45
+            "waitTime": 0.75
           }
         },
         {
@@ -232,10 +238,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intakeIR"
+                  "name": "act_intakeIR_s"
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
           }
         },
         {

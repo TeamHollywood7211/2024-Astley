@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.74,
-      "y": 4.41
+      "x": 0.7170742665184753,
+      "y": 6.658798453847941
     },
-    "rotation": 120.0
+    "rotation": -120.0
   },
   "command": {
     "type": "sequential",
@@ -36,7 +36,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.25
+                  "waitTime": 0.5
                 }
               },
               {
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Far to Center 5"
+                  "pathName": "Amp Side To Note 1"
                 }
               },
               {
@@ -80,13 +80,13 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.6
+                  "waitTime": 0.5
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "pos_offside"
+                  "name": "pos_mid"
                 }
               }
             ]
@@ -99,7 +99,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center 5  To Offside Shot"
+                  "pathName": "Note 1 To Shoot"
                 }
               },
               {
@@ -116,6 +116,12 @@
           "data": {
             "commands": [
               {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              },
+              {
                 "type": "named",
                 "data": {
                   "name": "act_intake_on"
@@ -124,7 +130,113 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.75
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_off"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intake_off"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "pos_zero"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 1 Shoot To Note 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR_s"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "pos_mid"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 2 To Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_on"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.4
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intake_on"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
                 }
               },
               {
@@ -149,100 +261,19 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "sequential",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Offside Shot To Center 4"
+                  "pathName": "Shoot To 180"
                 }
               },
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intakeIR_s"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.25
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "pos_offside"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Center 4 To Offside Shot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_shooter_on"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.35
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_on"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.75
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_shooter_off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "pos_zero"
+                  "name": "reset_gyro"
                 }
               }
             ]
@@ -251,6 +282,6 @@
       ]
     }
   },
-  "folder": "Far Side",
+  "folder": "Amp Side",
   "choreoAuto": false
 }

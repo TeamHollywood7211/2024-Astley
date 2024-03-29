@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkFlex;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 
@@ -16,12 +17,12 @@ import frc.robot.Constants.*;
 
 public class IntakeSubsystem extends SubsystemBase {
   
-  CANSparkMax IntakeMotor1 = new CANSparkMax(IntakeConstants.IntakeMotor1ID, MotorType.kBrushless);
-  CANSparkMax IntakeMotor2 = new CANSparkMax(IntakeConstants.IntakeMotor2ID, MotorType.kBrushless);
-  CANSparkMax feederMotor = new CANSparkMax (IntakeConstants.feederMotor1ID, MotorType.kBrushless);
-  CANSparkMax feederMotor2 = new CANSparkMax(IntakeConstants.feederMotor2ID, MotorType.kBrushless);
-  DigitalInput ringIntakeSensor = new DigitalInput(IntakeConstants.IRSensorIntakeSignalID); //The IR sensor for the rings
-  DigitalInput ringShooterSensor = new DigitalInput(IntakeConstants.IRSensorShooterSignalID);
+  CANSparkFlex IntakeMotor1 = new CANSparkFlex(IntakeConstants.IntakeMotor1ID, MotorType.kBrushless);
+  CANSparkFlex IntakeMotor2 = new CANSparkFlex(IntakeConstants.IntakeMotor2ID, MotorType.kBrushless);
+  CANSparkFlex feederMotor = new CANSparkFlex (IntakeConstants.feederMotor1ID, MotorType.kBrushless);
+  CANSparkFlex feederMotor2 = new CANSparkFlex(IntakeConstants.feederMotor2ID, MotorType.kBrushless);
+  DigitalInput ringIntakeSensor = new DigitalInput(IntakeConstants.IRSensorIntakeSignalID); //The IR sensor for the rings, this reads the Intake
+  DigitalInput ringShooterSensor = new DigitalInput(IntakeConstants.IRSensorShooterSignalID); //The IR sesnor for shooter
   /** Creates a new ExampleSubsystem. */
   public IntakeSubsystem() {
     IntakeMotor1.restoreFactoryDefaults();
@@ -31,7 +32,7 @@ public class IntakeSubsystem extends SubsystemBase {
     
     feederMotor2.setInverted(false);
 
-    IntakeMotor1.setSmartCurrentLimit(50);
+    IntakeMotor1.setSmartCurrentLimit(50); //CURRENT LIMITS!!!!
     IntakeMotor2.setSmartCurrentLimit(50);
     feederMotor.setSmartCurrentLimit(40);
     feederMotor2.setSmartCurrentLimit(40);
@@ -65,8 +66,8 @@ public class IntakeSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putBoolean("Ring In Shooter", !(readIntakeRingSensor())); //tells drivers if there is a ring detected by top IR sensor
-    SmartDashboard.putBoolean("Ring In Intake", !(readShooterRingSensor()));
+    SmartDashboard.putBoolean("Ring In Intake", !(readIntakeRingSensor())); //tells drivers if there is a ring detected by top IR sensor
+    SmartDashboard.putBoolean("Ring In Shooter", !(readShooterRingSensor()));
     // This method will be called once per scheduler run
   }
 

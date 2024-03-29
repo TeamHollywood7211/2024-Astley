@@ -70,6 +70,9 @@ public class Robot extends TimedRobot {
     }
     runBootAnimation = false;
     m_robotContainer.ledSubsystem.setRed();
+    m_robotContainer.intakeSubsystem.setFeeder(0); //possibly remove if these cause issues
+    m_robotContainer.intakeSubsystem.setIntake(0); //This is probably a stupid way to do this, 
+    m_robotContainer.shooterSubsystem.setShooterSpeed(0); //please find a better one
   }
 
   @Override
@@ -78,6 +81,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopExit() {
+    m_robotContainer.ledSubsystem.setDisabled();
   }
 
   @Override

@@ -48,15 +48,13 @@ public class RobotContainer {
   private final SendableChooser<Command> autoChooser;
 
   // Subsystems
-  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  public final ShooterSubsystem shooterSubsystem = new ShooterSubsystem(); //This is a bad naming scheme, dont name like this
+  public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(); //These are our subsystems
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   public final LEDSubsystem ledSubsystem = new LEDSubsystem();
 
-  /* Setting up bindings for necessary control of the swerve drive platform */
-  private final CommandXboxController m_driver = new CommandXboxController(0); // My joystick
-  private final CommandXboxController m_operator = new CommandXboxController(1);
-  // private final CommandXboxController m_dev = new CommandXboxController(2);
+  private final CommandXboxController m_driver = new CommandXboxController(0); //Driver joystick
+  private final CommandXboxController m_operator = new CommandXboxController(1); //Operator joystick
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   // Commands
@@ -64,20 +62,18 @@ public class RobotContainer {
   private final moveArmCommand m_moveArm = new moveArmCommand(armSubsystem, m_operator);
   private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem,
       shooterSubsystem, ledSubsystem, m_operator);
-  // private final moveClimberCommand m_climber = new
-  // moveClimberCommand(climberSubsystem, m_dev);
 
   // AUTO COMMANDS
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
-  private final Auto_shoot_safe au_shoot_safe = new Auto_shoot_safe(shooterSubsystem, intakeSubsystem);
+  private final Auto_shoot_safe au_shoot_safe = new Auto_shoot_safe(shooterSubsystem, intakeSubsystem); //heh heh, I hope auto_shoot gets used... NOT!!
   private final Auto_intake au_intake = new Auto_intake(intakeSubsystem);
-  private final Auto_intake_safe au_intake_safe = new Auto_intake_safe(intakeSubsystem);
+  private final Auto_intake_safe au_intake_safe = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem);
 
   // Auto Aim Shenanigans
   private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
   private final PhoenixPIDController autoTurnPID = new PhoenixPIDController(3.2, 0, 0.2);
 
-  public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+  public final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric() //Creates the freaking swerve dude!!!
 
       .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -88,14 +84,7 @@ public class RobotContainer {
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
   public void createFrontUsbCamera() {
-    // UsbCamera frontUsbCamera = new UsbCamera("frontUsbCamObject", 0 );
-    // frontUsbCamera.setResolution(160, 120);
-    //CameraServer.startAutomaticCapture();
-
-    // CvSink cvSink = CameraServer.getVideo(); //I dont know what cvsink is, I dont
-    // know what it is, but it makes the camera work.
-
-    // CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+    CameraServer.startAutomaticCapture(); //Camera stuff :3
   }
 
   /* Path follower */
@@ -121,7 +110,7 @@ public class RobotContainer {
     m_driver.b().whileTrue(drivetrain
         .applyRequest(() -> point.withModuleDirection(new Rotation2d(-m_driver.getLeftY(), -m_driver.getLeftX()))));
 
-    // reset the field-centric heading on left bumper press (reset gyro?)
+    //Resets gyro
     m_driver.button(7).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     // drivetrain.registerTelemetry(logger::telemeterize);
@@ -156,10 +145,10 @@ public class RobotContainer {
     m_driver.start().and(m_driver.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
     m_driver.start().and(m_driver.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
-    m_driver.rightBumper().whileTrue(new InstantCommand(drivetrain::slowRobot)); // slow/fast mode system
+    m_driver.rightBumper().whileTrue(new InstantCommand(drivetrain::slowRobot)); // slow/fast mode system (this doesnt work)
     m_driver.rightBumper().whileFalse(new InstantCommand(drivetrain::fastRobot));
 
-    // SHOOTER// GOD I WISH I GOT A BUTTON BOX
+    // SHOOTER// GOD I WISH I GOT A BUTTON BOX // GOD I REALLY WISH I HAD A BUTTON BOX
     new Trigger(m_operator.rightTrigger()).onTrue(m_intakeShooterCommand);
     new Trigger(m_operator.rightBumper()).onTrue(m_intakeShooterCommand);
 
@@ -184,10 +173,15 @@ public class RobotContainer {
 
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
 
-    new Trigger(m_operator.x()).onTrue(m_intakeShooterCommand);
+    new Trigger(m_operator.x()).onTrue(m_intakeShooterCommand); //revs up shooter GOD I WISH I HAD A BUTTON BOX
     //new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::calcAngle)); // Run this for auto aim
 
     new Trigger(m_operator.a()).onTrue(new InstantCommand(armSubsystem::posCross));
+
+    new Trigger(m_operator.start()).onTrue(new InstantCommand(shooterSubsystem::auto_shooterOff)); //force that stuff off 
+    new Trigger(m_operator.start()).onTrue(new InstantCommand(intakeSubsystem::auto_intakeOff));
+
+    new Trigger(m_operator.button(7)).onTrue(new InstantCommand(armSubsystem::posHPS));
 
     // new Trigger(m_operator.x()).onTrue(new
     // InstantCommand(limelightSubsystem::findDistanceToTarget));
@@ -215,7 +209,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("act_shoot_s", au_shoot_safe);
 
     NamedCommands.registerCommand("act_intakeIR", au_intake); // does sick auto intake stuff w/ IR
-    NamedCommands.registerCommand("act_intakeIR_s", au_intake_safe);
+    NamedCommands.registerCommand("act_intakeIR_s", au_intake_safe); //USE THIS ONE INSTEAD, SAFE IS SAFER!!!! (What idiot chose "augh we didnt need the safe one"... wait...)
 
     NamedCommands.registerCommand("act_intake_on", new InstantCommand(intakeSubsystem::auto_intakeOn));
     NamedCommands.registerCommand("act_intake_off", new InstantCommand(intakeSubsystem::auto_intakeOff));
@@ -232,6 +226,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("pos_ctf", new InstantCommand(armSubsystem::posCross));
 
     NamedCommands.registerCommand("pos_auto", new InstantCommand(armSubsystem::calcAngle));
+
+    NamedCommands.registerCommand("reset_gyro", drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
 
     // Work on auto targetting to add the following commands
     /*
