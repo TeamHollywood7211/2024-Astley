@@ -58,6 +58,7 @@ public class ArmSubsystem extends SubsystemBase {
     WristMotor.restoreFactoryDefaults();
 
 
+    
 
     ArmMotor.setSmartCurrentLimit(40);
     WristMotor.setSmartCurrentLimit(40);
@@ -121,7 +122,7 @@ public class ArmSubsystem extends SubsystemBase {
     armSetpoint = MathUtil.clamp(armSetpoint,-250,0); //Locks the arm setpoint between its 0 and a 
 
     WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
-    ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -0.75, 0.75));         //
+    ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -1, 1));         //
   
 
 
@@ -183,6 +184,11 @@ public class ArmSubsystem extends SubsystemBase {
   {
     wristSetpoint = 0;
     armSetpoint = SmartDashboard.getNumber("Setpoint CTF", -71.285*invertArmPos);
+  }
+  public void specFC3()
+  {
+    wristSetpoint = 0;
+    armSetpoint = -28.05*invertArmPos;
   }
 
   public void posHPS()

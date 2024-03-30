@@ -81,6 +81,7 @@ public class Auto_intake_safe extends Command {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
     }
+
     if(timer > timeToKill) //if we dont grab and we pass our time to kill
     {
       m_intake.setIntake(0); //stop it

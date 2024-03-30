@@ -55,6 +55,11 @@ public class RobotContainer {
 
   private final CommandXboxController m_driver = new CommandXboxController(0); //Driver joystick
   private final CommandXboxController m_operator = new CommandXboxController(1); //Operator joystick
+
+  //BUTTON BOX BABY!!!
+  private final CommandXboxController m_buttonLeft = new CommandXboxController(2);
+  private final CommandXboxController m_buttonRight = new CommandXboxController(3);
+
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
   // Commands
@@ -155,14 +160,14 @@ public class RobotContainer {
     new Trigger(m_operator.rightTrigger()).and(m_operator.rightBumper()).onFalse(m_intakeShooterCommand);
 
     // INTAKE//
-    new Trigger(m_operator.leftTrigger()).onTrue(m_intakeShooterCommand);
-    new Trigger(m_operator.leftBumper()).onTrue(m_intakeShooterCommand) ; 
+    new Trigger(m_operator.leftTrigger()).onTrue(m_intakeShooterCommand)  ;
+    new Trigger(m_operator.leftBumper()).onTrue(m_intakeShooterCommand)   ;
 
     new Trigger(m_operator.leftTrigger()).or(m_operator.leftBumper()).onFalse(m_intakeShooterCommand);
 
     // Move Arm
     new Trigger(m_operator.rightStick()).whileTrue(m_moveArm);
-    new Trigger(m_operator.leftStick()).whileTrue(m_moveArm);
+    new Trigger(m_operator.leftStick()).whileTrue(m_moveArm) ;
 
     new Trigger(m_operator.povUp()).onTrue(new InstantCommand(armSubsystem::posAmp));
     new Trigger(m_operator.povDown()).onTrue(new InstantCommand(armSubsystem::posExLong));
@@ -198,6 +203,27 @@ public class RobotContainer {
     // new Trigger(m_dev.b()).whileTrue(new
     // InstantCommand(climberSubsystem::resetClimberZero));
 
+
+    //button box stuff
+
+    new Trigger(m_buttonLeft.button(5)).onTrue(new InstantCommand(armSubsystem::posZero));
+    new Trigger(m_buttonLeft.button(4)).onTrue(new InstantCommand(armSubsystem::posMid));
+    new Trigger(m_buttonLeft.button(3)).onTrue(new InstantCommand(armSubsystem::posAmp));
+    new Trigger(m_buttonLeft.button(2)).onTrue(new InstantCommand(armSubsystem::posClimb));
+
+    
+    new Trigger(m_buttonLeft.button(9)).onTrue(new InstantCommand(armSubsystem::posLong));
+    new Trigger(m_buttonLeft.button(7)).onTrue(new InstantCommand(armSubsystem::posExLong));
+    new Trigger(m_buttonLeft.button(8)).onTrue(new InstantCommand(armSubsystem::posHPS));
+
+  
+    //manual stuff
+    new Trigger(m_buttonRight.button(1)).onTrue(new InstantCommand(shooterSubsystem::auto_shooterOff));
+    new Trigger(m_buttonRight.button(1)).onTrue(new InstantCommand(intakeSubsystem::auto_intakeOff));
+
+    //new Trigger(m_buttonLeft.button(6)).onTrue(new InstantCommand(armSubsystem::pos));
+
+
   }
 
   public RobotContainer() {
@@ -225,9 +251,18 @@ public class RobotContainer {
     NamedCommands.registerCommand("pos_offside", new InstantCommand(armSubsystem::posOff));
     NamedCommands.registerCommand("pos_ctf", new InstantCommand(armSubsystem::posCross));
 
+
+    NamedCommands.registerCommand("pos_specFC3", new InstantCommand(armSubsystem::specFC3));
+
     NamedCommands.registerCommand("pos_auto", new InstantCommand(armSubsystem::calcAngle));
 
     NamedCommands.registerCommand("reset_gyro", drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
+    //Driver stuff (remove if crashing)
+    NamedCommands.registerCommand("act_xstance", drivetrain.applyRequest(() -> brake));
+    NamedCommands.registerCommand("act_dr_aim", drivetrain.applyRequest(() -> autoAim.withTargetDirection(drivetrain.directionToGoal())
+            .withVelocityX(-m_driver.getLeftY() * MaxSpeed)
+            .withVelocityY(-m_driver.getLeftX() * MaxSpeed)));
+    NamedCommands.registerCommand("act_op_aim", new InstantCommand(armSubsystem::calcAngle));
 
     // Work on auto targetting to add the following commands
     /*
