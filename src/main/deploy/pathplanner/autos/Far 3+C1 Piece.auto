@@ -241,25 +241,6 @@
               }
             ]
           }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Center 3 To Note 2 Shoot"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": []
-          }
         }
       ]
     }

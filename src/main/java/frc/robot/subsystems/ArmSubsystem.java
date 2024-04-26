@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-//import edu.wpi.first.wpilibj2.command.InstantCommand;
+//import edu.wpi.first.wpilibj2.`command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants;
@@ -46,7 +46,7 @@ public class ArmSubsystem extends SubsystemBase {
   double targetX = 0;
   double targetY = 0;
   public ArmSubsystem() {
-    if(Constants.bot == 0)
+    if(Constants.bot == 0) //This tells us what bot we use. (0 = practice, 1 = main)
     {
       invertArmPos = -1;
     }
@@ -69,12 +69,12 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Setpoint Mid", -18.14*invertArmPos);
     SmartDashboard.putNumber("Setpoint Long", -48.28*invertArmPos);
 
-    SmartDashboard.putNumber("Setpoint ExLong", -49.35*invertArmPos);
+    SmartDashboard.putNumber("Setpoint ExLong", -49.35*invertArmPos); 
 
-    SmartDashboard.putNumber("Setpoint Climb", -186*invertArmPos);
+    SmartDashboard.putNumber("Setpoint Climb", -195*invertArmPos); //-186 before
     SmartDashboard.putNumber("Setpoint offshot", -33.14*invertArmPos);
 
-    SmartDashboard.putNumber("Setpoint CTF", -71.285*invertArmPos);
+    SmartDashboard.putNumber("Setpoint CTF", 0*invertArmPos);
 
     SmartDashboard.putNumber("Setpoint HPS", -69*invertArmPos); //human player station
 
@@ -120,6 +120,9 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("ArmSetpoint", armSetpoint);
 
     armSetpoint = MathUtil.clamp(armSetpoint,-250,0); //Locks the arm setpoint between its 0 and a 
+    //The above armSetpoint doesnt work for practice thanks to this clamp, please fix later (im at comp rn and dont wanna risk it)
+    //((although it is a stupid easy fix just an fyi dont risk random things if theres no need to risk it.))
+
 
     WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
     ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -1, 1));         //
@@ -170,8 +173,8 @@ public class ArmSubsystem extends SubsystemBase {
   }
   public void posClimb()
   {
-    wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint Climb", -186*invertArmPos);
+    wristSetpoint = 0; 
+    armSetpoint = SmartDashboard.getNumber("Setpoint Climb", -195*invertArmPos);
     RobotContainer.shooterSpeed = 1;
   }
   public void posOff()
@@ -183,12 +186,19 @@ public class ArmSubsystem extends SubsystemBase {
   public void posCross()
   {
     wristSetpoint = 0;
-    armSetpoint = SmartDashboard.getNumber("Setpoint CTF", -71.285*invertArmPos);
+    RobotContainer.shooterSpeed = 0.44;
+    armSetpoint = SmartDashboard.getNumber("Setpoint CTF", 0*invertArmPos);
   }
   public void specFC3()
   {
     wristSetpoint = 0;
     armSetpoint = -28.05*invertArmPos;
+  }
+  public void posNote2()
+  {
+    RobotContainer.shooterSpeed = 0.75; 
+    wristSetpoint = 0;
+    armSetpoint = -31.5*invertArmPos;
   }
 
   public void posHPS()

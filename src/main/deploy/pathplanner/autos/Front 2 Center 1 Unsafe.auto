@@ -240,7 +240,69 @@
         {
           "type": "named",
           "data": {
-            "name": "pos_zero"
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 3 (offset) To Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_on"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "sequential",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.25
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intake_on"
+                }
+              },
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 0.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_off"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intake_off"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "pos_zero"
+                }
+              }
+            ]
           }
         }
       ]

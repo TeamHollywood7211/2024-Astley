@@ -30,6 +30,7 @@ import frc.robot.commands.moveArmCommand;
 //import frc.robot.commands.moveClimberCommand;
 import frc.robot.commands.autos.Auto_intake;
 import frc.robot.commands.autos.Auto_intake_safe;
+
 import frc.robot.commands.autos.Auto_shoot;
 import frc.robot.commands.autos.Auto_shoot_safe;
 import frc.robot.generated.TunerConstants;
@@ -72,7 +73,8 @@ public class RobotContainer {
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
   private final Auto_shoot_safe au_shoot_safe = new Auto_shoot_safe(shooterSubsystem, intakeSubsystem); //heh heh, I hope auto_shoot gets used... NOT!!
   private final Auto_intake au_intake = new Auto_intake(intakeSubsystem);
-  private final Auto_intake_safe au_intake_safe = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem);
+  private final Auto_intake_safe au_intake_safe = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.05, 0.2);
+  private final Auto_intake_safe au_intake_safe_slow = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.01, 0.1);
 
   // Auto Aim Shenanigans
   private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
@@ -164,11 +166,10 @@ public class RobotContainer {
     new Trigger(m_operator.leftBumper()).onTrue(m_intakeShooterCommand)   ;
 
     new Trigger(m_operator.leftTrigger()).or(m_operator.leftBumper()).onFalse(m_intakeShooterCommand);
-
+ 
     // Move Arm
     new Trigger(m_operator.rightStick()).whileTrue(m_moveArm);
     new Trigger(m_operator.leftStick()).whileTrue(m_moveArm) ;
-
     new Trigger(m_operator.povUp()).onTrue(new InstantCommand(armSubsystem::posAmp));
     new Trigger(m_operator.povDown()).onTrue(new InstantCommand(armSubsystem::posExLong));
     new Trigger(m_operator.povRight()).onTrue(new InstantCommand(armSubsystem::posMid));
@@ -186,7 +187,8 @@ public class RobotContainer {
     new Trigger(m_operator.start()).onTrue(new InstantCommand(shooterSubsystem::auto_shooterOff)); //force that stuff off 
     new Trigger(m_operator.start()).onTrue(new InstantCommand(intakeSubsystem::auto_intakeOff));
 
-    new Trigger(m_operator.button(7)).onTrue(new InstantCommand(armSubsystem::posHPS));
+    new Trigger(m_operator.button(7)).onTrue(new InstantCommand(armSubsystem::posCross));
+    
 
     // new Trigger(m_operator.x()).onTrue(new
     // InstantCommand(limelightSubsystem::findDistanceToTarget));
@@ -205,7 +207,7 @@ public class RobotContainer {
 
 
     //button box stuff
-
+/* *
     new Trigger(m_buttonLeft.button(5)).onTrue(new InstantCommand(armSubsystem::posZero));
     new Trigger(m_buttonLeft.button(4)).onTrue(new InstantCommand(armSubsystem::posMid));
     new Trigger(m_buttonLeft.button(3)).onTrue(new InstantCommand(armSubsystem::posAmp));
@@ -215,6 +217,7 @@ public class RobotContainer {
     new Trigger(m_buttonLeft.button(9)).onTrue(new InstantCommand(armSubsystem::posLong));
     new Trigger(m_buttonLeft.button(7)).onTrue(new InstantCommand(armSubsystem::posExLong));
     new Trigger(m_buttonLeft.button(8)).onTrue(new InstantCommand(armSubsystem::posHPS));
+    new Trigger(m_buttonLeft.button(6)).onTrue(new InstantCommand(armSubsystem::posCross));
 
   
     //manual stuff
@@ -223,6 +226,12 @@ public class RobotContainer {
 
     //new Trigger(m_buttonLeft.button(6)).onTrue(new InstantCommand(armSubsystem::pos));
 
+    //Shooter/Intake
+
+    new Trigger(m_buttonRight.button(7)).onTrue(m_intakeShooterCommand);
+    new Trigger(m_buttonRight.button(8)).onTrue(m_intakeShooterCommand);
+    new Trigger(m_buttonRight.button(9)).onTrue(m_intakeShooterCommand);
+    new Trigger(m_buttonRight.button(10)).onTrue(m_intakeShooterCommand); */
 
   }
 
@@ -236,6 +245,7 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("act_intakeIR", au_intake); // does sick auto intake stuff w/ IR
     NamedCommands.registerCommand("act_intakeIR_s", au_intake_safe); //USE THIS ONE INSTEAD, SAFE IS SAFER!!!! (What idiot chose "augh we didnt need the safe one"... wait...)
+    NamedCommands.registerCommand("act_intakeIR_s_slow", au_intake_safe_slow);
 
     NamedCommands.registerCommand("act_intake_on", new InstantCommand(intakeSubsystem::auto_intakeOn));
     NamedCommands.registerCommand("act_intake_off", new InstantCommand(intakeSubsystem::auto_intakeOff));
@@ -253,7 +263,7 @@ public class RobotContainer {
 
 
     NamedCommands.registerCommand("pos_specFC3", new InstantCommand(armSubsystem::specFC3));
-
+    NamedCommands.registerCommand("pos_note2", new InstantCommand(armSubsystem::posNote2));
     NamedCommands.registerCommand("pos_auto", new InstantCommand(armSubsystem::calcAngle));
 
     NamedCommands.registerCommand("reset_gyro", drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));

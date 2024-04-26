@@ -69,14 +69,14 @@ public class IntakeShooterCommand extends Command {
    }
 
    //Stopping shooter under any circumstance that it isnt on
-   if((!m_controller.rightTrigger().getAsBoolean()) && (!m_controller.rightBumper().getAsBoolean()) && (!m_intakeSubsystem.readShooterRingSensor()) && (!m_controller.x().getAsBoolean()))
+   if((!m_controller.button(8).getAsBoolean()) && (!m_controller.button(5).getAsBoolean()) && (!m_intakeSubsystem.readShooterRingSensor()) && (!m_controller.button(6).getAsBoolean()))
    {
       m_shooterSubsystem.setShooterSpeed(0);
    }
 
    //Intake
 
-   if(m_controller.leftTrigger().getAsBoolean()) //Intaking in a piece
+   if(m_controller.button(7).getAsBoolean()) //Intaking in a piece
    {
     if(m_intakeSubsystem.readShooterRingSensor() == false) //Only  intake till there isnt a ring near the shooter
     {
@@ -90,13 +90,13 @@ public class IntakeShooterCommand extends Command {
     }
   }
 
-   if(m_controller.leftBumper().getAsBoolean()) //Pulling a ring out
+   if(m_controller.button(8).getAsBoolean()) //Pulling a ring out
    {
     m_intakeSubsystem.setIntake(0.30);
     m_intakeSubsystem.setFeeder(0.15);
    }
    //Stop intake under any circumstance that it shouldnt be running
-   if((!m_controller.leftTrigger().getAsBoolean()) && (!m_controller.leftBumper().getAsBoolean()) && (!m_controller.rightTrigger().getAsBoolean()))
+   if((!m_controller.button(7).getAsBoolean()) && (!m_controller.button(8).getAsBoolean()) && (!m_controller.button(8).getAsBoolean()))
    {
     m_intakeSubsystem.setIntake(0);
     m_intakeSubsystem.setFeeder(0);

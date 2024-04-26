@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class Auto_intake_safe extends Command {
+public class Auto_intake_supersafe extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final IntakeSubsystem m_intake;
   private final LEDSubsystem m_led;
@@ -27,10 +27,11 @@ public class Auto_intake_safe extends Command {
   double timeToKill = 4; //Time until to give up on the intake
   double spd;
   double intakeSpd;
+  boolean grabbedRing = false;
   //Timer time;
  // double timer = 0;
 
-  public Auto_intake_safe(IntakeSubsystem subsystem, LEDSubsystem led, ShooterSubsystem shooter, double speed, double intake_spd) {
+  public Auto_intake_supersafe(IntakeSubsystem subsystem, LEDSubsystem led, ShooterSubsystem shooter, double speed, double intake_spd) {
     m_intake = subsystem;
     m_led = led;
     m_shooter = shooter;
@@ -80,10 +81,15 @@ public class Auto_intake_safe extends Command {
       m_intake.setIntake(-intakeSpd); //Run that intake 0.2
       m_intake.setFeeder(-spd); //0.05
     }
+    
     else //else we done :3
     {
       m_intake.setIntake(0);
       m_intake.setFeeder(0);
+    }
+    if(m_intake.readShooterRingSensor())
+    {
+      grabbedRing = true;
     }
 
     if(timer > timeToKill) //if we dont grab and we pass our time to kill
@@ -91,6 +97,7 @@ public class Auto_intake_safe extends Command {
       m_intake.setIntake(0); //stop it
       m_intake.setFeeder(0);
     }
+
     if((timer > timeToKill + 0.1) || (m_intake.readShooterRingSensor() == true)) //if we grab a piece (or we pass our time to kill by a weeee bit)
     {
       System.out.println("AUTO INTAKE: MAY OR MAY NOT HAVE THE RING, IDC WE MOVIN' "); 
