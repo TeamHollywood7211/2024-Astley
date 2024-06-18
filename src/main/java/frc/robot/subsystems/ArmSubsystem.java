@@ -220,7 +220,7 @@ public class ArmSubsystem extends SubsystemBase {
 
   public void calcAngle()
   {
-    
+    armSetpoint = 0;
     Pose3d pos = LimelightHelpers.getBotPose3d("limelight");
     double botX = pos.getX();  
     double botY = pos.getY();  //Gets X and Y from Limelight
@@ -237,7 +237,6 @@ public class ArmSubsystem extends SubsystemBase {
           {
             targetX = 8.305;
             targetY = 1.325;
-            
           }
     }); //Alliance position
 
@@ -250,8 +249,11 @@ public class ArmSubsystem extends SubsystemBase {
     //Math.pow() allows you to have exponents :3
 
     SmartDashboard.putNumber("Disntace to Target", distance);
-    armSetpoint = -6.62955 * (distance * distance) + 47.4922 * distance + -55.4878; //This calculation is used for the april tag auto aim for the arm
+    //armSetpoint = -6.62955 * (distance * distance) + 47.4922 * distance + -55.4878; //This calculation is used for the april tag auto aim for the arm
     
+    armSetpoint = -0.974807 * (distance*distance) + -7.27931 * distance + 0.596068;
+
+    //armSetpoint = 3.36827 * (distance * distance) + -18.1038 * distance + -0.37939;
     //-0.705625 * (distance*distance) + 14.4712* distance + -46.5725;
   }
 

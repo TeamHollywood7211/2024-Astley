@@ -35,11 +35,23 @@ import frc.robot.commands.autos.Auto_shoot;
 import frc.robot.commands.autos.Auto_shoot_safe;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LEDSubsystem;
 //import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+
+
+/*
+ * 
+ *  Something that needs to be acknowledged is that
+ *  this code is built on the holy prayers of the semicolon
+ *  
+ * 
+ * 
+ */
+
 
 public class RobotContainer {
   static double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -53,13 +65,16 @@ public class RobotContainer {
   public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(); //These are our subsystems
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   public final LEDSubsystem ledSubsystem = new LEDSubsystem();
+  //public final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
   private final CommandXboxController m_driver = new CommandXboxController(0); //Driver joystick
   private final CommandXboxController m_operator = new CommandXboxController(1); //Operator joystick
 
+  //private final CommandXboxController m_dev = new CommandXboxController(2);
+
   //BUTTON BOX BABY!!!
-  private final CommandXboxController m_buttonLeft = new CommandXboxController(2);
-  private final CommandXboxController m_buttonRight = new CommandXboxController(3);
+  //private final CommandXboxController m_buttonLeft = new CommandXboxController(2);
+  //private final CommandXboxController m_buttonRight = new CommandXboxController(3);
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain; // My drivetrain
 
@@ -167,7 +182,7 @@ public class RobotContainer {
 
     new Trigger(m_operator.leftTrigger()).or(m_operator.leftBumper()).onFalse(m_intakeShooterCommand);
  
-    // Move Arm
+    // Move Arm 
     new Trigger(m_operator.rightStick()).whileTrue(m_moveArm);
     new Trigger(m_operator.leftStick()).whileTrue(m_moveArm) ;
     new Trigger(m_operator.povUp()).onTrue(new InstantCommand(armSubsystem::posAmp));
@@ -175,20 +190,25 @@ public class RobotContainer {
     new Trigger(m_operator.povRight()).onTrue(new InstantCommand(armSubsystem::posMid));
     new Trigger(m_operator.povLeft()).onTrue(new InstantCommand(armSubsystem::posLong));
 
-    new Trigger(m_operator.b()).onTrue(new InstantCommand(armSubsystem::posZero));
-
+    new Trigger(m_operator.b()).onTrue(new InstantCommand(armSubsystem::posZero ));
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
 
-    new Trigger(m_operator.x()).onTrue(m_intakeShooterCommand); //revs up shooter GOD I WISH I HAD A BUTTON BOX
+    new Trigger(m_operator.x()).onTrue(m_intakeShooterCommand); //revs up shooter GOD I WISH I HAD A BUTTON BOX (hey I got a button box)
     //new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::calcAngle)); // Run this for auto aim
 
     new Trigger(m_operator.a()).onTrue(new InstantCommand(armSubsystem::posCross));
 
     new Trigger(m_operator.start()).onTrue(new InstantCommand(shooterSubsystem::auto_shooterOff)); //force that stuff off 
-    new Trigger(m_operator.start()).onTrue(new InstantCommand(intakeSubsystem::auto_intakeOff));
+    new Trigger(m_operator.start()).onTrue(new InstantCommand(intakeSubsystem ::auto_intakeOff));
 
-    new Trigger(m_operator.button(7)).onTrue(new InstantCommand(armSubsystem::posCross));
+    new Trigger(m_operator.button(7)).onTrue(new InstantCommand(armSubsystem::calcAngle)); //auto climb
     
+    //new Trigger(m_dev.povRight()).onTrue(new InstantCommand(climberSubsystem::manual));
+
+
+
+    //new Trigger(m_driver.a()).onTrue(new InstantCommand(climberSubsystem::prepClimb));
+    //new Trigger(m_driver.b()).onTrue(new InstantCommand(climberSubsystem::lowerClimb));
 
     // new Trigger(m_operator.x()).onTrue(new
     // InstantCommand(limelightSubsystem::findDistanceToTarget));
@@ -252,7 +272,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("act_shooter_on", new InstantCommand(shooterSubsystem::auto_shooterOn));
     NamedCommands.registerCommand("act_shooter_off", new InstantCommand(shooterSubsystem::auto_shooterOff));
 
-    // Auto Positions
+    /*
+     * Arm Positions
+     * 
+     */
     NamedCommands.registerCommand("pos_amp", new InstantCommand(armSubsystem::posAmp)); // set position of that thangs//
     NamedCommands.registerCommand("pos_exlong", new InstantCommand(armSubsystem::posExLong));
     NamedCommands.registerCommand("pos_mid", new InstantCommand(armSubsystem::posMid));
@@ -261,10 +284,13 @@ public class RobotContainer {
     NamedCommands.registerCommand("pos_offside", new InstantCommand(armSubsystem::posOff));
     NamedCommands.registerCommand("pos_ctf", new InstantCommand(armSubsystem::posCross));
 
-
+    //Weird effed up hard coded dumb stupid positions
     NamedCommands.registerCommand("pos_specFC3", new InstantCommand(armSubsystem::specFC3));
     NamedCommands.registerCommand("pos_note2", new InstantCommand(armSubsystem::posNote2));
     NamedCommands.registerCommand("pos_auto", new InstantCommand(armSubsystem::calcAngle));
+
+
+    
 
     NamedCommands.registerCommand("reset_gyro", drivetrain.runOnce(() -> drivetrain.seedFieldRelative()));
     //Driver stuff (remove if crashing)

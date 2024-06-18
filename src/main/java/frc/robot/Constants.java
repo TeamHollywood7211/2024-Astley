@@ -66,9 +66,9 @@ public final class Constants {
 
     public static final int cameraResolution = 240;
 
-    public static class ClimberConstants //Remove climber next time if need be
+    public static class ClimberConstants //Remove climber next time if need be 
     {
-      public static final double kP = 0.01;
+      public static final double kP = 0.01;;
       public static final double kI = 0;
       public static final double kD = 0.001;
 
