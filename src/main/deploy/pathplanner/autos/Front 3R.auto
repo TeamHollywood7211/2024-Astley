@@ -42,9 +42,28 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Front Side To Note 2"
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Front Side To Note 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR_s"
+                }
+              }
+            ]
           }
         },
         {
@@ -57,12 +76,6 @@
           "type": "named",
           "data": {
             "name": "pos_mid"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "act_intake_off"
           }
         },
         {
@@ -93,7 +106,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.25
+            "waitTime": 0.5
           }
         },
         {
@@ -117,31 +130,38 @@
         {
           "type": "named",
           "data": {
-            "name": "pos_zero"
+            "name": "act_intake_off"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "act_intake_on"
+            "name": "pos_zero"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "Note 2 Shoot To Note 3"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 2 Shoot To Note 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR_s"
+                }
+              }
+            ]
           }
         },
         {
           "type": "wait",
           "data": {
             "waitTime": 0.75
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "act_intake_off"
           }
         },
         {
@@ -172,7 +192,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.25
+            "waitTime": 0.5
           }
         },
         {
