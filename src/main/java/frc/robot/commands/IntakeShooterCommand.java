@@ -60,7 +60,7 @@ public class IntakeShooterCommand extends Command {
       m_shooterSubsystem.setShooterSpeed(RobotContainer.shooterSpeed);
       if(m_intakeSubsystem.readShooterRingSensor())
       {
-        m_intakeSubsystem.setFeeder(-0.1);
+        m_intakeSubsystem.setFeeder(-0.2);
       }
    } 
    if(m_controller.rightBumper().getAsBoolean()) //Retracing from shooter
@@ -80,8 +80,8 @@ public class IntakeShooterCommand extends Command {
    {
     if(m_intakeSubsystem.readShooterRingSensor() == false) //Only  intake till there isnt a ring near the shooter
     {
-      m_intakeSubsystem.setIntake(-0.25);
-      m_intakeSubsystem.setFeeder(-0.10);
+      m_intakeSubsystem.setIntake(-0.4);
+      m_intakeSubsystem.setFeeder(-0.15);
     }
     else
     {
@@ -92,7 +92,7 @@ public class IntakeShooterCommand extends Command {
 
    if(m_controller.leftBumper().getAsBoolean()) //Pulling a ring out
    {
-    m_intakeSubsystem.setIntake(0.30);
+    m_intakeSubsystem.setIntake(0.4);
     m_intakeSubsystem.setFeeder(0.15);
    }
    //Stop intake under any circumstance that it shouldnt be running

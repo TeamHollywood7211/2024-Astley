@@ -24,7 +24,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 0.75
                 }
               },
               {
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Far to Center 5"
+                  "pathName": "Far Side to Center 4"
                 }
               },
               {
@@ -99,7 +99,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center 5  To Offside Shot"
+                  "pathName": "Center 4 To Offside Shot"
                 }
               },
               {
@@ -155,7 +155,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Offside Shot To Center 4"
+                  "pathName": "Offside shot to Center 5"
                 }
               },
               {
@@ -193,7 +193,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center 4 To Offside Shot"
+                  "pathName": "Center 5  To Offside Shot"
                 }
               },
               {

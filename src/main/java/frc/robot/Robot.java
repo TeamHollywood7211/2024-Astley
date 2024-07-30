@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -16,6 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.LEDSubsystem;
+import edu.wpi.first.wpilibj.DataLogManager;
+
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
@@ -24,10 +28,18 @@ public class Robot extends TimedRobot {
   public static boolean runBootAnimation = false;
   private final boolean UseLimelight = true;
 
+  public static DoubleLogEntry sentArmPos;
+
+
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
     runBootAnimation = true;
+
+    DataLogManager.start();
+
+    DataLog log = DataLogManager.getLog();
+    sentArmPos = new DoubleLogEntry(log, "/armPosition/pos");
 
   }
 
@@ -52,6 +64,7 @@ public class Robot extends TimedRobot {
         m_robotContainer.drivetrain.addVisionMeasurement(llPose, Timer.getFPGATimestamp());
       }
     }
+    
   }
 
   @Override

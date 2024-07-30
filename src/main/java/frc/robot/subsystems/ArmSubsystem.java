@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -42,6 +43,7 @@ public class ArmSubsystem extends SubsystemBase {
   int invertArmPos = -1;
 
 
+  double armsHeighestPos = -200;
 
   double targetX = 0;
   double targetY = 0;
@@ -49,6 +51,7 @@ public class ArmSubsystem extends SubsystemBase {
     if(Constants.bot == 0) //This tells us what bot we use. (0 = practice, 1 = main)
     {
       invertArmPos = -1;
+      armsHeighestPos = armsHeighestPos*-1;
     }
     else
     {
@@ -57,7 +60,7 @@ public class ArmSubsystem extends SubsystemBase {
     ArmMotor.restoreFactoryDefaults();
     WristMotor.restoreFactoryDefaults();
 
-
+   //This leaves a height limit to the arms position
     
 
     ArmMotor.setSmartCurrentLimit(40);
@@ -108,10 +111,10 @@ public class ArmSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-     Pose3d pos = LimelightHelpers.getBotPose3d("limelight"); //Limelight stuff
+    Pose3d pos = LimelightHelpers.getBotPose3d("limelight"); //Limelight stuff
 
-     SmartDashboard.putNumber("Limelight X", pos.getX()); //tells us the bots X,Y
-     SmartDashboard.putNumber("Limelight Y", pos.getY());
+    SmartDashboard.putNumber("Limelight X", pos.getX()); //tells us the bots X,Y
+    SmartDashboard.putNumber("Limelight Y", pos.getY());
 
     SmartDashboard.putNumber("wrist Pos", wristEncoder.getPosition()); //Tells us encoder positions
     SmartDashboard.putNumber("Arm Pos", armEncoder.getPosition());
@@ -119,16 +122,16 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Wrist Setpoint", wristSetpoint); //Tells us setpoints
     SmartDashboard.putNumber("ArmSetpoint", armSetpoint);
 
-    armSetpoint = MathUtil.clamp(armSetpoint,-250,0); //Locks the arm setpoint between its 0 and a 
+    armSetpoint = MathUtil.clamp(armSetpoint,armsHeighestPos,0); //Locks the arm setpoint between its 0 and a 
     //The above armSetpoint doesnt work for practice thanks to this clamp, please fix later (im at comp rn and dont wanna risk it)
     //((although it is a stupid easy fix just an fyi dont risk random things if theres no need to risk it.))
 
 
+
     WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
     ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -1, 1));         //
-  
 
-
+    //
 
   }
 
@@ -142,13 +145,16 @@ public class ArmSubsystem extends SubsystemBase {
     wristSetpoint = 0;
     armSetpoint = 0;
     RobotContainer.shooterSpeed = 0.6;
+    logArmPos(armSetpoint);
   }
+
   public void posAmp()
   {
     
     wristSetpoint = SmartDashboard.getNumber("Setpoint Amp Wrist",19.14); //Pulls the values from SmartDashboard 
     armSetpoint = SmartDashboard.getNumber("Setpoint Amp Arm",-180.14*invertArmPos);
     RobotContainer.shooterSpeed = 0.2;
+    logArmPos(armSetpoint);
   }
 
   public void posMid()
@@ -156,6 +162,7 @@ public class ArmSubsystem extends SubsystemBase {
     wristSetpoint = 0;
     armSetpoint = SmartDashboard.getNumber("Setpoint Mid", -18.14*invertArmPos);
     RobotContainer.shooterSpeed = 0.66;
+    logArmPos(armSetpoint);
   }
 
   public void posLong()
@@ -163,6 +170,7 @@ public class ArmSubsystem extends SubsystemBase {
     wristSetpoint = 0; //hey this is like 8.45 from target
     armSetpoint = SmartDashboard.getNumber("Setpoint Long", -45.28*invertArmPos); //56.47;  
     RobotContainer.shooterSpeed = 1;
+    logArmPos(armSetpoint);
   }
 
   public void posExLong()
@@ -170,41 +178,50 @@ public class ArmSubsystem extends SubsystemBase {
     wristSetpoint = 0;
     armSetpoint = SmartDashboard.getNumber("Setpoint ExLong", -49.35*invertArmPos);
     RobotContainer.shooterSpeed = 1;
+    logArmPos(armSetpoint);
   }
+
   public void posClimb()
   {
     wristSetpoint = 0; 
     armSetpoint = SmartDashboard.getNumber("Setpoint Climb", -195*invertArmPos);
     RobotContainer.shooterSpeed = 1;
+    logArmPos(armSetpoint);
   }
+
   public void posOff()
   {
     wristSetpoint = 0;
     armSetpoint = SmartDashboard.getNumber("Setpoint offshot", -33.14*invertArmPos);
     RobotContainer.shooterSpeed = 0.6;
+    logArmPos(armSetpoint);
   }
   public void posCross()
   {
     wristSetpoint = 0;
     RobotContainer.shooterSpeed = 0.44;
     armSetpoint = SmartDashboard.getNumber("Setpoint CTF", 0*invertArmPos);
+    logArmPos(armSetpoint);
   }
   public void specFC3()
   {
     wristSetpoint = 0;
     armSetpoint = -28.05*invertArmPos;
+    logArmPos(armSetpoint);
   }
   public void posNote2()
   {
     RobotContainer.shooterSpeed = 0.75; 
     wristSetpoint = 0;
     armSetpoint = -31.5*invertArmPos;
+    logArmPos(armSetpoint);
   }
 
   public void posHPS()
   {
     wristSetpoint =  18.4;
     armSetpoint = -210.48;
+    logArmPos(armSetpoint);
   }
 
   public void manuArm(double speed)
@@ -215,6 +232,11 @@ public class ArmSubsystem extends SubsystemBase {
   public void manuWrist(double speed)
   {
     wristSetpoint -= speed/2;
+  }
+
+  public void logArmPos(double pos)
+  {
+    Robot.sentArmPos.append(pos);
   }
 
 

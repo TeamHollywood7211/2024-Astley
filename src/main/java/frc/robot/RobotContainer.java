@@ -30,7 +30,7 @@ import frc.robot.commands.moveArmCommand;
 //import frc.robot.commands.moveClimberCommand;
 import frc.robot.commands.autos.Auto_intake;
 import frc.robot.commands.autos.Auto_intake_safe;
-
+import frc.robot.commands.autos.Auto_intake_unsafe;
 import frc.robot.commands.autos.Auto_shoot;
 import frc.robot.commands.autos.Auto_shoot_safe;
 import frc.robot.generated.TunerConstants;
@@ -43,12 +43,16 @@ import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 
+import edu.wpi.first.wpilibj.DataLogManager;
+
+
 /*
  * 
  *  Something that needs to be acknowledged is that
- *  this code is built on the holy prayers of the semicolon
- *  
- * 
+ *  this code is built on the holy prayers of the semicolon;
+ *  ALL HAIL THE SEMICOLON;
+ *  ALL HAIL THE SEMICOLON;
+ *  ;  ;  ;  ;  ;  ;  ;  ;
  * 
  */
 
@@ -88,8 +92,11 @@ public class RobotContainer {
   private final Auto_shoot au_shoot = new Auto_shoot(shooterSubsystem, intakeSubsystem);
   private final Auto_shoot_safe au_shoot_safe = new Auto_shoot_safe(shooterSubsystem, intakeSubsystem); //heh heh, I hope auto_shoot gets used... NOT!!
   private final Auto_intake au_intake = new Auto_intake(intakeSubsystem);
-  private final Auto_intake_safe au_intake_safe = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.05, 0.2);
+  private final Auto_intake_safe au_intake_safe = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.15, 0.4);
   private final Auto_intake_safe au_intake_safe_slow = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.01, 0.1);
+  private final Auto_intake_unsafe au_intake_unsafe = new Auto_intake_unsafe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.01, 0.1);
+
+
 
   // Auto Aim Shenanigans
   private final SwerveRequest.FieldCentricFacingAngle autoAim = new SwerveRequest.FieldCentricFacingAngle();
@@ -170,19 +177,19 @@ public class RobotContainer {
     m_driver.rightBumper().whileTrue(new InstantCommand(drivetrain::slowRobot)); // slow/fast mode system (this doesnt work)
     m_driver.rightBumper().whileFalse(new InstantCommand(drivetrain::fastRobot));
 
-    // SHOOTER// GOD I WISH I GOT A BUTTON BOX // GOD I REALLY WISH I HAD A BUTTON BOX
+    // SHOOTER // GOD I WISH I GOT A BUTTON BOX // GOD I REALLY WISH I HAD A BUTTON BOX
     new Trigger(m_operator.rightTrigger()).onTrue(m_intakeShooterCommand);
     new Trigger(m_operator.rightBumper()).onTrue(m_intakeShooterCommand);
 
     new Trigger(m_operator.rightTrigger()).and(m_operator.rightBumper()).onFalse(m_intakeShooterCommand);
 
-    // INTAKE//
+    // INTAKE //
     new Trigger(m_operator.leftTrigger()).onTrue(m_intakeShooterCommand)  ;
     new Trigger(m_operator.leftBumper()).onTrue(m_intakeShooterCommand)   ;
 
     new Trigger(m_operator.leftTrigger()).or(m_operator.leftBumper()).onFalse(m_intakeShooterCommand);
  
-    // Move Arm 
+    // Move Arm //
     new Trigger(m_operator.rightStick()).whileTrue(m_moveArm);
     new Trigger(m_operator.leftStick()).whileTrue(m_moveArm) ;
     new Trigger(m_operator.povUp()).onTrue(new InstantCommand(armSubsystem::posAmp));
@@ -193,14 +200,15 @@ public class RobotContainer {
     new Trigger(m_operator.b()).onTrue(new InstantCommand(armSubsystem::posZero ));
     new Trigger(m_operator.y()).onTrue(new InstantCommand(armSubsystem::posClimb));
 
-    new Trigger(m_operator.x()).onTrue(m_intakeShooterCommand); //revs up shooter GOD I WISH I HAD A BUTTON BOX (hey I got a button box)
+    new Trigger(m_operator.x()).onTrue(m_intakeShooterCommand); //revs up shooter GOD I WISH I HAD A BUTTON BOX (hey I got a button box) (the button box is ok, no disrespect to Scott but I wish it was smaller ))
+  //
     //new Trigger(m_operator.x()).onTrue(new InstantCommand(armSubsystem::calcAngle)); // Run this for auto aim
-
+  //
     new Trigger(m_operator.a()).onTrue(new InstantCommand(armSubsystem::posCross));
-
+  //
     new Trigger(m_operator.start()).onTrue(new InstantCommand(shooterSubsystem::auto_shooterOff)); //force that stuff off 
     new Trigger(m_operator.start()).onTrue(new InstantCommand(intakeSubsystem ::auto_intakeOff));
-
+  //
     new Trigger(m_operator.button(7)).onTrue(new InstantCommand(armSubsystem::calcAngle)); //auto climb
     
     //new Trigger(m_dev.povRight()).onTrue(new InstantCommand(climberSubsystem::manual));
@@ -255,6 +263,11 @@ public class RobotContainer {
 
   }
 
+
+  //everyday for someone to look busy you gotta
+  //hide in your code and do comment refactors
+
+
   public RobotContainer() {
 
     //// Auto Commands////
@@ -266,6 +279,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("act_intakeIR", au_intake); // does sick auto intake stuff w/ IR
     NamedCommands.registerCommand("act_intakeIR_s", au_intake_safe); //USE THIS ONE INSTEAD, SAFE IS SAFER!!!! (What idiot chose "augh we didnt need the safe one"... wait...)
     NamedCommands.registerCommand("act_intakeIR_s_slow", au_intake_safe_slow);
+    NamedCommands.registerCommand("act_intakeIR_us", au_intake_unsafe);
 
     NamedCommands.registerCommand("act_intake_on", new InstantCommand(intakeSubsystem::auto_intakeOn));
     NamedCommands.registerCommand("act_intake_off", new InstantCommand(intakeSubsystem::auto_intakeOff));

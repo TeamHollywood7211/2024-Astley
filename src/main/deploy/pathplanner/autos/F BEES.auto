@@ -24,7 +24,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 0.5
+                  "waitTime": 0.75
                 }
               },
               {
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Far to Center 5"
+                  "pathName": "Far Side to Center 4"
                 }
               },
               {
@@ -99,100 +99,6 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Center 5  To Offside Shot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_shooter_on"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_on"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.75
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_shooter_off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "pos_zero"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Offside Shot To Center 4"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intakeIR_s"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.25
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "pos_offside"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
                   "pathName": "Center 4 To Offside Shot"
                 }
               },
@@ -210,12 +116,6 @@
           "data": {
             "commands": [
               {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.35
-                }
-              },
-              {
                 "type": "named",
                 "data": {
                   "name": "act_intake_on"
@@ -243,6 +143,25 @@
                 "type": "named",
                 "data": {
                   "name": "pos_zero"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Offside shot to Center 5"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR_s"
                 }
               }
             ]

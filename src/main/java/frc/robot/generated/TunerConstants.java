@@ -37,7 +37,7 @@ public class TunerConstants {
     // This needs to be tuned to your individual robot
     private static final double kSlipCurrentA = 40.0;
 
-    // Theoretical free speed (m/s) at 12v applied output;
+    // Theoretical frv fee speed (m/s) at 12v applied output;
     // This needs to be tuned to your individual robot
     public static final double kSpeedAt12VoltsMps = 5.41; //5.21;
 

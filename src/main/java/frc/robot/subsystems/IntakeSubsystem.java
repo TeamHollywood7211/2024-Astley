@@ -23,7 +23,7 @@ public class IntakeSubsystem extends SubsystemBase {
   CANSparkFlex feederMotor2 = new CANSparkFlex(IntakeConstants.feederMotor2ID, MotorType.kBrushless);
   DigitalInput ringIntakeSensor = new DigitalInput(IntakeConstants.IRSensorIntakeSignalID); //The IR sensor for the rings, this reads the Intake
   DigitalInput ringShooterSensor = new DigitalInput(IntakeConstants.IRSensorShooterSignalID); //The IR sesnor for shooter
-  /** Creates a new ExampleSubsystem. */
+  /** Creates a new ExampleSubsystem. **/
   public IntakeSubsystem() {
     IntakeMotor1.restoreFactoryDefaults();
     IntakeMotor2.restoreFactoryDefaults();
@@ -34,7 +34,7 @@ public class IntakeSubsystem extends SubsystemBase {
 
     IntakeMotor1.setSmartCurrentLimit(50); //CURRENT LIMITS!!!!
     IntakeMotor2.setSmartCurrentLimit(50);
-    feederMotor.setSmartCurrentLimit(40);
+    feederMotor.setSmartCurrentLimit(40) ;
     feederMotor2.setSmartCurrentLimit(40);
 
     //feederMotor2.follow(feederMotor);
