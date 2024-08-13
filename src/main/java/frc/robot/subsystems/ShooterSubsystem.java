@@ -64,18 +64,6 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    
-  /*
-  
-  when wrist was here
-  SmartDashboard.putNumber("Shooter Angle: ", shooterAngleEncoder.getPosition());
-    //setpoint = MathUtil.clamp(setpoint, 0, 60);
-
-    shooterAngleMotor.set(MathUtil.clamp(pid.calculate(shooterAngleEncoder.getPosition(), setpoint), -0.75, 0.75));
-*/
-    //mostly built on the cool pid.calculate() function. Clamps the speed AND the setpoints so
-    //I, the operator, and the code doesnt smash itself into the robot, ultimately destroying
-    //the fragile Neo Vortex (which can catch on fire :3)
   }
 
   @Override

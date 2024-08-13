@@ -8,7 +8,7 @@ import edu.wpi.first.math.numbers.N3;
 public final class Constants {
     public static final double stickDeadband = 0.1;;
 
-    public static final double safetyWheels = 0.8; //Set to 1 for max speed
+    public static final double safetyWheels = 0.6; //Set to 1 for max speed
 
     public static final int bot = 1; //0 = Practice, 1 = Main 
 
