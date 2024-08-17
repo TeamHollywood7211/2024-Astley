@@ -4,33 +4,48 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.newClimberSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-/** An example command that uses an example subsystem. */
-public class moveArmCommand extends Command {
+public class newClimberCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final ArmSubsystem m_subsystem;
+  private final newClimberSubsystem m_subsystem;
   private final CommandXboxController m_controller;
-
-  public moveArmCommand(ArmSubsystem subsystem, CommandXboxController controller) {
+  public newClimberCommand(newClimberSubsystem subsystem, CommandXboxController controller) {
     m_subsystem = subsystem;
     m_controller = controller;
     addRequirements(subsystem);
   }
 
-  //This command is prioritized for manual control of the Arm/Wrist
- 
-
- 
   @Override
   public void initialize() {}
 
   @Override
   public void execute() {
-    m_subsystem.manuArm(m_controller.getLeftY());
-    m_subsystem.manuWrist(m_controller.getRightY());
+    if(m_controller.b().getAsBoolean())
+    {
+      m_subsystem.toggleArm();
+    }
+
+    if(m_controller.povUp().getAsBoolean())
+    {
+      m_subsystem.manArm(1);
+    }
+    if(m_controller.povDown().getAsBoolean())
+    {
+      m_subsystem.manArm(-1);
+    }
+    if(m_controller.x().getAsBoolean())
+    {
+      m_subsystem.trap();
+    }
+    if(m_controller.povLeft().getAsBoolean())
+    {
+      m_subsystem.manArm(0);
+    }
   }
 
   @Override

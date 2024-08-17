@@ -23,22 +23,27 @@ import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
 import frc.robot.Robot;
 import frc.robot.RobotContainer;
+import frc.robot.subsystems.newClimberSubsystem;
 
 public class ArmSubsystem extends SubsystemBase {
   //Assigns PID
   PIDController armPID = new PIDController(ArmConstants.armP, ArmConstants.armI, ArmConstants.armD);
   PIDController wristPID = new PIDController(ArmConstants.wristP, ArmConstants.wristI, ArmConstants.wristD);
-
+  PIDController climber_wristPID = new PIDController(ArmConstants.cli_wristP, ArmConstants.cli_wristI, ArmConstants.cli_wristD);
   //Assigns Motors
-  CANSparkFlex ArmMotor = new CANSparkFlex(ArmConstants.armMotorID, MotorType.kBrushless);
-  CANSparkFlex WristMotor = new CANSparkFlex(ArmConstants.wristMotorID, MotorType.kBrushless);
+  static CANSparkFlex ArmMotor = new CANSparkFlex(ArmConstants.armMotorID, MotorType.kBrushless);
+  static CANSparkFlex WristMotor = new CANSparkFlex(ArmConstants.wristMotorID, MotorType.kBrushless);
   //Assigns encoders from motor
-  public RelativeEncoder armEncoder = ArmMotor.getEncoder();
-  public RelativeEncoder wristEncoder = WristMotor.getEncoder();
+  public static RelativeEncoder armEncoder = ArmMotor.getEncoder();
+  public static RelativeEncoder wristEncoder = WristMotor.getEncoder();
+
+
+  
+  PIDController pid = wristPID;
 
   //Sets the setpoints to encoder positions so that we can redeploy code without issue
-  double armSetpoint = armEncoder.getPosition(); //this makes it so when you repush code the robot doesnt get all wonky with arm pos
-  double wristSetpoint = wristEncoder.getPosition();
+  static double armSetpoint = armEncoder.getPosition(); //this makes it so when you repush code the robot doesnt get all wonky with arm pos
+  static double wristSetpoint = wristEncoder.getPosition();
 
   int invertArmPos = -1;
 
@@ -128,8 +133,21 @@ public class ArmSubsystem extends SubsystemBase {
 
 
 
-    WristMotor.set(MathUtil.clamp(wristPID.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
+    /*if(newClimberSubsystem.armDown)
+    {
+      pid = climber_wristPID;
+    }
+    else
+    {
+      pid = armPID;
+    }*/
+    pid = wristPID;
+
     ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -1, 1));         //
+
+    WristMotor.set(MathUtil.clamp(pid.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
+
+
 
     //
 

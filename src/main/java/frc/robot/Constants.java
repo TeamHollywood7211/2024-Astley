@@ -8,16 +8,23 @@ import edu.wpi.first.math.numbers.N3;
 public final class Constants {
     public static final double stickDeadband = 0.1;;
 
-    public static final double safetyWheels = 0.6; //Set to 1 for max speed
+    public static final double driveSpeed = 0.99; //Set to 1 for max speed 
+    //
+    //  This is 0 -> 1 (0% through 100%)         
+    //  For safety, I recommend either 40% or 60%
+    //
+    //  !!DO NOT!! SET IT TO ANYTHING BEYOND 1!!!
+    //
 
     public static final int bot = 1; //0 = Practice, 1 = Main 
+
 
 
     public static class ArmConstants
     {
       public static final int armMotorID = 45; //fill in with actual thing
       public static final int wristMotorID = 47;
-  
+    
       public static final double armP = 0.075;  //Speed
       public static final double armI = 0;      //Ignore(?)
       public static final double armD = 0.0005; //Rate of Change (Multiplies the current I (which changes) by this?)
@@ -26,6 +33,11 @@ public final class Constants {
       public static final double wristP = 0.02;
       public static final double wristI = 0;
       public static final double wristD = 0.003;
+
+
+      public static final double cli_wristP = 0.005;
+      public static final double cli_wristI = 0;
+      public static final double cli_wristD = 0.003;
       /*
        * 
         In case you are looking for info on how to tune these bad boys, then take a look at this crazy guide I stole online.
@@ -89,7 +101,17 @@ public final class Constants {
 
 
     }
-    
+    public static class newClimberConstants
+    {
+      public static final int ClimberMotorLeft = 54;
+      public static final int ClimberMotorRight = 55;
+      public static final double kP = 0.01;
+      public static final double kI = 0;
+      public static final double kD = 0.0005;
+
+      public static final double armPos = -199.15;
+      public static final double wirstPos = 46.5;
+    }
 
 
 }
