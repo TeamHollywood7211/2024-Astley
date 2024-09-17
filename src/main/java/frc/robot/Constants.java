@@ -8,12 +8,13 @@ import edu.wpi.first.math.numbers.N3;
 public final class Constants {
     public static final double stickDeadband = 0.1;;
 
-    public static final double driveSpeed = 0.99; //Set to 1 for max speed 
+    public static final double driveSpeed = 1; //Set to 1 for max speed 
     //
     //  This is 0 -> 1 (0% through 100%)         
     //  For safety, I recommend either 40% or 60%
     //
     //  !!DO NOT!! SET IT TO ANYTHING BEYOND 1!!!
+    //   Any of those changes is ON YOU!!!!
     //
 
     public static final int bot = 1; //0 = Practice, 1 = Main 

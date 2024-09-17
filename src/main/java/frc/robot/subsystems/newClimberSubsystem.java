@@ -62,9 +62,10 @@ public class newClimberSubsystem extends SubsystemBase {
   public void periodic() {
     double currentPos = ArmEncoder.getPosition();
     SmartDashboard.putNumber("New Arm Position", currentPos);
-    ArmMotorL.set(MathUtil.clamp(armPID.calculate(-currentPos, ArmSetpoint), -0.5, 0.5));
-    ArmMotorR.set(MathUtil.clamp(armPID.calculate(currentPos, -ArmSetpoint), -0.5, 0.5));
-    SmartDashboard.putNumber("Percentage to Pos: ", currentPos / ArmSetpoint);
+    SmartDashboard.putNumber("New Arm Target Pos", ArmSetpoint);
+    ArmMotorL.set(MathUtil.clamp(armPID.calculate(currentPos, ArmSetpoint), -0.5, 0.5));
+    ArmMotorR.set(MathUtil.clamp(armPID.calculate(-currentPos, -ArmSetpoint), -0.5, 0.5));
+    SmartDashboard.putNumber("Percentage to Pos: ", (currentPos / ArmSetpoint) * 100);
   }
 
   @Override
@@ -94,5 +95,26 @@ public class newClimberSubsystem extends SubsystemBase {
   {
     ArmSetpoint += pos;
   }
+
+  public void forceStop()
+  {
+    ArmSetpoint = ArmMotorR.getEncoder().getPosition();
+  }
+
+  public void teleoPos() //For when we enter teleop
+  {
+    ArmSetpoint = 119;
+  }
+  public void highestPos() //For the initial "oh shoot we 'boutta climb!"
+  {
+    ArmSetpoint = 0;
+  }
+  public void climbPos() //For the "oh shoot, we climbed!!"
+  {
+    ArmSetpoint = 142;
+  }
+
+
+
 
 }

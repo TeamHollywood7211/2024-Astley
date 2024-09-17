@@ -74,7 +74,7 @@ public class ArmSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Setpoint Amp Arm", -180.14*invertArmPos); //Allows us to mid-comp change robot arm positions w/o redeploy 
     SmartDashboard.putNumber("Setpoint Amp Wrist", 18.14);
 
-    SmartDashboard.putNumber("Setpoint Mid", -18.14*invertArmPos);
+    SmartDashboard.putNumber("Setpoint Mid", -24.64*invertArmPos); //-18.14
     SmartDashboard.putNumber("Setpoint Long", -48.28*invertArmPos);
 
     SmartDashboard.putNumber("Setpoint ExLong", -49.35*invertArmPos); 
@@ -143,14 +143,9 @@ public class ArmSubsystem extends SubsystemBase {
     }*/
     pid = wristPID;
 
-    ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -1, 1));         //
+    ArmMotor.set(MathUtil.clamp(armPID.calculate(armEncoder.getPosition(), armSetpoint), -1, 1));
 
     WristMotor.set(MathUtil.clamp(pid.calculate(wristEncoder.getPosition(), wristSetpoint), -0.75, 0.75)); //PID stuff I stole directly from the WPI website
-
-
-
-    //
-
   }
 
   @Override
@@ -163,6 +158,7 @@ public class ArmSubsystem extends SubsystemBase {
     wristSetpoint = 0;
     armSetpoint = 0;
     RobotContainer.shooterSpeed = 0.6;
+
     logArmPos(armSetpoint);
   }
 
@@ -302,6 +298,27 @@ public class ArmSubsystem extends SubsystemBase {
     //armSetpoint = calcAngle();
     wristSetpoint = 0;
   }
+
+
+  //The following setpoints are specifically for trapping, 
+  //and are designated with a "trap_", and the next one is
+  //W=Wrist, A=Arm
+
+  public void trap_WunderChain(){ //Gets you under the stage 
+    armSetpoint = -38; 
+  }
+  public void trap_stage1() //Once under, both arm and wirst go to stage 1
+  {
+    armSetpoint = -68;
+    wristSetpoint = 21;
+  }
+  public void trap_state2() //Second stage for safety
+  {
+
+  }
+
+  
+  
 
 
 

@@ -1,0 +1,233 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3351518646165252,
+      "y": 5.544193078907484
+    },
+    "rotation": 179.76713642194184
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Front Side To Note 2"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR_s"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 2 To Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_on"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_zero"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 2 Shoot To Note 3"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_intakeIR_s"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_mid"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note 3 To Shoot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "act_shooter_on"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_on"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_shooter_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "act_intake_off"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "pos_zero"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "Front Side",
+  "choreoAuto": false
+}

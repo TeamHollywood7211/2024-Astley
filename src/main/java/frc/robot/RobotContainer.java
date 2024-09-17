@@ -70,12 +70,12 @@ public class RobotContainer {
   public final IntakeSubsystem intakeSubsystem = new IntakeSubsystem(); //These are our subsystems
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   public final LEDSubsystem ledSubsystem = new LEDSubsystem();
-  //private final newClimberSubsystem climberSubsystem = new newClimberSubsystem();
+  private final newClimberSubsystem climberSubsystem = new newClimberSubsystem();
   //public final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
 
   private final CommandXboxController m_driver = new CommandXboxController(0); //Driver joystick
   private final CommandXboxController m_operator = new CommandXboxController(1); //Operator joystick
-  //private final CommandXboxController m_climber = new CommandXboxController(2); //Dedicated to the new driving mechanics
+  private final CommandXboxController m_climber = new CommandXboxController(2); //Dedicated to the new driving mechanics
   //private final CommandXboxController m_dev = new CommandXboxController(2);
 
   //BUTTON BOX BABY!!!
@@ -89,7 +89,7 @@ public class RobotContainer {
   private final moveArmCommand m_moveArm = new moveArmCommand(armSubsystem, m_operator);
   private final IntakeShooterCommand m_intakeShooterCommand = new IntakeShooterCommand(intakeSubsystem,
       shooterSubsystem, ledSubsystem, m_operator);
-  //private final newClimberCommand m_climberCommand = new newClimberCommand(climberSubsystem, m_climber);
+  private final newClimberCommand m_climberCommand = new newClimberCommand(climberSubsystem, m_climber, armSubsystem);
   //  private final IntakeShooterCommandForAmp m_ampIntakeShooterCommand = new IntakeShooterCommandForAmp(intakeSubsystem,
   //    shooterSubsystem, ledSubsystem, m_climber);
 
@@ -134,9 +134,9 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(
         // #region standard drivetrain
         // Drivetrain will execute this command periodically
-        drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed * Constants.driveSpeed) // Drive forward with
+        drivetrain.applyRequest(() -> drive.withVelocityX(-m_driver.getLeftY() * MaxSpeed) // Drive forward with
                                                                                            // negative Y (forward)
-            .withVelocityY(-m_driver.getLeftX() * MaxSpeed * Constants.driveSpeed) // Drive left with negative X (left)
+            .withVelocityY(-m_driver.getLeftX() * MaxSpeed ) // Drive left with negative X (left)
             .withRotationalRate(-m_driver.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
         ).ignoringDisable(true));
 
@@ -219,7 +219,20 @@ public class RobotContainer {
     new Trigger(m_operator.start()).onTrue(new InstantCommand(intakeSubsystem ::auto_intakeOff));
   //
     new Trigger(m_operator.button(7)).onTrue(new InstantCommand(armSubsystem::calcAngle)); //auto climb
-  /* 
+  
+  
+    new Trigger(m_climber.a()).onTrue(new InstantCommand(armSubsystem::trap_WunderChain)); //freaking sweet
+    new Trigger(m_climber.b()).onTrue(new InstantCommand(armSubsystem::trap_stage1));
+  
+  
+    m_climber.povUp().whileTrue(m_climberCommand);
+    m_climber.povDown().whileTrue(m_climberCommand);
+    m_climber.povLeft().whileTrue(m_climberCommand);
+    
+    
+    
+  
+    /* 
     new Trigger(m_climber.b()).onTrue(new InstantCommand(climberSubsystem::toggleArm));
 
     new Trigger(m_climber.leftTrigger()).onTrue(m_ampIntakeShooterCommand)  ;

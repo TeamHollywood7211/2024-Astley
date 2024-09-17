@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.newClimberSubsystem;
@@ -12,11 +13,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class newClimberCommand extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final newClimberSubsystem m_subsystem;
+  private final newClimberSubsystem m_climber;
   private final CommandXboxController m_controller;
-  public newClimberCommand(newClimberSubsystem subsystem, CommandXboxController controller) {
-    m_subsystem = subsystem;
+  private final ArmSubsystem m_arm;
+  public newClimberCommand(newClimberSubsystem subsystem, CommandXboxController controller, ArmSubsystem armsubsystem) {
+    m_climber = subsystem;
     m_controller = controller;
+    m_arm = armsubsystem;
     addRequirements(subsystem);
   }
 
@@ -25,27 +28,39 @@ public class newClimberCommand extends Command {
 
   @Override
   public void execute() {
-    if(m_controller.b().getAsBoolean())
-    {
-      m_subsystem.toggleArm();
-    }
+    //if(m_controller.b().getAsBoolean())
+    //{
+    //  m_subsystem.toggleArm();
+    //}
 
     if(m_controller.povUp().getAsBoolean())
     {
-      m_subsystem.manArm(1);
+      m_climber.manArm(1);
     }
     if(m_controller.povDown().getAsBoolean())
     {
-      m_subsystem.manArm(-1);
+      m_climber.manArm(-1);
     }
-    if(m_controller.x().getAsBoolean())
+    //if(m_controller.x().getAsBoolean())
+    //{
+    //  m_subsystem.trap();
+    //}
+
+    if(m_controller.a().getAsBoolean())
     {
-      m_subsystem.trap();
+      m_arm.trap_WunderChain();
     }
+
+
+
+
+
     if(m_controller.povLeft().getAsBoolean())
     {
-      m_subsystem.manArm(0);
+      m_climber.forceStop();
     }
+
+
   }
 
   @Override
