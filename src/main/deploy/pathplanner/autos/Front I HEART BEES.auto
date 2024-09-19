@@ -60,7 +60,7 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "act_intakeIR_s"
+                  "name": "act_intakeIR_s_slow"
                 }
               }
             ]
@@ -177,7 +177,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note 1 To Shoot"
+                  "pathName": "Note 1 (ALT) to Shoot"
                 }
               },
               {

@@ -81,7 +81,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public boolean auto_shooterOn() //auton shooter for pathplanner
   {
-    shooterMotor1.setIdleMode(IdleMode.kCoast);
+    shooterMotor1.setIdleMode(IdleMode.kCoast); //These were set as coast during states, possibly causing issues as of 9/17/24 - Noah :3
     shooterMotor2.setIdleMode(IdleMode.kCoast);
 
     shooterMotor1.set(-1);

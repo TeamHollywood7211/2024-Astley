@@ -98,7 +98,7 @@ public class RobotContainer {
   private final Auto_shoot_safe au_shoot_safe = new Auto_shoot_safe(shooterSubsystem, intakeSubsystem); //heh heh, I hope auto_shoot gets used... NOT!!
   private final Auto_intake au_intake = new Auto_intake(intakeSubsystem);
   private final Auto_intake_safe au_intake_safe = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.15, 0.4);
-  private final Auto_intake_safe au_intake_safe_slow = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.01, 0.1);
+  private final Auto_intake_safe au_intake_safe_slow = new Auto_intake_safe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.15, 0.4); //legacy
   private final Auto_intake_unsafe au_intake_unsafe = new Auto_intake_unsafe(intakeSubsystem, ledSubsystem, shooterSubsystem, 0.01, 0.1);
 
 
@@ -221,10 +221,12 @@ public class RobotContainer {
     new Trigger(m_operator.button(7)).onTrue(new InstantCommand(armSubsystem::calcAngle)); //auto climb
   
   
+  
     new Trigger(m_climber.a()).onTrue(new InstantCommand(armSubsystem::trap_WunderChain)); //freaking sweet
     new Trigger(m_climber.b()).onTrue(new InstantCommand(armSubsystem::trap_stage1));
   
   
+
     m_climber.povUp().whileTrue(m_climberCommand);
     m_climber.povDown().whileTrue(m_climberCommand);
     m_climber.povLeft().whileTrue(m_climberCommand);
