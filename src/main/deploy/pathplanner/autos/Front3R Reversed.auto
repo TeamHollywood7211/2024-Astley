@@ -226,63 +226,6 @@
           }
         },
         {
-          "type": "sequential",
-          "data": {
-            "commands": [
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "Note 1 Shoot to BEES"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "act_intakeIR_s"
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.2
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "pos_mid"
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "BEES to Note 1 Shoot"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "act_shooter_on"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -296,42 +239,6 @@
                 "type": "named",
                 "data": {
                   "name": "act_intakeIR_s"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.1
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_on"
-                }
-              },
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 0.5
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_shooter_off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "act_intake_off"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "pos_zero"
                 }
               }
             ]
